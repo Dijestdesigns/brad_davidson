@@ -1,0 +1,30 @@
+.blog-text p {
+	line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    /*white-space: nowrap;*/
+    text-overflow: ellipsis;
+}
+
+.content {
+	position: absolute;
+	bottom: 10;
+	width: 82%;
+}
+
+.search-form {
+	border-bottom: 1px solid #dcdcdc;
+	/*margin-bottom: 20px;*/
+    padding-bottom: 5px;
+}
+
+.add-new-button {
+	right: 20px;
+	position: fixed;
+	z-index: 2;
+}
+
+.base-quantity {
+	bottom: 30px !important;
+	position: relative;
+}
