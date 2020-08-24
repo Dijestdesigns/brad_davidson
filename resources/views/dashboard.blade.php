@@ -42,7 +42,7 @@
                             <div class="red-header">
                                 <h5><p>{{ __('Total Values') }}</p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-money"></i>&nbsp;${{ $totalValues }}</p>
+                            <p class="user"><i class="fa fa-money"></i>&nbsp;&nbsp;${{ $totalValues }}</p>
                         </div>
                     </div>
                 </div>
