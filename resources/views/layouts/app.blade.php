@@ -16,6 +16,22 @@
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
     <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/jquery.ui.widget.js') }}" defer></script> -->
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <!-- <script src="http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js" defer></script> -->
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <!-- <script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js" defer></script> -->
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <!-- <script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js" defer></script> -->
+    <!-- blueimp Gallery script -->
+    <!-- <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js" defer></script>
+    <script src="{{ asset('js/jquery.iframe-transport.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload-process.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload-image.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload-validate.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload-ui.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.fileupload.main.js') }}" defer></script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -28,6 +44,16 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <!-- blueimp Gallery styles -->
+    <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <link rel="stylesheet" href="{{ asset('css/jquery.fileupload.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery.fileupload-ui.css') }}">
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('css/jquery.fileupload-noscript.css') }}">
+    </noscript>
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('css/jquery.fileupload-ui-noscript.css') }}">
+    </noscript> -->
 </head>
 <body>
     <div id="app">
@@ -299,12 +325,18 @@
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered"><a href="profile.html"><img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80"></a></p>
+                        <p class="centered"><a href="#"><img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80"></a></p>
                         <h5 class="centered">{{ Auth::user()->name }}</h5>
                         <li class="mt">
                             <a class="{{ (request()->is('/') ? 'active' : '') }}" href="{{ route('dashboard') }}">
                                 <i class="fa fa-dashboard"></i>
                                 <span>{{ __('Dashboard') }}</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="{{ (request()->is('tags*') ? 'active' : '') }}" href="{{ route('tags.index') }}">
+                                <i class="fa fa-object-group"></i>
+                                <span>{{ __('Tags') }}</span>
                             </a>
                         </li>
                         <li class="sub-menu">
@@ -314,19 +346,19 @@
                             </a>
                         </li>
                         <li class="sub-menu">
-                            <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="javascript:;">
+                            <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="{{ route('folders.index') }}">
                                 <i class="fa fa-users"></i>
                                 <span>{{ __('Folders') }}</span>
                             </a>
                         </li>
                         <li class="sub-menu">
-                            <a class="{{ (request()->is('stock/levels*') ? 'active' : '') }}" href="javascript:;">
+                            <a class="{{ (request()->is('stock_levels*') ? 'active' : '') }}" href="{{ route('stock_levels.index') }}">
                                 <i class="fa fa-database"></i>
                                 <span>{{ __('Stock Levels') }}</span>
                             </a>
                         </li>
                         <li class="sub-menu">
-                            <a class="{{ (request()->is('stock/values*') ? 'active' : '') }}" href="javascript:;">
+                            <a class="{{ (request()->is('stock_values*') ? 'active' : '') }}" href="{{ route('stock_values.index') }}">
                                 <i class="fa fa-money"></i>
                                 <span>{{ __('Stock Values') }}</span>
                             </a>

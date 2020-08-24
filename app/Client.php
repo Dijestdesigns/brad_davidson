@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Tag;
 
-class Item extends BaseModel
+class Client extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -14,24 +14,23 @@ class Item extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name', 'qty', 'min_level', 'price', 'value', 'notes', 'created_by'
+        'name', 'notes', 'created_by', 'updated_by'
     ];
 
     public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false)
     {
         $createdBy = ['required', 'integer', 'exists:' . User::getTableName() . ',id'];
+        $updatedBy = [];
         if ($isUpdate) {
             $createdBy = [];
+            $updatedBy = ['required', 'integer', 'exists:' . User::getTableName() . ',id'];
         }
 
         $validator = Validator::make($data, [
             'name'       => ['required', 'string', 'max:255'],
-            'qty'        => ['required', 'integer'],
-            'min_level'  => ['required', 'integer'],
-            'price'      => ['required', 'between:0,99.99'],
-            'value'      => ['required', 'between:0,99.99'],
             'notes'      => ['nullable'],
             'created_by' => $createdBy,
+            'updated_by' => $updatedBy,
             'tags.*'     => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
         ]);
 
@@ -46,19 +45,23 @@ class Item extends BaseModel
         return $validator;
     }
 
-    public function tags()
+    public function userCreatedBy()
     {
-        return $this->hasMany('App\ItemTag', 'item_id', 'id');
+        return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
+    public function clientTags()
+    {
+        return $this->hasMany('App\ClientTag', 'client_id', 'id');
     }
 
     public function photo()
     {
-        return $this->hasOne('App\ItemPhoto', 'item_id', 'id');
+        return $this->hasOne('App\ClientPhoto', 'client_id', 'id');
     }
-
 
     public function photos()
     {
-        return $this->hasMany('App\ItemPhoto', 'item_id', 'id');
+        return $this->hasMany('App\ClientPhoto', 'client_id', 'id');
     }
 }

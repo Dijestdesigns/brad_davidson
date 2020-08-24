@@ -22,6 +22,23 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Items'], function () {
         Route::resources(['items' => 'ItemsController']);
+        Route::post('items/change/quantity/{id}', 'ItemsController@changeQuantity')->name('items.change.quantity');
+        Route::post('items/moveto/folder/{id}', 'ItemsController@moveToFolder')->name('items.moveto.folder');
     });
 
+    Route::group(['namespace' => 'Tags'], function () {
+        Route::resources(['tags' => 'TagsController']);
+    });
+
+    Route::group(['namespace' => 'Folders'], function () {
+        Route::resources(['folders' => 'FoldersController']);
+    });
+
+    Route::group(['namespace' => 'StockLevels'], function () {
+        Route::resources(['stock_levels' => 'StockLevelsController']);
+    });
+
+    Route::group(['namespace' => 'StockValues'], function () {
+        Route::resources(['stock_values' => 'StockValuesController']);
+    });
 });

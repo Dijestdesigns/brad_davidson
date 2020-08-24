@@ -20,8 +20,10 @@ class CreateItemsTable extends Migration
             $table->integer('min_level');
             $table->float('price');
             $table->float('value');
-            $table->text('notes');
-            $table->timestamp('created_at')->nullable();
+            $table->text('notes')->nullable();
+            $table->bigInteger('created_by')->unsigned();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

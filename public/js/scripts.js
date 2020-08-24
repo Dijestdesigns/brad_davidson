@@ -133,3 +133,31 @@ jQuery(document).ready(function( $ ) {
     $('html, body').animate({scrollTop : 0},500);
   });
 });
+
+function getValue(element) {
+    var price    = $("#item-price").val(),
+        quantity = $("#item-quantity").val();
+
+    $("#price-value").val(price * quantity);
+}
+
+function readURL(input) {
+    if (input.files) {
+        $('#preview-image').html("");
+
+        $.each(input.files, function(index) {
+
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+              $('#preview-image').append('<div class="col-md-4"><img src="' + e.target.result + '" style="width:100%;height: 230px;" /></div>');
+          }
+
+          reader.readAsDataURL(input.files[index]);
+        });
+    }
+}
+
+$("#imgUpload").change(function() {
+    readURL(this);
+});
