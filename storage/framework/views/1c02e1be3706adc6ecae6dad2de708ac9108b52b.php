@@ -16,7 +16,7 @@
                             <div class="gray-header">
                                 <h5><p><?php echo e(__('Total Items')); ?></p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-object-group"></i>&nbsp;10</p>
+                            <p class="user"><i class="fa fa-object-group"></i>&nbsp; <?php echo e($itemCount); ?></p>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -24,7 +24,7 @@
                             <div class="yellow-header">
                                 <h5><p><?php echo e(__('Total Folders')); ?></p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-users"></i>&nbsp;10</p>
+                            <p class="user"><i class="fa fa-users"></i>&nbsp;<?php echo e($clientCount); ?></p>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -32,7 +32,7 @@
                             <div class="green-header">
                                 <h5><p><?php echo e(__('Total Stocks')); ?></p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-database"></i>&nbsp;10</p>
+                            <p class="user"><i class="fa fa-database"></i>&nbsp;<?php echo e($totalStocks); ?></p>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -40,7 +40,7 @@
                             <div class="red-header">
                                 <h5><p><?php echo e(__('Total Values')); ?></p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-money"></i>&nbsp;10</p>
+                            <p class="user"><i class="fa fa-money"></i>&nbsp;$<?php echo e($totalValues); ?></p>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="details">
                         <p>
-                            <a href="#">Paul Rudd</a> purchased an item.<br>
+                            <a href="#">Brad Davidson</a> purchased an item.<br>
                         </p>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="details">
                         <p>
-                            <a href="#">Paul Rudd</a> purchased an item.<br>
+                            <a href="#">Brad Davidson</a> purchased an item.<br>
                         </p>
                     </div>
                 </div>

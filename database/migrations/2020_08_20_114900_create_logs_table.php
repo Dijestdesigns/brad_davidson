@@ -16,11 +16,10 @@ class CreateLogsTable extends Migration
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->string('model_name');
-            $table->integer('qty');
-            $table->integer('min_level');
-            $table->float('price');
-            $table->float('value');
-            $table->text('notes');
+            $table->integer('model_id');
+            $table->text('message');
+            $table->bigInteger('created_by')->unsigned();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at')->nullable();
         });
     }
