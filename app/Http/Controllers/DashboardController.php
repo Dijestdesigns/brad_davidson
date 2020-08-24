@@ -32,8 +32,8 @@ class DashboardController extends BaseController
 
         $totalStocks = $totalValues = 0;
         if (!empty($totalStockValues)) {
-            $totalStocks = $totalStockValues->qty;
-            $totalValues = number_format($totalStockValues->value, 2);
+            $totalStocks = (!empty($totalStockValues->qty)) ? $totalStockValues->qty : 0;
+            $totalValues = (!empty($totalStockValues->value)) ? number_format($totalStockValues->value, 2) : 0;
         }
 
         return view('dashboard', compact('itemCount', 'clientCount', 'totalStocks', 'totalValues'));
