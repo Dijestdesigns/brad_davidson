@@ -14,8 +14,10 @@
     <script difer src="{{ asset('js/jquery.nicescroll.js') }}" defer></script>
     <script difer src="{{ asset('js/jquery.dcjqaccordion.2.7.js') }}" defer></script>
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
+    <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
-    <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+    <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
     <!-- <script src="{{ asset('js/jquery.ui.widget.js') }}" defer></script> -->
     <!-- The Templates plugin is included to render the upload/download listings -->
     <!-- <script src="http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js" defer></script> -->
@@ -39,10 +41,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
@@ -325,7 +329,7 @@
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered"><a href="#"><img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80"></a></p>
+                        <p class="centered"><a href="#"><img src="{{ asset('img/me/me.png') }}" class="img-circle" width="80"></a></p>
                         <h5 class="centered">{{ Auth::user()->name }}</h5>
                         <li class="mt">
                             <a class="{{ (request()->is('/') ? 'active' : '') }}" href="{{ route('dashboard') }}">
@@ -348,7 +352,7 @@
                         <li class="sub-menu">
                             <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="{{ route('folders.index') }}">
                                 <i class="fa fa-users"></i>
-                                <span>{{ __('Folders') }}</span>
+                                <span>{{ __('Clients') }}</span>
                             </a>
                         </li>
                         <li class="sub-menu">
@@ -361,6 +365,18 @@
                             <a class="{{ (request()->is('stock_values*') ? 'active' : '') }}" href="{{ route('stock_values.index') }}">
                                 <i class="fa fa-money"></i>
                                 <span>{{ __('Stock Values') }}</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="{{ (request()->is('logs*') ? 'active' : '') }}" href="{{ route('logs.index') }}">
+                                <i class="fa fa-history"></i>
+                                <span>{{ __('Logs') }}</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="{{ (request()->is('trash*') ? 'active' : '') }}" href="{{ route('trash.index') }}">
+                                <i class="fa fa-trash"></i>
+                                <span>{{ __('Trash') }}</span>
                             </a>
                         </li>
                     </ul>

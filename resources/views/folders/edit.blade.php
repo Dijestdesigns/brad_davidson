@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Folders Edit') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Clients Edit') }}</h3>
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@
                             @if (!empty($record->photos) && !$record->photos->isEmpty())
                                 @foreach ($record->photos as $photo)
                                     <div class="col-md-4">
-                                        <img src="{{ $photo->photo }}" style="width:100%;height: 230px;" />
+                                        <img src="{{ $photo->photo }}" style="width:100%;height: 100%;object-fit: cover;" />
                                     </div>
                                 @endforeach
                             @endif

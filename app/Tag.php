@@ -21,11 +21,16 @@ class Tag extends BaseModel
         return $this->hasOne('App\User', 'id', 'created_by');
     }
 
-    public static function validators(array $data, $returnBoolsOnly = false)
+    public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false)
     {
+        $createdBy = ['required', 'integer', 'exists:' . User::getTableName() . ',id'];
+        if ($isUpdate) {
+            $createdBy = [];
+        }
+
         $validator = Validator::make($data, [
             'name'        => ['required', 'string', 'max:255'],
-            'created_by'  => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
+            'created_by'  => $createdBy
         ]);
 
         if ($returnBoolsOnly === true) {

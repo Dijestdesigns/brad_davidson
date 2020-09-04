@@ -39,7 +39,7 @@ class StockLevelsController extends \App\Http\Controllers\BaseController
         }
 
         $total   = $modelQuery->count();
-        $records = $modelQuery->orderBy('id', 'DESC')->paginate(Item::PAGINATE_RECORDS);
+        $records = $modelQuery->orderBy('qty', 'DESC')->paginate(Item::PAGINATE_RECORDS);
 
         return view('stock_levels.index', compact('total', 'records', 'request', 'isFiltered'));
     }

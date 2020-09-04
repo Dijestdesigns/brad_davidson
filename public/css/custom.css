@@ -63,3 +63,39 @@
     direction: ltr;
     cursor: pointer;
 }
+
+#blog-bg img {
+	min-height:100%
+	object-fit: cover;
+}
+
+.blog-title {
+	background: rgba(241,100,50,0.8);
+}
+
+.second-aside {
+ 	background: #d6d9dc;
+ 	padding-top: 20px;
+}
+
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+.pt11 {
+	padding-top: unset;
+}
+
+@media (min-width:801px)  {
+	.pt11 {
+		padding-top: 11px;
+	}
+}

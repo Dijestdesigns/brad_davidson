@@ -139,7 +139,7 @@
                             @if (!empty($record->photos) && !$record->photos->isEmpty())
                                 @foreach ($record->photos as $photo)
                                     <div class="col-md-4">
-                                        <img src="{{ $photo->photo }}" style="width:100%;height: 230px;" />
+                                        <img src="{{ $photo->photo }}" style="width:100%;height: 100%;object-fit: cover;" />
                                     </div>
                                 @endforeach
                             @endif

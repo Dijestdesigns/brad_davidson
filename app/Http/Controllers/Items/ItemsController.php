@@ -9,6 +9,7 @@ use App\ItemTag;
 use App\ItemPhoto;
 use App\Client;
 use App\ClientItem;
+use App\Log;
 use DB;
 use Illuminate\Http\UploadedFile;
 
@@ -65,10 +66,22 @@ class ItemsController extends \App\Http\Controllers\BaseController
                              ->where(ItemTag::getTableName() . '.tag_id', (int)$t);
                 });
             }
+
+            if ($request->get('f', false)) {
+                $f = $request->get('f');
+
+                $modelQuery->join(ClientItem::getTableName(), function($join) use($f, $model) {
+                    $join->on($model::getTableName() . '.id', '=', ClientItem::getTableName() . '.item_id')
+                             ->where(ClientItem::getTableName() . '.qty', '>', 0)
+                             ->where(ClientItem::getTableName() . '.client_id', (int)$f);
+                });
+
+                $modelQuery->groupBy(ClientItem::getTableName() . '.item_id');
+            }
         }
 
         $total   = $modelQuery->count();
-        $records = $modelQuery->paginate(8);
+        $records = $modelQuery->select($model::getTableName() . '.*')->orderBy('name', 'ASC')->paginate(9);
 
         // $quantity = $model::all()->pluck('qty', 'qty');
         $levels   = $model::all()->pluck('min_level', 'min_level');
@@ -99,6 +112,9 @@ class ItemsController extends \App\Http\Controllers\BaseController
         $create = $model::create($data);
 
         if ($create) {
+            $find = $model::find($create->id);
+            self::createLog($find, __("Created item {$find->name}"), Log::CREATE, [], $find->toArray());
+
             $tagData['item_id'] = $create->id;
             $tagData['tag_id']  = (!empty($data['tags'])) ? $data['tags'] : [];
 
@@ -184,9 +200,14 @@ class ItemsController extends \App\Http\Controllers\BaseController
 
             $validator->validate();
 
+            $oldData = $record->toArray();
+
             $update = $record->update($data);
 
             if ($update) {
+                $find = $model::find($id);
+                self::createLog($find, __("Updated item {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
                 $tagData['item_id'] = $id;
                 $tagData['tag_id']  = (!empty($data['tags'])) ? $data['tags'] : [];
 
@@ -225,7 +246,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
     {
         $record = Item::where('id', $id)->get();
 
-        if ($record) {
+        if (!empty($record[0])) {
             DB::beginTransaction();
 
             $find = ItemTag::where('item_id', $id)->get();
@@ -236,6 +257,8 @@ class ItemsController extends \App\Http\Controllers\BaseController
             $isRemoved = self::remove($record);
 
             if ($isRemoved) {
+                self::createLog($record[0], __("Deleted item " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+
                 DB::commit();
 
                 return redirect('items')->with('success', __("Item deleted!"));
@@ -258,10 +281,15 @@ class ItemsController extends \App\Http\Controllers\BaseController
             $oldQuantity = $record->qty;
             $newQuantity = $request->get('qty');
 
+            $oldData = $record->toArray();
+
             $record->qty = $newQuantity;
             $update = $record->save();
 
             if ($update) {
+                $find = $model::find($id);
+                self::createLog($find, __("Changed quantity of item {$find->name} from {$oldData['qty']} to {$find->qty}"), Log::UPDATE, $oldData, $find->toArray());
+
                 return redirect('items')->with('success', __("Item quantity changed from {$oldQuantity} to {$newQuantity}!"));
             }
         }
@@ -302,10 +330,17 @@ class ItemsController extends \App\Http\Controllers\BaseController
             $create = ClientItem::create($insert);
 
             if ($create) {
+                $oldData = $record->toArray();
+
                 $record->qty = $deductedQty;
                 $record->save();
 
+                $newData = $record->toArray();
+
                 $client = Client::find($clientId);
+
+                $find = Client::find($clientId);
+                self::createLog($find, __("Moved {$postedAmount} item quantities of {$record->name} to {$find->name}"), Log::UPDATE, $oldData, $newData);
 
                 return redirect('items')->with('success', __("Item {$record->name}, {$postedAmount} quantity moved to {$client->name} folder. Now remains {$deductedQty} quantity!"));
             }

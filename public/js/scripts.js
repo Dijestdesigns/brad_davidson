@@ -132,6 +132,10 @@ jQuery(document).ready(function( $ ) {
     e.preventDefault();
     $('html, body').animate({scrollTop : 0},500);
   });
+
+    $(document).find("#folders").collapse('show');
+
+    $(document).find('[id^=slider]').carousel('pause');
 });
 
 function getValue(element) {
@@ -150,7 +154,7 @@ function readURL(input) {
           var reader = new FileReader();
 
           reader.onload = function(e) {
-              $('#preview-image').append('<div class="col-md-4"><img src="' + e.target.result + '" style="width:100%;height: 230px;" /></div>');
+              $('#preview-image').append('<div class="col-md-4"><img src="' + e.target.result + '" style="width:100%;height: 100%;object-fit: cover;" /></div>');
           }
 
           reader.readAsDataURL(input.files[index]);

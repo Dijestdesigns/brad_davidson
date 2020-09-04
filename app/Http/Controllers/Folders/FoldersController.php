@@ -8,6 +8,7 @@ use App\Tag;
 use App\ClientTag;
 use App\ClientPhoto;
 use App\ClientItem;
+use App\Log;
 use DB;
 use Illuminate\Http\UploadedFile;
 
@@ -49,11 +50,11 @@ class FoldersController extends \App\Http\Controllers\BaseController
         }
 
         $modelQuery->leftJoin(ClientItem::getTableName(), $model::getTableName() . '.id', '=', ClientItem::getTableName() . '.client_id');
-        $modelQuery->groupBy(ClientItem::getTableName() . '.client_id');
+        $modelQuery->groupBy($model::getTableName() . '.id');
         $modelQuery->select(DB::raw($model::getTableName() . ".*, SUM(" . ClientItem::getTableName() . '.qty) as qty'));
 
         $total   = $modelQuery->count();
-        $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
+        $records = $modelQuery->orderBy('name', 'ASC')->paginate($model::PAGINATE_RECORDS);
 
         $tags    = Tag::all();
 
@@ -81,6 +82,9 @@ class FoldersController extends \App\Http\Controllers\BaseController
         $create = $model::create($data);
 
         if ($create) {
+            $find = $model::find($create->id);
+            self::createLog($find, __("Created client {$find->name}"), Log::CREATE, [], $find->toArray());
+
             $tagData['client_id'] = $create->id;
             $tagData['tag_id']    = (!empty($data['tags'])) ? $data['tags'] : [];
 
@@ -166,9 +170,14 @@ class FoldersController extends \App\Http\Controllers\BaseController
 
             $validator->validate();
 
+            $oldData = $record->toArray();
+
             $update = $record->update($data);
 
             if ($update) {
+                $find = $model::find($id);
+                self::createLog($find, __("Updated client {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
                 $tagData['client_id'] = $id;
                 $tagData['tag_id']    = (!empty($data['tags'])) ? $data['tags'] : [];
 
@@ -207,7 +216,7 @@ class FoldersController extends \App\Http\Controllers\BaseController
     {
         $record = Client::where('id', $id)->get();
 
-        if ($record) {
+        if (!empty($record[0])) {
             DB::beginTransaction();
 
             $find = ClientTag::where('client_id', $id)->get();
@@ -218,6 +227,8 @@ class FoldersController extends \App\Http\Controllers\BaseController
             $isRemoved = self::remove($record);
 
             if ($isRemoved) {
+                self::createLog($record[0], __("Deleted client " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+
                 DB::commit();
 
                 return redirect('folders')->with('success', __("Folder deleted!"));

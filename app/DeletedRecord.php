@@ -34,4 +34,9 @@ class DeletedRecord extends BaseModel
 
         return $validator;
     }
+
+    public function userDeletedBy()
+    {
+        return $this->hasOne('App\User', 'id', 'deleted_by');
+    }
 }

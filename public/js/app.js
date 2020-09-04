@@ -71210,6 +71210,16 @@ $(document).ready(function () {
       });
   });
 
+  $(".showLogBtn").on('click', function () {
+      event.preventDefault();
+
+      var message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message
+      });
+  });
+
   $(document).on("click", ".close-model", function() {
       bootbox.hideAll();
   });

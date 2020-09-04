@@ -41,4 +41,18 @@ Route::middleware($middlewares)->group(function() {
     Route::group(['namespace' => 'StockValues'], function () {
         Route::resources(['stock_values' => 'StockValuesController']);
     });
+
+    Route::group(['namespace' => 'Trash'], function () {
+        Route::resources(['trash' => 'TrashController']);
+    });
+
+    Route::group(['namespace' => 'Logs'], function () {
+        Route::resources(['logs' => 'LogsController']);
+    });
+
+    Route::get('/storage/link', function () {
+        Artisan::call('storage:link');
+
+        dd(Artisan::output());
+    });
 });

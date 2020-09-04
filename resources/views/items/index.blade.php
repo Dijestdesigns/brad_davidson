@@ -54,6 +54,7 @@
                                     <i class="fa fa-trash"></i>
                                 </a>
                             @endif
+                            <input type="hidden" name="f" value="{{ $request->get('f') }}" />
                             <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -80,20 +81,80 @@
                 </div>
             </div>
         </div>
-        <div class="row mt">
-            <div class="col-lg-12">
+        <div class="mt">
+            <div class="col-lg-3 second-aside">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#folders">
+                                    {{ __('Clients') }}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="folders" class="panel-collapse out">
+                            <div class="panel-body white-panel">
+                                @foreach ($folders as $folder)
+                                    <div class="row white-header" style="{{ ($request->has('f') && $request->get('f') == $folder->id) ? 'background: #b7b7b7;' : '' }}">
+                                        <a href="{{ ($request->has('f') && $request->get('f') == $folder->id) ? route('items.index', array_merge($request->query(), ['f' => '', 'page' => ''])) : route('items.index', array_merge($request->query(), ['f' => $folder->id, 'page' => ''])) }}">
+                                            @if (!empty($folder->photo))
+                                                <div class="col-md-3 hidden-sm hidden-xs">
+                                                    <img src="{{ $folder->photo->photo }}" class="img-circle" width="45" height="45">
+                                                </div>
+                                            @else
+                                                <div class="col-md-3 hidden-sm hidden-xs">
+                                                    <img src="{{ asset('img/no-item-image.png') }}" class="img-circle" width="45" height="45">
+                                                </div>
+                                            @endif
+
+                                            <div class="col-md-9 col-sm-12 col-xs-12 pt11">
+                                                {!! ($request->has('f') && $request->get('f') == $folder->id) ? '<b>' : '' !!}
+                                                    {{ $folder->name }}
+                                                {!! ($request->has('f') && $request->get('f') == $folder->id) ? '</b>' : '' !!}
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9" style="padding-right: 0px;">
                 <div class="row">
                     @if (!empty($records) && !$records->isEmpty())
                         @foreach ($records as $index => $record)
-                            <div class="col-lg-3 col-md-3 col-sm-3 mb">
+                            <div class="col-lg-4 col-md-4 col-sm-4 mb">
                                 <div class="content-panel sp">
                                     <div id="blog-bg">
-                                        <img src="{{ (!empty($record->photo)) ? $record->photo->photo : asset('img/no-item-image.png') }}" style="width: 100%;height: 150px;" />
+                                        @if ((!empty($record->photos) && count($record->photos) > 1))
+                                            <div id="slider-{{ $record->id }}" class="carousel slide" data-ride="carousel" style="margin-top: -15px !important;">
+                                                <div class="carousel-inner">
+                                                    @foreach ($record->photos as $key => $photo)
+                                                        <div class="carousel-item item {{ ($key == 0) ? 'active' : '' }}">
+                                                            <img src="{{ (!empty($photo->photo)) ? $photo->photo : asset('img/no-item-image.png') }}" style="width: 100%;height: 260px;padding-top: 15px !important;" />
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                                <a class="carousel-control-prev" href="#slider-{{ $record->id }}" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                  </a>
+                                                  <a class="carousel-control-next" href="#slider-{{ $record->id }}" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                  </a>
+                                            </div>
+                                        @else
+                                            <img src="{{ (!empty($record->photo->photo)) ? $record->photo->photo : asset('img/no-item-image.png') }}" style="width: 100%;height: 245px;" />
+                                        @endif
                                         <div class="pull-left">
                                             <div class="blog-title">{{ $record->name }}</div>
                                         </div>
                                         <div class="pull-right">
-                                            <div class="blog-title-right base-quantity">${{ $record->qty }} | ${{ $record->value }}</div>
+                                            <div class="blog-title-right base-quantity">{{ __('Qty') }} : {{ $record->qty }} | ${{ $record->value }}</div>
                                         </div>
                                     </div>
                                     <div class="blog-text">
@@ -113,7 +174,7 @@
                                                         <button class="btn btn-warning btn-sm moveItem" title="{{ __('Move to folder') }}" data-html="moveto-model-{{ $record->id }}"><i class="fa fa-arrows"></i></button>
                                                     </form>
                                                     <div style="display: inline-block;margin-left: -4px;">
-                                                        <button class="btn btn-info btn-sm" title="{{ __('History') }}"><i class="fa fa-history"></i></button>
+                                                        <a href="{{ route('logs.index', ['model' => $record->id]) }}" target="__blank" class="btn btn-info btn-sm" title="{{ __('History') }}"><i class="fa fa-history"></i></a>
                                                     </div>
                                                     <form action="{{ route('items.destroy', $record->id) }}" method="POST" style="display: inline-block;margin-left: -4px;">
                                                         @method('DELETE')

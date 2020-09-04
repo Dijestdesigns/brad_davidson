@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tags;
 
 use Illuminate\Http\Request;
 use App\Tag;
+use App\Log;
 
 class TagsController extends \App\Http\Controllers\BaseController
 {
@@ -34,7 +35,7 @@ class TagsController extends \App\Http\Controllers\BaseController
         }
 
         $total   = $modelQuery->count();
-        $records = $modelQuery->paginate(Tag::PAGINATE_RECORDS);
+        $records = $modelQuery->orderBy('name', 'ASC')->paginate(Tag::PAGINATE_RECORDS);
 
         return view('tags.index', compact('total', 'records', 'request', 'isFiltered'));
     }
@@ -57,6 +58,9 @@ class TagsController extends \App\Http\Controllers\BaseController
         $create = $model::create($data);
 
         if ($create) {
+            $find = $model::find($create->id);
+            self::createLog($find, __("Created tag {$find->name}"), Log::CREATE, [], $find->toArray());
+
             return redirect('tags')->with('success', __("Tag created!"));
         }
 
@@ -82,11 +86,16 @@ class TagsController extends \App\Http\Controllers\BaseController
             $data               = $request->all();
             // $data['created_by'] = auth()->user()->id;
 
-            $validator = Tag::validators($data);
+            $validator = Tag::validators($data, false, true);
 
             $validator->validate();
 
+            $oldData = $record->toArray();
+
             if ($record->update($data)) {
+                $find = Tag::find($id);
+                self::createLog($find, __("Updated tag {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
                 return redirect('tags')->with('success', __("Tag updated!"));
             }
         }
@@ -98,10 +107,12 @@ class TagsController extends \App\Http\Controllers\BaseController
     {
         $record = Tag::where('id', $id)->get();
 
-        if ($record) {
+        if (!empty($record[0])) {
             $isRemoved = self::remove($record);
 
             if ($isRemoved) {
+                self::createLog($record[0], __("Deleted tag " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+
                 return redirect('tags')->with('success', __("Tag deleted!"));
             } else {
                 return redirect('tags')->with('error', __("There has been an error!"));

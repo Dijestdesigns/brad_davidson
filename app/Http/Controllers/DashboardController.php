@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
 use App\Client;
+use App\Log;
 use DB;
 
 class DashboardController extends BaseController
@@ -36,6 +37,8 @@ class DashboardController extends BaseController
             $totalValues = number_format($totalStockValues->value, 2);
         }
 
-        return view('dashboard', compact('itemCount', 'clientCount', 'totalStocks', 'totalValues'));
+        $logs = Log::orderBy('id', 'DESC')->limit(10)->get();
+
+        return view('dashboard', compact('itemCount', 'clientCount', 'totalStocks', 'totalValues', 'logs'));
     }
 }

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Folders Create') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Clients Create') }}</h3>
                 </div>
             </div>
         </div>
