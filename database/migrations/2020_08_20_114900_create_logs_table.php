@@ -13,7 +13,7 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        /* Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->string('model_name');
             $table->integer('model_id');
@@ -21,7 +21,7 @@ class CreateLogsTable extends Migration
             $table->bigInteger('created_by')->unsigned();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at')->nullable();
-        });
+        }); */
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        /* Schema::dropIfExists('logs'); */
     }
 }

@@ -11,3 +11,6 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+/node_modules.zip
+/live.env
+/.env_live_dijerstserver
