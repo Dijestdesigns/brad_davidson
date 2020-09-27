@@ -26,7 +26,7 @@
                             <div class="yellow-header">
                                 <h5><p>{{ __('Total Clients') }}</p></h5>
                             </div>
-                            <p class="user"><i class="fa fa-users"></i>&nbsp;{{ $clientCount }}</p>
+                            <p class="user"><i class="fa fa-users"></i>&nbsp;{{ $userCount }}</p>
                         </div>
                     </div>
                     <div class="col-md-2">

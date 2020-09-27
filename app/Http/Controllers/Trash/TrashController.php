@@ -7,6 +7,11 @@ use App\DeletedRecord;
 
 class TrashController extends \App\Http\Controllers\BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:trash_access'])->only('index');
+    }
+
     public function index(Request $request)
     {
         $model      = new DeletedRecord();

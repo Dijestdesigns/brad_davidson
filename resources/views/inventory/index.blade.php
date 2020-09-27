@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Items') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Inventory') }}</h3>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h4>{{ __('Search Form : ') }}</h4>
-                <form class="form-inline search-form" method="__GET" action="{{ route('items.index') }}">
+                <form class="form-inline search-form" method="__GET" action="{{ route('inventory.index') }}">
                     <div>
                         <div class="form-group">
                             <input type="text" name="s" class="form-control" placeholder="{{ __('Search by name') }}" value="{{ $request->get('s', '') }}">
@@ -50,7 +50,7 @@
                                 @endif
                             </select>
                             @if($isFiltered == true)
-                                <a href="{{route('items.index')}}" class="btn btn-light">
+                                <a href="{{route('inventory.index')}}" class="btn btn-light">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             @endif
@@ -59,9 +59,11 @@
                         </div>
                     </div>
 
-                    <div class="pull-right add-new-button">
-                        <a class="btn btn-primary" href="{{ route('items.create') }}"><i class="fa fa-plus"></i></a>
-                    </div>
+                    @can('inventories_create')
+                        <div class="pull-right add-new-button">
+                            <a class="btn btn-primary" href="{{ route('inventory.create') }}"><i class="fa fa-plus"></i></a>
+                        </div>
+                    @endcan
                 </form>
 
             </div>
@@ -71,7 +73,7 @@
             <div class="col-lg-12">
                 <div class="content-panel" style="height: 100%;">
                     <div class="col-md-8">
-                        <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Items') }}</h4>
+                        <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Inventories') }}</h4>
                     </div>
                     <div class="col-md-4">
                         <h5 class="float-right text-muted">
@@ -96,7 +98,7 @@
                             <div class="panel-body white-panel">
                                 @foreach ($folders as $folder)
                                     <div class="row white-header" style="{{ ($request->has('f') && $request->get('f') == $folder->id) ? 'background: #b7b7b7;' : '' }}">
-                                        <a href="{{ ($request->has('f') && $request->get('f') == $folder->id) ? route('items.index', array_merge($request->query(), ['f' => '', 'page' => ''])) : route('items.index', array_merge($request->query(), ['f' => $folder->id, 'page' => ''])) }}">
+                                        <a href="{{ ($request->has('f') && $request->get('f') == $folder->id) ? route('inventory.index', array_merge($request->query(), ['f' => '', 'page' => ''])) : route('inventory.index', array_merge($request->query(), ['f' => $folder->id, 'page' => ''])) }}">
                                             @if (!empty($folder->photo))
                                                 <div class="col-md-3 hidden-sm hidden-xs">
                                                     <img src="{{ $folder->photo->photo }}" class="img-circle" width="45" height="45">
@@ -162,25 +164,35 @@
                                         <div>
                                             <div class="text-center">
                                                 <div class="btn-group">
-                                                    <a class="btn btn-primary btn-sm" title="{{ __('Edit') }}" href="{{ route('items.edit', $record->id) }}"><i class="fa fa-edit"></i></a>
-                                                    <form action="{{ route('items.change.quantity', $record->id) }}" method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        <button class="changeQuantity btn btn-dark btn-sm" title="{{ __('Change Quantities') }}" data-title="{{ __('Change Quantities') }}" data-value="{{ $record->qty }}"><i class="fa fa-sort-amount-desc"></i></button>
+                                                    @can('inventories_edit')
+                                                        <a class="btn btn-primary btn-sm" title="{{ __('Edit') }}" href="{{ route('inventory.edit', $record->id) }}"><i class="fa fa-edit"></i></a>
+                                                    @endcan
+                                                    @can('inventories_change_quantities')
+                                                        <form action="{{ route('inventory.change.quantity', $record->id) }}" method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            <button class="changeQuantity btn btn-dark btn-sm" title="{{ __('Change Quantities') }}" data-title="{{ __('Change Quantities') }}" data-value="{{ $record->qty }}"><i class="fa fa-sort-amount-desc"></i></button>
 
-                                                        <input type="hidden" name="qty" id="qty" value="{{ $record->qty }}">
-                                                    </form>
-                                                    <form action="{{ route('items.moveto.folder', $record->id) }}" method="POST" style="display: inline-block;margin-left: -4px;">
-                                                        @csrf
-                                                        <button class="btn btn-warning btn-sm moveItem" title="{{ __('Move to folder') }}" data-html="moveto-model-{{ $record->id }}"><i class="fa fa-arrows"></i></button>
-                                                    </form>
-                                                    <div style="display: inline-block;margin-left: -4px;">
-                                                        <a href="{{ route('logs.index', ['model' => $record->id]) }}" target="__blank" class="btn btn-info btn-sm" title="{{ __('History') }}"><i class="fa fa-history"></i></a>
-                                                    </div>
-                                                    <form action="{{ route('items.destroy', $record->id) }}" method="POST" style="display: inline-block;margin-left: -4px;">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <a href="#" class="deleteBtn btn btn-danger btn-sm" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash"></i></a>
-                                                    </form>
+                                                            <input type="hidden" name="qty" id="qty" value="{{ $record->qty }}">
+                                                        </form>
+                                                    @endcan
+                                                    @can('inventories_move_to_folder')
+                                                        <form action="{{ route('inventory.moveto.folder', $record->id) }}" method="POST" style="display: inline-block;margin-left: -4px;">
+                                                            @csrf
+                                                            <button class="btn btn-warning btn-sm moveItem" title="{{ __('Move to folder') }}" data-html="moveto-model-{{ $record->id }}"><i class="fa fa-arrows"></i></button>
+                                                        </form>
+                                                    @endcan
+                                                    @can('logs_access')
+                                                        <div style="display: inline-block;margin-left: -4px;">
+                                                            <a href="{{ route('logs.index', ['model' => $record->id]) }}" target="__blank" class="btn btn-info btn-sm" title="{{ __('History') }}"><i class="fa fa-history"></i></a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('inventories_delete')
+                                                        <form action="{{ route('inventory.destroy', $record->id) }}" method="POST" style="display: inline-block;margin-left: -4px;">
+                                                            @method('DELETE')
+                                                            @csrf
+                                                            <a href="#" class="deleteBtn btn btn-danger btn-sm" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash"></i></a>
+                                                        </form>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -208,7 +220,7 @@
     @if (!empty($records) && !$records->isEmpty())
         @foreach ($records as $index => $record)
             <div class="moveto-model-{{ $record->id }} d-none">
-                <form action="{{ route('items.moveto.folder', $record->id) }}" method="POST">
+                <form action="{{ route('inventory.moveto.folder', $record->id) }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
@@ -224,7 +236,7 @@
                             <br />
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label>{{ __('What quantity of this item do you want to move?') }}</label>
+                                    <label>{{ __('What quantity of this inventory do you want to move?') }}</label>
                                 </div>
                             </div>
 

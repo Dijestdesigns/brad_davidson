@@ -9,6 +9,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class LogsController extends \App\Http\Controllers\BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:logs_access'])->only('index');
+    }
+
     public function index(Request $request)
     {
         $model          = new Log();

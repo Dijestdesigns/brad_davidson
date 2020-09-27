@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Validator;
-use App\Client;
+use App\User;
 use App\Tag;
 
 class ClientTag extends BaseModel
@@ -14,14 +14,14 @@ class ClientTag extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'client_id', 'tag_id'
+        'user_id', 'tag_id'
     ];
 
     public static function validators(array $data, $returnBoolsOnly = false)
     {
         $validator = Validator::make($data, [
-            'client_id' => ['required', 'integer', 'exists:' . Client::getTableName() . ',id'],
-            'tag_id.*'  => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
+            'user_id'  => ['required', 'integer', 'exists:' . User::getTableName() . ',id'],
+            'tag_id.*' => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
         ]);
 
         if ($returnBoolsOnly === true) {

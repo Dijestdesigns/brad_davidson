@@ -16,8 +16,8 @@ class CreateClientPhotosTable extends Migration
         Schema::create('client_photos', function (Blueprint $table) {
             $table->id();
             $table->string('photo');
-            $table->bigInteger('client_id')->unsigned();
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

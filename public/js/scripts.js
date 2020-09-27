@@ -165,3 +165,18 @@ function readURL(input) {
 $("#imgUpload").change(function() {
     readURL(this);
 });
+
+let togglePassword = $(".togglePassword");
+if (togglePassword) {
+    togglePassword.on('click', function (e) {
+        let passwordInput = $(this).next();
+
+        if (passwordInput) {
+            if (passwordInput.attr('type') == 'password') {
+                passwordInput.attr('type', 'text');
+            } else {
+                passwordInput.attr('type', 'password');
+            }
+        }
+    });
+}

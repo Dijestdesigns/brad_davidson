@@ -1,20 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Items;
+namespace App\Http\Controllers\Inventory;
 
 use Illuminate\Http\Request;
 use App\Item;
 use App\Tag;
 use App\ItemTag;
 use App\ItemPhoto;
-use App\Client;
+use App\User;
 use App\ClientItem;
 use App\Log;
 use DB;
 use Illuminate\Http\UploadedFile;
 
-class ItemsController extends \App\Http\Controllers\BaseController
+class InventoryController extends \App\Http\Controllers\BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:inventories_access'])->only('index');
+        $this->middleware(['permission:inventories_create'])->only(['create','store']);
+        $this->middleware(['permission:inventories_edit'])->only(['edit','update']);
+        $this->middleware(['permission:inventories_change_quantities'])->only(['changeQuantity']);
+        $this->middleware(['permission:inventories_edit'])->only(['inventories_move_to_folder']);
+        $this->middleware(['permission:inventories_delete'])->only('destroy');
+    }
+
     public function index(Request $request)
     {
         $model          = new Item();
@@ -43,7 +53,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
             if ($request->get('q', false)) {
                 $q = $request->get('q');
 
-                $modelQuery->where('qty', (int)$q);
+                $modelQuery->where($model::getTableName() . '.qty', (int)$q);
             }
             
             if ($request->get('v', false)) {
@@ -73,7 +83,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
                 $modelQuery->join(ClientItem::getTableName(), function($join) use($f, $model) {
                     $join->on($model::getTableName() . '.id', '=', ClientItem::getTableName() . '.item_id')
                              ->where(ClientItem::getTableName() . '.qty', '>', 0)
-                             ->where(ClientItem::getTableName() . '.client_id', (int)$f);
+                             ->where(ClientItem::getTableName() . '.user_id', (int)$f);
                 });
 
                 $modelQuery->groupBy(ClientItem::getTableName() . '.item_id');
@@ -86,16 +96,16 @@ class ItemsController extends \App\Http\Controllers\BaseController
         // $quantity = $model::all()->pluck('qty', 'qty');
         $levels   = $model::all()->pluck('min_level', 'min_level');
         $tags     = Tag::all();
-        $folders  = Client::all();
+        $folders  = User::where('id', '!=', User::$superadminId)->get();
 
-        return view('items.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'levels', 'folders'));
+        return view('inventory.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'levels', 'folders'));
     }
 
     public function create()
     {
         $tags = Tag::all();
 
-        return view('items.create', compact('tags'));
+        return view('inventory.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -113,7 +123,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
 
         if ($create) {
             $find = $model::find($create->id);
-            self::createLog($find, __("Created item {$find->name}"), Log::CREATE, [], $find->toArray());
+            self::createLog($find, __("Created inventory {$find->name}"), Log::CREATE, [], $find->toArray());
 
             $tagData['item_id'] = $create->id;
             $tagData['tag_id']  = (!empty($data['tags'])) ? $data['tags'] : [];
@@ -136,10 +146,10 @@ class ItemsController extends \App\Http\Controllers\BaseController
                 }
             }
 
-            return redirect('items')->with('success', __("Item created!"));
+            return redirect('inventory')->with('success', __("Inventory created!"));
         }
 
-        return redirect('items/create')->with('error', __("There has been an error!"));
+        return redirect('inventory/create')->with('error', __("There has been an error!"));
     }
 
     public function photos($id, $datas, $flag = 'create')
@@ -180,10 +190,10 @@ class ItemsController extends \App\Http\Controllers\BaseController
         if ($record) {
             $tags = Tag::all();
 
-            return view('items.edit', compact('record', 'tags'));
+            return view('inventory.edit', compact('record', 'tags'));
         }
 
-        return redirect('items')->with('error', __("Not found!"));
+        return redirect('inventory')->with('error', __("Not found!"));
     }
 
     public function update(Request $request, int $id)
@@ -206,7 +216,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
 
             if ($update) {
                 $find = $model::find($id);
-                self::createLog($find, __("Updated item {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+                self::createLog($find, __("Updated inventory {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
 
                 $tagData['item_id'] = $id;
                 $tagData['tag_id']  = (!empty($data['tags'])) ? $data['tags'] : [];
@@ -235,11 +245,11 @@ class ItemsController extends \App\Http\Controllers\BaseController
                     }
                 }
 
-                return redirect('items')->with('success', __("Item updated!"));
+                return redirect('inventory')->with('success', __("Inventory updated!"));
             }
         }
 
-        return redirect('items')->with('error', __("There has been an error!"));
+        return redirect('inventory')->with('error', __("There has been an error!"));
     }
 
     public function destroy(int $id)
@@ -257,19 +267,19 @@ class ItemsController extends \App\Http\Controllers\BaseController
             $isRemoved = self::remove($record);
 
             if ($isRemoved) {
-                self::createLog($record[0], __("Deleted item " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+                self::createLog($record[0], __("Deleted inventory " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
 
                 DB::commit();
 
-                return redirect('items')->with('success', __("Item deleted!"));
+                return redirect('inventory')->with('success', __("Inventory deleted!"));
             } else {
                 DB::rollBack();
 
-                return redirect('items')->with('error', __("There has been an error!"));
+                return redirect('inventory')->with('error', __("There has been an error!"));
             }
         }
 
-        return redirect('items')->with('error', __("Not found!"));
+        return redirect('inventory')->with('error', __("Not found!"));
     }
 
     public function changeQuantity(Request $request, $id)
@@ -288,13 +298,13 @@ class ItemsController extends \App\Http\Controllers\BaseController
 
             if ($update) {
                 $find = $model::find($id);
-                self::createLog($find, __("Changed quantity of item {$find->name} from {$oldData['qty']} to {$find->qty}"), Log::UPDATE, $oldData, $find->toArray());
+                self::createLog($find, __("Changed quantity of inventory {$find->name} from {$oldData['qty']} to {$find->qty}"), Log::UPDATE, $oldData, $find->toArray());
 
-                return redirect('items')->with('success', __("Item quantity changed from {$oldQuantity} to {$newQuantity}!"));
+                return redirect('inventory')->with('success', __("Inventory quantity changed from {$oldQuantity} to {$newQuantity}!"));
             }
         }
 
-        return redirect('items')->with('error', __("Not found!"));
+        return redirect('inventory')->with('error', __("Not found!"));
     }
 
     public function moveToFolder(Request $request, $id)
@@ -305,14 +315,14 @@ class ItemsController extends \App\Http\Controllers\BaseController
         $record = $model->find($id);
 
         if ($record) {
-            $clientId     = (!empty($data['folder'])) ? (int)$data['folder'] : NULL;
+            $userId       = (!empty($data['folder'])) ? (int)$data['folder'] : NULL;
             $postedAmount = (!empty($data['amount'])) ? (int)$data['amount'] : 0;
             $origionalQty = $record->qty;
 
             if (empty($postedAmount)) {
-                return redirect('items')->with('error', __("Please enter amount properly!"));
+                return redirect('inventory')->with('error', __("Please enter amount properly!"));
             } elseif ($postedAmount > $origionalQty) {
-                return redirect('items')->with('error', __("Entered more amount then actual quantity. Please insert amount properly!"));
+                return redirect('inventory')->with('error', __("Entered more amount then actual quantity. Please insert amount properly!"));
             }
 
             $deductedQty = ($origionalQty - $postedAmount);
@@ -320,7 +330,7 @@ class ItemsController extends \App\Http\Controllers\BaseController
             $insert['qty']        = $postedAmount;
             $insert['old_qty']    = $origionalQty;
             $insert['item_id']    = $id;
-            $insert['client_id']  = $clientId;
+            $insert['user_id']    = $userId;
             $insert['created_by'] = auth()->user()->id;
 
             $validator = ClientItem::validators($insert);
@@ -337,15 +347,13 @@ class ItemsController extends \App\Http\Controllers\BaseController
 
                 $newData = $record->toArray();
 
-                $client = Client::find($clientId);
+                $find = User::find($userId);
+                self::createLog($find, __("Moved {$postedAmount} inventory quantities of {$record->name} to {$find->name}"), Log::UPDATE, $oldData, $newData);
 
-                $find = Client::find($clientId);
-                self::createLog($find, __("Moved {$postedAmount} item quantities of {$record->name} to {$find->name}"), Log::UPDATE, $oldData, $newData);
-
-                return redirect('items')->with('success', __("Item {$record->name}, {$postedAmount} quantity moved to {$client->name} folder. Now remains {$deductedQty} quantity!"));
+                return redirect('inventory')->with('success', __("Inventory {$record->name}, {$postedAmount} quantity moved to {$find->name} folder. Now remains {$deductedQty} quantity!"));
             }
         }
 
-        return redirect('items')->with('error', __("Not found!"));
+        return redirect('inventory')->with('error', __("Not found!"));
     }
 }

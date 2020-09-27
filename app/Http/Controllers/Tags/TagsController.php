@@ -8,6 +8,14 @@ use App\Log;
 
 class TagsController extends \App\Http\Controllers\BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:tags_access'])->only('index');
+        $this->middleware(['permission:tags_create'])->only(['create','store']);
+        $this->middleware(['permission:tags_edit'])->only(['edit','update']);
+        $this->middleware(['permission:tags_delete'])->only('destroy');
+    }
+
     public function index(Request $request)
     {
         $model          = new Tag();

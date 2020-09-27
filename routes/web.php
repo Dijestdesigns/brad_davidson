@@ -14,16 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes(['register' => false, 'reset' => false]);
 
+Route::get('/', 'DashboardController@index')->name('dashboard');
+
 $middlewares = ['auth'];
 
 Route::middleware($middlewares)->group(function() {
 
-    Route::get('/', 'DashboardController@index')->name('dashboard');
-
-    Route::group(['namespace' => 'Items'], function () {
-        Route::resources(['items' => 'ItemsController']);
-        Route::post('items/change/quantity/{id}', 'ItemsController@changeQuantity')->name('items.change.quantity');
-        Route::post('items/moveto/folder/{id}', 'ItemsController@moveToFolder')->name('items.moveto.folder');
+    Route::group(['namespace' => 'Inventory'], function () {
+        Route::resources(['inventory' => 'InventoryController']);
+        Route::post('inventory/change/quantity/{id}', 'InventoryController@changeQuantity')->name('inventory.change.quantity');
+        Route::post('inventory/moveto/folder/{id}', 'InventoryController@moveToFolder')->name('inventory.moveto.folder');
     });
 
     Route::group(['namespace' => 'Tags'], function () {
@@ -32,6 +32,26 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Folders'], function () {
         Route::resources(['folders' => 'FoldersController']);
+    });
+
+    Route::group(['namespace' => 'Training'], function () {
+        Route::resources(['training' => 'TrainingController']);
+    });
+
+    Route::group(['namespace' => 'Chat'], function () {
+        Route::resources(['chat' => 'ChatController']);
+    });
+
+    Route::group(['namespace' => 'Calendar'], function () {
+        Route::resources(['calendar' => 'CalendarController']);
+    });
+
+    Route::group(['namespace' => 'Diary'], function () {
+        Route::resources(['diary' => 'DiaryController']);
+    });
+
+    Route::group(['namespace' => 'Supplements'], function () {
+        Route::resources(['supplements' => 'SupplementsController']);
     });
 
     Route::group(['namespace' => 'StockLevels'], function () {
@@ -48,6 +68,14 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Logs'], function () {
         Route::resources(['logs' => 'LogsController']);
+    });
+
+    Route::group(['namespace' => 'Roles', 'middleware' => ['permission:roles_access']], function () {
+        Route::resources(['roles' => 'RoleController']);
+    });
+
+    Route::group(['namespace' => 'Permissions', 'middleware' => ['permission:permissions_access']], function () {
+        Route::resources(['permissions' => 'PermissionController']);
     });
 
     Route::get('/storage/link', function () {

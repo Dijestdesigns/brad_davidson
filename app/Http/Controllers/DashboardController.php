@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
-use App\Client;
+use App\User;
 use App\Log;
 use DB;
 
@@ -28,7 +28,7 @@ class DashboardController extends BaseController
     public function index()
     {
         $itemCount        = Item::count();
-        $clientCount      = Client::count();
+        $userCount        = User::where('id', '!=', User::$superadminId)->count();
         $totalStockValues = Item::select(DB::raw('SUM(qty) as qty, SUM(`value`) as value'))->first();
 
         $totalStocks = $totalValues = 0;
@@ -39,6 +39,6 @@ class DashboardController extends BaseController
 
         $logs = Log::orderBy('id', 'DESC')->limit(10)->get();
 
-        return view('dashboard', compact('itemCount', 'clientCount', 'totalStocks', 'totalValues', 'logs'));
+        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs'));
     }
 }

@@ -1,3 +1,46 @@
+@font-face {
+    font-family: 'Ambient';
+    src: url('../fonts/Ambient/Ambient-Regular.eot');
+    src: local('Ambient Regular'), local('Ambient-Regular'),
+        url('../fonts/Ambient/Ambient-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Ambient/Ambient-Regular.woff2') format('woff2'),
+        url('../fonts/Ambient/Ambient-Regular.woff') format('woff'),
+        url('../fonts/Ambient/Ambient-Regular.ttf') format('truetype'),
+        url('../fonts/Ambient/Ambient-Regular.svg#Ambient-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.header {
+	font-family: 'Ambient';
+}
+
+@font-face {
+    font-family: 'FuturaBook';
+    src: url('../fonts/Futura Book/FuturaPTBook.otf') format('opentype');
+    src: url('../fonts/Futura Book/FuturaPT-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#main-content {
+	font-family: 'Futura Book';
+}
+
+#menu-svg {
+   fill: white;
+}
+
+ul.sidebar-menu li a svg {
+    font-size: 15px;
+    padding-right: 6px;
+}
+
+ul.sidebar-menu li a i {
+    font-size: 15px;
+    padding-right: 6px;
+}
+
 .blog-text p {
 	line-height: 1.5em;
     height: 3em;

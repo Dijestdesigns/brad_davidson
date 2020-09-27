@@ -112,11 +112,11 @@
             </div>
         </nav> -->
         <header class="header black-bg">
-            @auth
+            @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
                 <div class="sidebar-toggle-box">
                     <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
                 </div>
-            @endauth
+            @endif
             <!--logo start-->
             <a href="{{ route("dashboard") }}" class="logo"><b>{{ config('app.name', 'Brad Davidson') }}</b></a>
             <!--logo end-->
@@ -305,7 +305,7 @@
                 </ul>
                 <!--  notification end --><!--
             </div> -->
-            @auth
+            @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
                 <div class="top-menu">
                     <ul class="nav pull-right top-menu">
                         <li>
@@ -321,72 +321,171 @@
                          </li>
                     </ul>
                 </div>
-            @endauth
+            @endif
         </header>
 
-        @auth
+        @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
             <aside>
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered"><a href="#"><img src="{{ asset('img/me/me.png') }}" class="img-circle" width="80"></a></p>
-                        <h5 class="centered">{{ Auth::user()->name }}</h5>
+                        <p class="centered">
+                            <a href="#">
+                                @if(Auth::guard('admin')->user()->isSuperAdmin())
+                                    <img src="{{ asset('img/me/me.png') }}" class="img-circle" width="80">
+                                @else
+                                    <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80">
+                                @endif
+                            </a>
+                        </p>
+                        <h5 class="centered">
+                            @if(Auth::guard('admin')->check())
+                                {{ Auth::guard('admin')->user()->name }}
+                            @elseif(Auth::guard('client')->check())
+                                {{ Auth::guard('client')->user()->name }}
+                            @endif
+                        </h5>
                         <li class="mt">
                             <a class="{{ (request()->is('/') ? 'active' : '') }}" href="{{ route('dashboard') }}">
-                                <i class="fa fa-dashboard"></i>
+                                <!-- <i class="fa fa-dashboard"></i> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
                                 <span>{{ __('Dashboard') }}</span>
                             </a>
                         </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('tags*') ? 'active' : '') }}" href="{{ route('tags.index') }}">
-                                <i class="fa fa-object-group"></i>
-                                <span>{{ __('Tags') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('items*') ? 'active' : '') }}" href="{{ route('items.index') }}">
-                                <i class="fa fa-object-group"></i>
-                                <span>{{ __('Items') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="{{ route('folders.index') }}">
-                                <i class="fa fa-users"></i>
-                                <span>{{ __('Clients') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('stock_levels*') ? 'active' : '') }}" href="{{ route('stock_levels.index') }}">
-                                <i class="fa fa-database"></i>
-                                <span>{{ __('Stock Levels') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('stock_values*') ? 'active' : '') }}" href="{{ route('stock_values.index') }}">
-                                <i class="fa fa-money"></i>
-                                <span>{{ __('Stock Values') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('logs*') ? 'active' : '') }}" href="{{ route('logs.index') }}">
-                                <i class="fa fa-history"></i>
-                                <span>{{ __('Logs') }}</span>
-                            </a>
-                        </li>
-                        <li class="sub-menu">
-                            <a class="{{ (request()->is('trash*') ? 'active' : '') }}" href="{{ route('trash.index') }}">
-                                <i class="fa fa-trash"></i>
-                                <span>{{ __('Trash') }}</span>
-                            </a>
-                        </li>
+                        @can('tags_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('tags*') ? 'active' : '') }}" href="{{ route('tags.index') }}">
+                                    <!-- <i class="fa fa-object-group"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg>
+                                    <span>{{ __('Tags') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('inventories_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('inventory*') ? 'active' : '') }}" href="{{ route('inventory.index') }}">
+                                    <!-- <i class="fa fa-object-group"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M12 2l-5.5 9h11z"/><circle id="menu-svg" cx="17.5" cy="17.5" r="4.5"/><path id="menu-svg" d="M3 13.5h8v8H3z"/></svg>
+                                    <span>{{ __('Inventory') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('clients_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="{{ route('folders.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M12 2c-4.97 0-9 4.03-9 9 0 4.17 2.84 7.67 6.69 8.69L12 22l2.31-2.31C18.16 18.67 21 15.17 21 11c0-4.97-4.03-9-9-9zm0 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.3c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                                    <span>{{ __('Clients') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('training_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('training*') ? 'active' : '') }}" href="{{ route('training.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M15.5,13.5c0,2-2.5,3.5-2.5,5h-2c0-1.5-2.5-3-2.5-5c0-1.93,1.57-3.5,3.5-3.5h0C13.93,10,15.5,11.57,15.5,13.5z M13,19.5h-2 V21h2V19.5z M19,13c0,1.68-0.59,3.21-1.58,4.42l1.42,1.42C20.18,17.27,21,15.23,21,13c0-2.74-1.23-5.19-3.16-6.84l-1.42,1.42 C17.99,8.86,19,10.82,19,13z M16,5l-4-4v3c0,0,0,0,0,0c-4.97,0-9,4.03-9,9c0,2.23,0.82,4.27,2.16,5.84l1.42-1.42 C5.59,16.21,5,14.68,5,13c0-3.86,3.14-7,7-7c0,0,0,0,0,0v3L16,5z"/></g></svg>
+                                    <span>{{ __('Training') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('chat_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('chat*') ? 'active' : '') }}" href="{{ route('chat.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                                    <span>{{ __('Chat') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('calendar_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('calendar*') ? 'active' : '') }}" href="{{ route('calendar.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>
+                                    <span>{{ __('Calendar') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('diary_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('diary*') ? 'active' : '') }}" href="{{ route('diary.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path id="menu-svg" d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/></svg>
+                                    <span>{{ __('Diary') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('supplements_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('supplements*') ? 'active' : '') }}" href="{{ route('supplements.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+                                    <span>{{ __('Supplements') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('stock_levels_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('stock_levels*') ? 'active' : '') }}" href="{{ route('stock_levels.index') }}">
+                                    <!-- <i class="fa fa-database"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><rect id="menu-svg" fill="none" height="24" width="24"/><g><path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/></g></svg>
+                                    <span>{{ __('Stock Levels') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('stock_values_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('stock_values*') ? 'active' : '') }}" href="{{ route('stock_values.index') }}">
+                                    <!-- <i class="fa fa-money"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+                                    <span>{{ __('Stock Values') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('logs_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('logs*') ? 'active' : '') }}" href="{{ route('logs.index') }}">
+                                    <!-- <i class="fa fa-history"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                                    <span>{{ __('Logs') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('roles_access')
+                            <li>
+                                <a href="{{ route('roles.index') }}" class="{{ (request()->is('roles*') ? 'mm-active' : '') }}">
+                                    <!-- <i class="fa fa-tasks"></i>  -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 c1.57,0,3.04,0.46,4.28,1.25l1.45-1.45C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12s4.48,10,10,10c1.73,0,3.36-0.44,4.78-1.22 l-1.5-1.5C14.28,19.74,13.17,20,12,20z M19,15h-3v2h3v3h2v-3h3v-2h-3v-3h-2V15z"/></svg>
+                                    {{__('Roles')}}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('permissions_access')
+                            <li>
+                                <a href="{{ route('permissions.index') }}" class="{{ (request()->is('permissions*') ? 'mm-active' : '') }}">
+                                    <!-- <i class="fa fa-lock"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                    {{__('Permissions')}}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('trash_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('trash*') ? 'active' : '') }}" href="{{ route('trash.index') }}">
+                                    <!-- <i class="fa fa-trash"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 7v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm8 7v4h-4v-4H8l4-4 4 4h-2z"/></svg>
+                                    <span>{{ __('Trash') }}</span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                     <!-- sidebar menu end-->
                 </div>
             </aside>
-        @endauth
+        @endif
 
         <main class="py-4">
-            <section @auth id="main-content" @endauth>
+            <section @if(Auth::guard('admin')->check() || Auth::guard('client')->check()) id="main-content" @endif>
                 @yield('content')
             </section>
         </main>

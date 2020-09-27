@@ -5,17 +5,40 @@ namespace App;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Tag;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Client extends BaseModel
+class Client extends Authenticatable
 {
+    use Notifiable, HasRoles;
+
+    protected $guard_name = 'client';
+    protected $guard = 'client';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'notes', 'created_by', 'updated_by'
+        'name', 'email', 'password', 'notes', 'created_by', 'updated_by'
     ];
+
+    protected $hidden = [
+        'password'
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    const PAGINATE_RECORDS = 20;
+
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
 
     public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false)
     {
@@ -28,7 +51,9 @@ class Client extends BaseModel
 
         $validator = Validator::make($data, [
             'name'       => ['required', 'string', 'max:255'],
+            'email'      => ['required', 'string', 'email', 'max:255', 'unique:' . self::getTableName() . ',email'],
             'notes'      => ['nullable'],
+            'password'   => ['string', 'min:8'],
             'created_by' => $createdBy,
             'updated_by' => $updatedBy,
             'tags.*'     => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']

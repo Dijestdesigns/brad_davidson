@@ -3569,3 +3569,22 @@ ul.chat-available-user li a:hover {
 #copyrights a {
   color: #fff;
 }
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon i {
+  position: absolute;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.left-addon i  { left:  0px;}
+.right-addon i { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }

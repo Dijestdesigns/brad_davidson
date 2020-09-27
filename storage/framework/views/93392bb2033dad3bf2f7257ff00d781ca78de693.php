@@ -38,9 +38,11 @@
                         </div>
                     </div>
 
-                    <div class="pull-right add-new-button">
-                        <a class="btn btn-primary" href="<?php echo e(route('tags.create')); ?>"><i class="fa fa-plus"></i></a>
-                    </div>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('tags_create')): ?>
+                        <div class="pull-right add-new-button">
+                            <a class="btn btn-primary" href="<?php echo e(route('tags.create')); ?>"><i class="fa fa-plus"></i></a>
+                        </div>
+                    <?php endif; ?>
                 </form>
 
             </div>
@@ -92,15 +94,19 @@
                                             <td><?php echo e($record->created_at); ?></td>
                                             <td><?php echo e($record->user->name); ?></td>
                                             <td class="form-inline">
-                                                <a href="<?php echo e(route('tags.edit', $record->id)); ?>" title="<?php echo e(__('Edit')); ?>">
-                                                    <i class="fa fa-edit fa-2x"></i>
-                                                </a>
-                                                &nbsp;
-                                                <form action="<?php echo e(route('tags.destroy', $record->id)); ?>" method="POST">
-                                                    <?php echo method_field('DELETE'); ?>
-                                                    <?php echo csrf_field(); ?>
-                                                    <a href="#" class="deleteBtn" data-confirm-message="<?php echo e(__("Are you sure you want to delete this?")); ?>" data-toggle="tooltip" data-placement="top" title="<?php echo e(__('Delete')); ?>"><i class="fa fa-trash fa-2x"></i></a>
-                                                </form>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('tags_edit')): ?>
+                                                    <a href="<?php echo e(route('tags.edit', $record->id)); ?>" title="<?php echo e(__('Edit')); ?>">
+                                                        <i class="fa fa-edit fa-2x"></i>
+                                                    </a>
+                                                    &nbsp;
+                                                <?php endif; ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('tags_delete')): ?>
+                                                    <form action="<?php echo e(route('tags.destroy', $record->id)); ?>" method="POST">
+                                                        <?php echo method_field('DELETE'); ?>
+                                                        <?php echo csrf_field(); ?>
+                                                        <a href="#" class="deleteBtn" data-confirm-message="<?php echo e(__("Are you sure you want to delete this?")); ?>" data-toggle="tooltip" data-placement="top" title="<?php echo e(__('Delete')); ?>"><i class="fa fa-trash fa-2x"></i></a>
+                                                    </form>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

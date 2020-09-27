@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Items Create') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Inventory Edit') }}</h3>
                 </div>
             </div>
         </div>
@@ -13,14 +13,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-panel">
-                    <form class="form-group p-10" enctype="multipart/form-data" action="{{ route('items.store') }}" method="POST">
+                    <form class="form-group p-10" enctype="multipart/form-data" action="{{ route('inventory.update', $record->id) }}" method="POST">
+                        @method('PATCH')
                         @csrf
 
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label>{{ __('Item Name') }} : </label>
+                                <label>{{ __('Inventory Name') }} : </label>
 
-                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" autofocus="" />
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $record->name) }}" autofocus="" />
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -32,7 +33,7 @@
                             <div class="col-md-3">
                                 <label>{{ __('Quantity') }} : </label>
 
-                                <input type="number" class="form-control{{ $errors->has('qty') ? ' is-invalid' : '' }}" name="qty" value="{{ old('qty') }}" autofocus="" id="item-quantity" onblur="getValue(this)" />
+                                <input type="number" class="form-control{{ $errors->has('qty') ? ' is-invalid' : '' }}" name="qty" value="{{ old('qty', $record->qty) }}" autofocus="" id="item-quantity" onblur="getValue(this)" />
 
                                 @if ($errors->has('qty'))
                                     <span class="invalid-feedback" role="alert">
@@ -44,7 +45,7 @@
                             <div class="col-md-3">
                                 <label>{{ __('Min Level') }} : </label>
 
-                                <input type="number" class="form-control{{ $errors->has('min_level') ? ' is-invalid' : '' }}" name="min_level" value="{{ old('min_level') }}" autofocus="" />
+                                <input type="number" class="form-control{{ $errors->has('min_level') ? ' is-invalid' : '' }}" name="min_level" value="{{ old('min_level', $record->min_level) }}" autofocus="" />
 
                                 @if ($errors->has('min_level'))
                                     <span class="invalid-feedback" role="alert">
@@ -58,7 +59,7 @@
                             <div class="col-md-3">
                                 <label>{{ __('Price') }} ($) : </label>
 
-                                <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ old('price') }}" autofocus="" id="item-price" onblur="getValue(this)" step="0.01" min="0" />
+                                <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ old('price', $record->price) }}" autofocus="" id="item-price" onblur="getValue(this)" step="0.01" min="0" />
 
                                 @if ($errors->has('price'))
                                     <span class="invalid-feedback" role="alert">
@@ -70,7 +71,7 @@
                             <div class="col-md-3">
                                 <label>{{ __('Value') }} ($) : </label>
 
-                                <input type="number" class="form-control{{ $errors->has('value') ? ' is-invalid' : '' }}" name="value" value="{{ old('value', 0) }}" autofocus="" readonly=""  id="price-value" />
+                                <input type="number" class="form-control{{ $errors->has('value') ? ' is-invalid' : '' }}" name="value" value="{{ old('value', $record->value) }}" autofocus="" readonly=""  id="price-value" />
 
                                 @if ($errors->has('value'))
                                     <span class="invalid-feedback" role="alert">
@@ -83,11 +84,19 @@
                                 <label>{{ __('Tags') }} : </label>
 
                                 <select name="tags[]" class="form-control{{ $errors->has('tags.0') ? ' is-invalid' : '' }}" multiple="">
-                                    <option value="" {{ old('tags.0') == '' ? 'selected=""' : '' }}>{{ __('Select') }}</option>
+                                    @php
+                                        $tagIds = [];
+
+                                        if (!empty($record->tags) && !$record->tags->isEmpty()) {
+                                            $tagIds = $record->tags->pluck('tag_id')->toArray();
+                                        }
+                                    @endphp
+
+                                    <option value="" {{ (old('tags.0') == '' && empty($tagIds)) ? 'selected=""' : '' }}>{{ __('Select') }}</option>
 
                                     @if (!empty($tags))
                                         @foreach ($tags as $index => $tag)
-                                            <option value="{{ $tag->id }}" {{ old('tags.'.$index) == $tag->id ? 'selected' : '' }}>{{ $tag->name }}</option>
+                                            <option value="{{ $tag->id }}" {{ (old('tags.'.$index) == $tag->id || in_array($tag->id, $tagIds)) ? 'selected' : '' }}>{{ $tag->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -104,7 +113,7 @@
                             <div class="col-md-12">
                                 <label>{{ __('Notes') }} : </label>
 
-                                <textarea class="form-control{{ $errors->has('notes') ? ' is-invalid' : '' }}" name="notes">{{ old('notes') }}</textarea>
+                                <textarea class="form-control{{ $errors->has('notes') ? ' is-invalid' : '' }}" name="notes">{{ old('notes', $record->notes) }}</textarea>
 
                                 @if ($errors->has('notes'))
                                     <span class="invalid-feedback" role="alert">
@@ -126,12 +135,20 @@
                             </div>
 
                         </div>
-                        <div class="form-group row" id="preview-image"></div>
+                        <div class="form-group row" id="preview-image">
+                            @if (!empty($record->photos) && !$record->photos->isEmpty())
+                                @foreach ($record->photos as $photo)
+                                    <div class="col-md-4">
+                                        <img src="{{ $photo->photo }}" style="width:100%;height: 100%;object-fit: cover;" />
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
 
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                                <a class="btn btn-default" href="{{ route('items.index') }}"><i class="fa fa-arrow-left"></i></a>
+                                <a class="btn btn-default" href="{{ route('inventory.index') }}"><i class="fa fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </form>

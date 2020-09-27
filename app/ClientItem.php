@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Validator;
-use App\Client;
+use App\User;
 use App\Item;
 
 class ClientItem extends BaseModel
@@ -14,7 +14,7 @@ class ClientItem extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'qty', 'old_qty', 'item_id', 'client_id', 'created_by', 'updated_by'
+        'qty', 'old_qty', 'item_id', 'user_id', 'created_by', 'updated_by'
     ];
 
     public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false)
@@ -30,7 +30,7 @@ class ClientItem extends BaseModel
             'qty'        => ['required', 'integer'],
             'old_qty'    => ['required', 'integer'],
             'item_id'    => ['required', 'integer', 'exists:' . Item::getTableName() . ',id'],
-            'client_id'  => ['required', 'integer', 'exists:' . Client::getTableName() . ',id'],
+            'user_id'    => ['required', 'integer', 'exists:' . User::getTableName() . ',id'],
             'created_by' => $createdBy,
             'updated_by' => $updatedBy
         ]);

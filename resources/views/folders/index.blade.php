@@ -38,7 +38,16 @@
                                     @endforeach
                                 @endif
                             </select>
-                            @if($isFiltered == true)
+                            <select class="form-control" name="c">
+                                <option value="" selected="">{{ __('Category') }}</option>
+
+                                @if (!empty($categories))
+                                    @foreach ($categories as $index => $category)
+                                        <option value="{{ $index }}" {{ (string)$request->get('c') === (string)$index ? 'selected' : '' }}>{{ $category }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @if($isFiltered == true || $request->get('c') == "0")
                                 <a href="{{route('folders.index')}}" class="btn btn-light">
                                     <i class="fa fa-trash"></i>
                                 </a>
@@ -47,9 +56,11 @@
                         </div>
                     </div>
 
-                    <div class="pull-right add-new-button">
-                        <a class="btn btn-primary" href="{{ route('folders.create') }}"><i class="fa fa-plus"></i></a>
-                    </div>
+                    @can('clients_create')
+                        <div class="pull-right add-new-button">
+                            <a class="btn btn-primary" href="{{ route('folders.create') }}"><i class="fa fa-plus"></i></a>
+                        </div>
+                    @endcan
                 </form>
 
             </div>
@@ -83,8 +94,11 @@
                                         <th>
                                             {{ __('Tags') }}
                                         </th>
-                                        <th>
+                                        <!-- <th>
                                             {{ __('Notes') }}
+                                        </th> -->
+                                        <th>
+                                            {{ __('Category') }}
                                         </th>
                                         <th>
                                             {{ __('Qty') }}
@@ -113,19 +127,30 @@
                                                         }
                                                     @endphp
                                                     <td>{{ implode(", ", $tags) }}</td>
-                                                    <td>{{ $record->notes }}</td>
+                                                    <!-- <td>{{ $record->notes }}</td> -->
+                                                    <td>{{ (!empty(App\User::$categories[$record->category])) ? App\User::$categories[$record->category] : __('None') }}</td>
                                                     <td>{{ $record->qty }}</td>
                                                     <td>{{ $record->userCreatedBy->name }}</td>
                                                     <td class="form-inline">
-                                                        <a href="{{ route('folders.edit', $record->id) }}" title="{{ __('Edit') }}">
-                                                            <i class="fa fa-edit fa-2x"></i>
-                                                        </a>
+                                                        @can('clients_edit')
+                                                            <a href="{{ route('folders.edit', $record->id) }}" title="{{ __('Edit') }}">
+                                                                <i class="fa fa-edit fa-2x"></i>
+                                                            </a>
                                                         &nbsp;
-                                                        <form action="{{ route('folders.destroy', $record->id) }}" method="POST">
-                                                            @method('DELETE')
-                                                            @csrf
-                                                            <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>
-                                                        </form>
+                                                        @endcan
+                                                        @can('clients_show')
+                                                            <a href="{{route('folders.show', $record->id)}}" target="__blank" data-toggle="tooltip" data-placement="top" title="{{__('View Client')}}">
+                                                                <i class="fa fa-eye fa-2x"></i>
+                                                            </a>
+                                                        &nbsp;
+                                                        @endcan
+                                                        @can('clients_delete')
+                                                            <form action="{{ route('folders.destroy', $record->id) }}" method="POST">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </form>
+                                                        @endcan
                                                     </td>
                                                 </tr>
                                             @endforeach

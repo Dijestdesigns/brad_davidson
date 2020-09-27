@@ -38,9 +38,11 @@
                         </div>
                     </div>
 
-                    <div class="pull-right add-new-button">
-                        <a class="btn btn-primary" href="{{ route('tags.create') }}"><i class="fa fa-plus"></i></a>
-                    </div>
+                    @can('tags_create')
+                        <div class="pull-right add-new-button">
+                            <a class="btn btn-primary" href="{{ route('tags.create') }}"><i class="fa fa-plus"></i></a>
+                        </div>
+                    @endcan
                 </form>
 
             </div>
@@ -87,15 +89,19 @@
                                             <td>{{ $record->created_at }}</td>
                                             <td>{{ $record->user->name }}</td>
                                             <td class="form-inline">
-                                                <a href="{{ route('tags.edit', $record->id) }}" title="{{ __('Edit') }}">
-                                                    <i class="fa fa-edit fa-2x"></i>
-                                                </a>
-                                                &nbsp;
-                                                <form action="{{ route('tags.destroy', $record->id) }}" method="POST">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>
-                                                </form>
+                                                @can('tags_edit')
+                                                    <a href="{{ route('tags.edit', $record->id) }}" title="{{ __('Edit') }}">
+                                                        <i class="fa fa-edit fa-2x"></i>
+                                                    </a>
+                                                    &nbsp;
+                                                @endcan
+                                                @can('tags_delete')
+                                                    <form action="{{ route('tags.destroy', $record->id) }}" method="POST">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                    </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

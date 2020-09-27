@@ -21,7 +21,7 @@
                             <div class="col-md-6">
                                 <label>{{ __('Name') }} : </label>
 
-                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $record->name) }}" autofocus="" />
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $record->name) }}" autofocus="" required=""/>
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -31,9 +31,70 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label>{{ __('Surname') }} : </label>
+
+                                <input type="text" class="form-control{{ $errors->has('surname') ? ' is-invalid' : '' }}" name="surname" value="{{ old('surname', $record->surname) }}" />
+
+                                @if ($errors->has('surname'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('surname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label>{{ __('Email') }} : </label>
+
+                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email', $record->email) }}" required="" />
+
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>{{ __('Password') }}<span style="color: red;"> (* {{ __("Leave blank if don't want to update") }})</span></label>
+
+                                        <div class="inner-addon right-addon">
+                                            <i class="fa fa-eye togglePassword" id=""></i>
+                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" value="{{ old('password') }}">
+
+                                            @if ($errors->has('password'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>{{ __('Confirm Password') }}<span style="color: red;"> (* {{ __("Leave blank if don't want to update") }})</span></label>
+
+                                        <div class="inner-addon right-addon">
+                                            <input type="password" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" name="password_confirmation">
+
+                                            @if ($errors->has('password_confirmation'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
                                 <label>{{ __('Tags') }} : </label>
 
-                                <select name="tags[]" class="form-control{{ $errors->has('tags.0') ? ' is-invalid' : '' }}" multiple="">
+                                <select name="tags[]" class="form-control{{ $errors->has('tags.0') ? ' is-invalid' : '' }}" multiple="" required="">
                                     @php
                                         $tagIds = [];
 
@@ -57,6 +118,26 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <div class="col-md-6">
+                                <label>{{ __('Category') }} : </label>
+
+                                <select name="category" class="form-control{{ $errors->has('category') ? ' is-invalid' : '' }}">
+                                    <!-- <option value="" {{ old('category') == '' ? 'selected=""' : '' }}>{{ __('Select') }}</option> -->
+
+                                    @if (!empty($categories))
+                                        @foreach ($categories as $index => $category)
+                                            <option value="{{ $index }}" {{ old('category', $record->category) == $index ? 'selected' : '' }}>{{ $category }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
+                                @if ($errors->has('category'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('category') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="form-group row">
@@ -74,6 +155,32 @@
                         </div>
 
                         <div class="form-group row">
+                            <div class="col-md-6">
+                                <label>{{ __('Role') }} : </label>
+
+                                <select class="form-control{{ $errors->has('role_id') ? ' is-invalid' : '' }}" name="role_id" required="true">
+                                    <option value="">{{ __('Select Role') }}</option>
+
+                                    @if ($record->isSuperAdmin())
+                                        <span class="badge badge-lg badge-secondary text-white">
+                                            {{ __('Superadmin') }}
+                                        </span>
+                                    @else
+                                        @foreach($roles as $role)
+                                            <option value="{{$role->id}}" {{ (old('role_id') == $role->id || $record->hasRole($role) ? 'selected="true"' : '') }}>{{ $role->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
+                                @if ($errors->has('role_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('role_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="fileupload-buttonbar">
                                     <span class="btn btn-success fileinput-button">
@@ -83,8 +190,8 @@
                                     </span>
                                 </div>
                             </div>
-
                         </div>
+
                         <div class="form-group row" id="preview-image">
                             @if (!empty($record->photos) && !$record->photos->isEmpty())
                                 @foreach ($record->photos as $photo)

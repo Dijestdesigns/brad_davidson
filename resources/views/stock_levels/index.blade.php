@@ -49,7 +49,7 @@
             <div class="col-md-12">
                 <div class="content-panel">
                     <div class="col-md-8">
-                        <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Items') }}</h4>
+                        <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Inventories') }}</h4>
                     </div>
                     <div class="col-md-4">
                         <h5 class="float-right text-muted">
@@ -82,7 +82,7 @@
                                             <td>{{ $record->name }}</td>
                                             <td>{{ $record->qty }}</td>
                                             <td class="form-inline">
-                                                <a href="{{ route('items.index', ['s' => $record->name, 'q' => $record->qty]) }}" title="{{ __('Check') }}" target="__blank">
+                                                <a href="{{ route('inventory.index', ['s' => $record->name, 'q' => $record->qty]) }}" title="{{ __('Check') }}" target="__blank">
                                                     <i class="fa fa-eye fa-2x"></i>
                                                 </a>
                                             </td>

@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Validator;
-use App\Client;
+use App\User;
 use Illuminate\Support\Facades\Storage;
 
 class ClientPhoto extends BaseModel
@@ -14,7 +14,7 @@ class ClientPhoto extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'photo', 'client_id'
+        'photo', 'user_id'
     ];
 
     public static $fileSystems       = 'public';
@@ -24,8 +24,8 @@ class ClientPhoto extends BaseModel
     public static function validators(array $data, $returnBoolsOnly = false)
     {
         $validator = Validator::make($data, [
-            'photo'     => ['required', 'mimes:' . implode(",", self::$allowedExtensions), 'max:255'],
-            'client_id' => ['required', 'integer', 'exists:' . Client::getTableName() . ',id']
+            'photo'   => ['required', 'mimes:' . implode(",", self::$allowedExtensions), 'max:255'],
+            'user_id' => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
         ]);
 
         if ($returnBoolsOnly === true) {
@@ -46,6 +46,6 @@ class ClientPhoto extends BaseModel
         }
 
         $storageFolderName = (str_ireplace("\\", "/", self::$storageFolderName));
-        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->client_id . '/' . $value);
+        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->user_id . '/' . $value);
     }
 }
