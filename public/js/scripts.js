@@ -125,6 +125,41 @@ var Script = function() {
 
 }();
 
+/**
+ * Sets a CSS style on the selected element(s) with !important priority.
+ * This supports camelCased CSS style property names and calling with an object 
+ * like the jQuery `css()` method. 
+ * Unlike jQuery's css() this does NOT work as a getter.
+ * 
+ * @param {string|Object<string, string>} name
+ * @param {string|undefined} value
+ */   
+jQuery.fn.cssImportant = function(name, value) {
+  const $this = this;
+  const applyStyles = (n, v) => {
+    // Convert style name from camelCase to dashed-case.
+    const dashedName = n.replace(/(.)([A-Z])(.)/g, (str, m1, upper, m2) => {
+      return m1 + "-" + upper.toLowerCase() + m2;
+    }); 
+    // Loop over each element in the selector and set the styles.
+    $this.each(function(){
+      this.style.setProperty(dashedName, v, 'important');
+    });
+  };
+  // If called with the first parameter that is an object,
+  // Loop over the entries in the object and apply those styles. 
+  if(jQuery.isPlainObject(name)){
+    for(const [n, v] of Object.entries(name)){
+       applyStyles(n, v);
+    }
+  } else {
+    // Otherwise called with style name and value.
+    applyStyles(name, value);
+  }
+  // This is required for making jQuery plugin calls chainable.
+  return $this;
+};
+
 jQuery(document).ready(function( $ ) {
 
   // Go to top
@@ -136,6 +171,40 @@ jQuery(document).ready(function( $ ) {
     $(document).find("#folders").collapse('show');
 
     $(document).find('[id^=slider]').carousel('pause');
+
+    setTimeout(function() {
+        $(document).find(".md-header.btn-toolbar").find(".md-controls").append('<div class="pull-left"><button class="btn btn-primary btn-sm" style="margin-right: 5px;" type="submit"><i class="fa fa-save"></i></button><button class="saveDiary btn btn-primary btn-sm" style="margin-right: 5px;" title="Create New" data-title="Create New" type="button"><i class="fa fa-plus"></i></button><a href="#" class="deleteBtnDiary btn btn-danger btn-sm" data-confirm-message="Are you sure you want to delete this?" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></div>');
+        $(document).find(".md-control.md-control-fullscreen").on("click", function() {
+            // $(this).css("visibility", "hidden");
+        });
+        $(document).find(".md-fullscreen-mode").find(".md-fullscreen-controls .exit-fullscreen").on("click", function() {
+            // $(document).find(".md-control.md-control-fullscreen").css("visibility", "visible");
+        });
+        /*$(document).keyup(function(e) {
+            if(e.key === "Escape") {
+                // $(document).find(".md-control.md-control-fullscreen").css("visibility", "visible");
+                // $(document).find(".md-fullscreen-mode").find(".md-fullscreen-controls .exit-fullscreen").click();
+            }
+        });*/
+
+        $(document).find(".list-group-item").on("click", function() {
+            let id          = $(this).data("id"),
+                contentBook = $("#contentBook-" + id);
+
+            if (contentBook && contentBook.length > 0) {
+                $(document).find(".md-editor").cssImportant("display", "none");
+
+                contentBook.parent().fadeIn(200, function() {
+                    contentBook.parent().cssImportant("display", "block");
+
+                    $(document).find("#currentId").val(id);
+                });
+
+                $(document).find(".page-aside .app-notebook-list .list-group li").removeClass("active");
+                $(this).addClass("active");
+            }
+        });
+    }, 2000);
 });
 
 function getValue(element) {

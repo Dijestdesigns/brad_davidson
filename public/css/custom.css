@@ -137,6 +137,70 @@ ul.sidebar-menu li a i {
 	padding-top: unset;
 }
 
+.page-aside {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    overflow-y: hidden;
+    background: #fff;
+    border-right: 1px solid #e4eaec;
+    -webkit-transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
+    -o-transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
+    transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
+}
+
+.page-aside .app-notebook-list .list-group li {
+    cursor: pointer;
+}
+
+.app-notebook .md-editor {
+    border: 0;
+    border-radius: 0;
+    max-width: 100%;
+    overflow: auto;
+    display: none;
+}
+
+.noContent {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+}
+
+.noContent .saveDiary {
+    position: absolute;
+    left: 55%;
+    top:50%;
+}
+
+.bootbox.modal {
+    z-index: 9999 !important;
+}
+
+@media (max-width:320px)  {
+    .noContent .saveDiary {
+        position: unset;
+    }
+}
+@media (max-width:480px)  {
+    .noContent .saveDiary {
+        position: unset;
+    }
+}
+@media (max-width:600px)  {
+    .noContent .saveDiary {
+        position: unset;
+    }
+}
+
 @media (min-width:801px)  {
 	.pt11 {
 		padding-top: 11px;

@@ -145,9 +145,8 @@ class DefaultUserSeeder extends Seeder
             'guard_name' => 'admin'
         ]);
 
-        $assignCoachesPermissions = $getPermissions->map(function($item) {
+        $assignVIPClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'clients_access', 'clients_create', 'clients_show', 'clients_edit',
                 'training_access', 'training_create', 'training_edit',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
@@ -159,7 +158,7 @@ class DefaultUserSeeder extends Seeder
                 return [$item->name];
             }
         });
-        $vipClientsRole->givePermissionTo($assignCoachesPermissions);
+        $vipClientsRole->givePermissionTo($assignVIPClientsPermissions);
 
         $coaches = User::create([
             'id'            => 3,
@@ -175,15 +174,14 @@ class DefaultUserSeeder extends Seeder
         }
 
         // Normal Clients.
-        $vipClientsRole = Role::create([
+        $normalClientsRole = Role::create([
             'id' => 4,
             'name' => 'Normal Clients',
             'guard_name' => 'admin'
         ]);
 
-        $assignCoachesPermissions = $getPermissions->map(function($item) {
+        $assignNormalClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'clients_access', 'clients_create', 'clients_show', 'clients_edit',
                 'training_access', 'training_create', 'training_edit',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
@@ -195,7 +193,7 @@ class DefaultUserSeeder extends Seeder
                 return [$item->name];
             }
         });
-        $vipClientsRole->givePermissionTo($assignCoachesPermissions);
+        $normalClientsRole->givePermissionTo($assignNormalClientsPermissions);
 
         $coaches = User::create([
             'id'            => 4,

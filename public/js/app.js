@@ -28061,14 +28061,16 @@ function leverageNative( el, type, expectSync ) {
       } else if ( saved ) {
 
         // ...and capture the result
-        dataPriv.set( this, type, jQuery.event.trigger(
+        try {
+          dataPriv.set( this, type, jQuery.event.trigger(
 
-          // Support: IE <=9 - 11+
-          // Extend with the prototype to reset the above stopImmediatePropagation()
-          jQuery.extend( saved.shift(), jQuery.Event.prototype ),
-          saved,
-          this
-        ) );
+            // Support: IE <=9 - 11+
+            // Extend with the prototype to reset the above stopImmediatePropagation()
+            jQuery.extend( saved.shift(), jQuery.Event.prototype ),
+            saved,
+            this
+          ) );
+        } catch (e) {}
 
         // Abort handling of the native event
         event.stopImmediatePropagation();
@@ -71132,6 +71134,60 @@ $(document).ready(function () {
       }
     });
   });
+
+  setTimeout(function() {
+    $(document).find(".saveDiary").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+
+      form.find("#newNotes").val('');
+
+      bootbox.prompt({
+        title: "Create New",
+        centerVertical: true,
+        inputType: 'text',
+        placeholder: "Name of note",
+        callback: function(result){
+            if (result) {
+              form.find("#newNotes").val(result);
+
+              form.submit();
+            }
+        }
+      });
+    });
+
+    $(".deleteBtnDiary").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+      var message = $(this).attr('data-confirm-message');
+
+      form.find("#deletedId").val('');
+
+      bootbox.confirm({
+        message: message,
+        buttons: {
+          confirm: {
+            className: 'btn-primary'
+          },
+          cancel: {
+            className: 'btn-danger'
+          }
+        },
+        locale: window.appLocale,
+        callback: function callback(result) {
+          if (result) {
+            let id = $("#currentId").val();
+
+            form.find("#deletedId").val(id);
+
+            form.submit();
+          }
+        }
+      });
+    });
+  }, 3000);
+
   $("select[name=MAIL_DRIVER]").change(function () {
     var val = $(this).val();
 

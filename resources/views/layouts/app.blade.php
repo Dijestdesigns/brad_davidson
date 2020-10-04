@@ -16,6 +16,8 @@
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
     <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+    <script difer src="{{ asset('js/marked.js') }}" defer></script>
+    <script difer src="{{ asset('js/bootstrap-markdown.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
     <!-- <script src="{{ asset('js/jquery.ui.widget.js') }}" defer></script> -->
@@ -47,6 +49,9 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('css/notebook.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-extend.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-markdown.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
