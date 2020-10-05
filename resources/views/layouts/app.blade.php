@@ -16,9 +16,9 @@
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
     <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
-    <script difer src="{{ asset('js/marked.js') }}" defer></script>
-    <script difer src="{{ asset('js/bootstrap-markdown.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
+
+    @stack('scripts')
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
     <!-- <script src="{{ asset('js/jquery.ui.widget.js') }}" defer></script> -->
     <!-- The Templates plugin is included to render the upload/download listings -->

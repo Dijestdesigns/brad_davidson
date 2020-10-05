@@ -205,6 +205,8 @@ jQuery(document).ready(function( $ ) {
             }
         });
     }, 2000);
+
+    $(document).find(".app-notebook .page-main").fadeIn(200);
 });
 
 function getValue(element) {

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @push('scripts')
+        <script difer src="{{ asset('js/marked.js') }}" defer></script>
+        <script difer src="{{ asset('js/bootstrap-markdown.js') }}" defer></script>
+    @endpush
+
     <section class="wrapper site-min-height">
         <div class="row">
             <div class="col-lg-12">
@@ -29,10 +35,11 @@
                         <div class="page-aside-inner">
                             @if(!empty($records) && !$records->isEmpty())
                                 <div class="input-search">
-                                    <button class="input-search-btn" type="submit">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
                                     <form action="{{ route('diary.index') }}" method="GET">
+                                        <button class="input-search-btn" type="submit">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+
                                         <input class="form-control" type="text" placeholder="{{ __('Search Keyword') }}" name="s" value="{{ $request->get('s', '') }}">
                                     </form>
                                 </div>
@@ -67,7 +74,7 @@
                         </div>
                     </div>
 
-                    <div class="page-main" style="margin-left: 260px;">
+                    <div class="page-main" style="margin-left: 260px;display: none;">
                         <form action="{{ route('diary.store') }}" method="POST">
                             @csrf
 
