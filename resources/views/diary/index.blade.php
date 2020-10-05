@@ -2,6 +2,12 @@
 
 @section('content')
 
+    @section('styles')
+        <link href="{{ asset('css/notebook.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-extend.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-markdown.min.css') }}" rel="stylesheet">
+    @stop
+
     @push('scripts')
         <script difer src="{{ asset('js/marked.js') }}" defer></script>
         <script difer src="{{ asset('js/bootstrap-markdown.js') }}" defer></script>

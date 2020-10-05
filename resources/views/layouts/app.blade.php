@@ -49,9 +49,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
-    <link href="{{ asset('css/notebook.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-extend.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-markdown.min.css') }}" rel="stylesheet">
+    @yield('styles')
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
