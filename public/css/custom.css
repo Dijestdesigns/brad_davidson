@@ -1376,6 +1376,10 @@ ul.sidebar-menu li a i {
     content: "\f073";
 }
 
+.fc-widget-content .fc-event-container .fc-content {
+    cursor: pointer;
+}
+
 @media (max-width:320px)  {
     .noContent .saveDiary {
         position: unset;

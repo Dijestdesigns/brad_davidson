@@ -228,7 +228,7 @@ jQuery(document).ready(function( $ ) {
                   $("#addNewEvent").modal("show"),
                   $("#starts").datetimepicker("update", event._d);
               },
-              editable: !0,
+              editable: !1,
               eventLimit: !0,
               windowResize: function(view) {
                   var width = $(window).outerWidth()
@@ -273,7 +273,7 @@ jQuery(document).ready(function( $ ) {
               var calendar = $('#calendar').fullCalendar(myOptions);
           } catch(e) {}
         }
-    }, 500);
+    }, 1000);
 
     // $(document).find('.datetimepicker').datetimepicker();
     $(document).find('input.datetimepicker').focus(function() {

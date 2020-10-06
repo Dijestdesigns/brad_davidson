@@ -71186,6 +71186,34 @@ $(document).ready(function () {
         }
       });
     });
+
+    $(".deleteBtnCalendar").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+      var message = $(this).attr('data-confirm-message');
+
+      form.find("#isDelete").val('');
+
+      bootbox.confirm({
+        message: message,
+        buttons: {
+          confirm: {
+            className: 'btn-primary'
+          },
+          cancel: {
+            className: 'btn-danger'
+          }
+        },
+        locale: window.appLocale,
+        callback: function callback(result) {
+          if (result) {
+            form.find("#isDelete").val('true');
+
+            form.submit();
+          }
+        }
+      });
+    });
   }, 3000);
 
   $("select[name=MAIL_DRIVER]").change(function () {

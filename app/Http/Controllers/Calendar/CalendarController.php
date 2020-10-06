@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Calendar;
 
 use Illuminate\Http\Request;
+use App\Log;
 use App\Calendar;
 
 class CalendarController extends \App\Http\Controllers\BaseController
@@ -59,22 +60,41 @@ class CalendarController extends \App\Http\Controllers\BaseController
         $model = new Calendar();
 
         if (!empty($data['calendarId'])) {
-            $id     = (int)$data['calendarId'];
-            $record = $model::find($id);
 
-            if ($record) {
-                $data['user_id']    = auth()->user()->id;
-                $data['start_date'] = date('Y-m-d h:i:s', strtotime($data['start_date']));
-                $data['end_date']   = date('Y-m-d h:i:s', strtotime($data['end_date']));
+            if (!empty($data['isDelete'])) {
+                $id = (int)$data['calendarId'];
 
-                $validator = $model::validators($data);
+                $find = $model::where('id', $id)->get();
 
-                $validator->validate();
+                if (!empty($find) && !$find->isEmpty()) {
+                    $record = clone $find;
 
-                $update = $record->update($data);
+                    $isRemoved = self::remove($find);
 
-                if ($update) {
-                    return redirect('calendar?i=' . strtotime($data['start_date']))->header('Cache-Control', 'no-store, no-cache, must-revalidate')->with('success', __("Calendar updated!"));
+                    if ($isRemoved) {
+                        self::createLog($record[0], __("Deleted calendar " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+
+                        return redirect('calendar?i=' . strtotime($data['start_date']))->with('success', __("Calendar deleted!"));
+                    }
+                }
+            } else {
+                $id     = (int)$data['calendarId'];
+                $record = $model::find($id);
+
+                if ($record) {
+                    $data['user_id']    = auth()->user()->id;
+                    $data['start_date'] = date('Y-m-d h:i:s', strtotime($data['start_date']));
+                    $data['end_date']   = date('Y-m-d h:i:s', strtotime($data['end_date']));
+
+                    $validator = $model::validators($data);
+
+                    $validator->validate();
+
+                    $update = $record->update($data);
+
+                    if ($update) {
+                        return redirect('calendar?i=' . strtotime($data['start_date']))->header('Cache-Control', 'no-store, no-cache, must-revalidate')->with('success', __("Calendar updated!"));
+                    }
                 }
             }
         }

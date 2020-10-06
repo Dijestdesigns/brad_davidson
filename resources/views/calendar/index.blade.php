@@ -93,12 +93,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        <!-- <div class="form-group row">
                                             <label class="col-md-2 form-control-label" for="repeats">{{ __('Repeats') }}: </label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control" id="repeats" name="repeats" data-min="0" data-max="10" value="0">
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group row">
                                             <label class="form-control-label col-md-2">{{ __('Color') }} : </label>
                                             <div class="col-md-10">
@@ -119,10 +119,6 @@
                                                         <input type="radio" name="color" id="eventColorChosen5" value="orange">
                                                         <label for="eventColorChosen5"></label>
                                                     </li>
-                                                    <li class="bg-red-600">
-                                                        <input type="radio" name="color" id="eventColorChosen6" value="red">
-                                                        <label for="eventColorChosen6"></label>
-                                                    </li>
                                                     <li class="bg-blue-grey-600">
                                                         <input type="radio" name="color" id="eventColorChosen7" value="blue-grey">
                                                         <label for="eventColorChosen7"></label>
@@ -130,6 +126,10 @@
                                                     <li class="bg-purple-600">
                                                         <input type="radio" name="color" id="eventColorChosen8" value="purple">
                                                         <label for="eventColorChosen8"></label>
+                                                    </li>
+                                                    <li class="bg-red-600">
+                                                        <input type="radio" name="color" id="eventColorChosen6" value="red">
+                                                        <label for="eventColorChosen6"></label>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -184,12 +184,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        <!-- <div class="form-group row">
                                             <label class="col-md-2 form-control-label" for="editRepeats">{{ __('Repeats') }}: </label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control" id="editRepeats" name="repeats" data-plugin="TouchSpin" data-min="0" data-max="10" value="0">
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group row" id="editColor">
                                             <label class="form-control-label col-md-2">{{ __('Color') }}:</label>
                                             <div class="col-md-10">
@@ -210,10 +210,6 @@
                                                         <input type="radio" data-color="orange|600" name="color" id="editColorChosen5" value="orange">
                                                         <label for="editColorChosen4"></label>
                                                     </li>
-                                                    <li class="bg-red-600">
-                                                        <input type="radio" data-color="red|600" name="color" id="editColorChosen6" value="red">
-                                                        <label for="editColorChosen6"></label>
-                                                    </li>
                                                     <li class="bg-blue-grey-600">
                                                         <input type="radio" data-color="blue-grey|600" name="color" id="editColorChosen7" value="blue-grey">
                                                         <label for="editColorChosen7"></label>
@@ -222,6 +218,10 @@
                                                         <input type="radio" data-color="purple|600" name="color" id="editColorChosen8" value="purple">
                                                         <label for="editColorChosen8"></label>
                                                     </li>
+                                                    <li class="bg-red-600">
+                                                        <input type="radio" data-color="red|600" name="color" id="editColorChosen6" value="red">
+                                                        <label for="editColorChosen6"></label>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -229,9 +229,10 @@
                                     <div class="modal-footer">
                                         <div class="form-actions">
                                             <input type="hidden" name="calendarId" id="calendarId" value="">
+                                            <input type="hidden" name="isDelete" id="isDelete" value="">
                                             <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i></button>
-                                            <button class="btn btn-danger" type="button"><i class="fa fa-trash"></i></button>
-                                            <a class="btn btn-sm btn-default" data-dismiss="modal" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                                            <button class="btn btn-danger deleteBtnCalendar" data-confirm-message="{{__("Are you sure you want to delete this?")}}" title="{{__('Delete')}}" type="button"><i class="fa fa-trash"></i></button>
+                                            <a class="btn btn-sm btn-default" data-dismiss="modal" href=""><i class="fa fa-times"></i></a>
                                         </div>
                                     </div>
                                 </form>
@@ -244,61 +245,61 @@
                                 <form class="modal-content form-horizontal" action="#" method="post" role="form">
                                     <div class="modal-header">
                                         <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">New Calendar</h4>
+                                        <h4 class="modal-title">{{ __('New Calendar') }}</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group row">
-                                            <label class="col-md-2 form-control-label" for="ename">Name:</label>
+                                            <label class="col-md-2 form-control-label" for="ename">{{ __('Name') }} : </label>
                                             <div class="col-md-10">
                                                 <input type="text" class="form-control" id="ename" name="ename">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="form-control-label col-md-2">Color:</label>
+                                            <label class="col-md-2 form-control-label" for="people">{{ __('People') }}: </label>
                                             <div class="col-md-10">
-                                                <ul class="color-selector">
-                                                    <li class="bg-blue-600">
-                                                        <input type="radio" checked name="colorChosen" id="colorChosen2">
-                                                        <label for="colorChosen2"></label>
-                                                    </li>
-                                                    <li class="bg-green-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen3">
-                                                        <label for="colorChosen3"></label>
-                                                    </li>
-                                                    <li class="bg-cyan-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen4">
-                                                        <label for="colorChosen4"></label>
-                                                    </li>
-                                                    <li class="bg-orange-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen5">
-                                                        <label for="colorChosen5"></label>
-                                                    </li>
-                                                    <li class="bg-red-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen6">
-                                                        <label for="colorChosen6"></label>
-                                                    </li>
-                                                    <li class="bg-blue-grey-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen7">
-                                                        <label for="colorChosen7"></label>
-                                                    </li>
-                                                    <li class="bg-purple-600">
-                                                        <input type="radio" name="colorChosen" id="colorChosen8">
-                                                        <label for="colorChosen8"></label>
-                                                    </li>
-                                                </ul>
+                                                <select id="people" multiple class="plugin-selective"></select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-2 form-control-label" for="people">People:</label>
+                                            <label class="form-control-label col-md-2">{{ __('Color') }} : </label>
                                             <div class="col-md-10">
-                                                <select id="people" multiple class="plugin-selective"></select>
+                                                <ul class="color-selector">
+                                                    <li class="bg-blue-600">
+                                                        <input type="radio" checked name="colorChosen" id="colorChosen2" value="blue">
+                                                        <label for="colorChosen2"></label>
+                                                    </li>
+                                                    <li class="bg-green-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen3" value="green">
+                                                        <label for="colorChosen3"></label>
+                                                    </li>
+                                                    <li class="bg-cyan-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen4" value="cyan">
+                                                        <label for="colorChosen4"></label>
+                                                    </li>
+                                                    <li class="bg-orange-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen5" value="orange">
+                                                        <label for="colorChosen5"></label>
+                                                    </li>
+                                                    <li class="bg-blue-grey-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen7" value="blue-grey">
+                                                        <label for="colorChosen7"></label>
+                                                    </li>
+                                                    <li class="bg-purple-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen8" value="purple">
+                                                        <label for="colorChosen8"></label>
+                                                    </li>
+                                                    <li class="bg-red-600">
+                                                        <input type="radio" name="colorChosen" id="colorChosen6" value="red">
+                                                        <label for="colorChosen6"></label>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="form-actions">
-                                            <button class="btn btn-primary" data-dismiss="modal" type="button">Create</button>
-                                            <a class="btn btn-sm btn-white" data-dismiss="modal" href="javascript:void(0)">Cancel</a>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i></button>
+                                            <a class="btn btn-sm btn-default" data-dismiss="modal" href="javascript:void(0)"><i class="fa fa-times"></i></a>
                                         </div>
                                     </div>
                                 </form>
