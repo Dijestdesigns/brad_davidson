@@ -20,8 +20,8 @@ class Calendar extends BaseModel
     {
         $validator = Validator::make($data, [
             'name'       => ['required', 'string', 'max:255'],
-            'start_date' => ['nullable', 'date_format:Y-m-d h:i:s'],
-            'end_date'   => ['nullable', 'date_format:Y-m-d h:i:s'],
+            'start_date' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'end_date'   => ['nullable', 'date_format:Y-m-d H:i:s'],
             'repeats'    => ['nullable', 'integer'],
             'color'      => ['nullable', 'string', 'max:255'],
             'user_id'    => ['required', 'integer', 'exists:' . User::getTableName() . ',id']

@@ -222,11 +222,16 @@ jQuery(document).ready(function( $ ) {
                   right: "month,agendaWeek,agendaDay"
               },
               defaultDate: ((typeof selectedDate !== typeof undefined) ? selectedDate : yyyy + '-' + mm + '-' + dd),
+              allDaySlot: true,
+              firstHour: 8,
+              slotMinutes: 30,
+              timeFormat: 'HH:mm:ss',
               selectable: !0,
               selectHelper: !0,
+              slotLabelFormat:'HH:mm:ss',
               select: function(event) {
                   $("#addNewEvent").modal("show"),
-                  $("#starts").datetimepicker("update", event._d);
+                  $("#starts").datetimepicker("update", moment(event._i).format("YYYY-MM-DD HH:mm:ss"));
               },
               editable: !1,
               eventLimit: !0,
@@ -266,7 +271,24 @@ jQuery(document).ready(function( $ ) {
                   });
               },
               events: calendarDatas,
-              droppable: !0
+              droppable: !0,
+              eventMouseover: function(calEvent, jsEvent) {
+                  var tooltip = '<div class="tooltipevent" style="padding: 5px;width:auto;height:auto;background:yellow;position:absolute;z-index:10001;">' + ((calEvent.start != null) ? moment(calEvent.start._i).format('HH:mm:ss') : "") + " " + ((calEvent.end != null) ? moment(calEvent.end._i).format('HH:mm:ss') : "") + " <br />" + calEvent.title + '</div>';
+                  var $tooltip = $(tooltip).appendTo('body');
+
+                  $(this).mouseover(function(e) {
+                      $(this).css('z-index', 10000);
+                      $tooltip.fadeIn('500');
+                      $tooltip.fadeTo('10', 1.9);
+                  }).mousemove(function(e) {
+                      $tooltip.css('top', e.pageY + 10);
+                      $tooltip.css('left', e.pageX + 20);
+                  });
+              },
+              eventMouseout: function(calEvent, jsEvent) {
+                  $(this).css('z-index', 8);
+                  $('.tooltipevent').remove();
+              }
           };
 
           try {

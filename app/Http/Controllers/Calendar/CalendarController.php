@@ -38,8 +38,8 @@ class CalendarController extends \App\Http\Controllers\BaseController
         $model = new Calendar();
 
         $data['user_id']    = auth()->user()->id;
-        $data['start_date'] = date('Y-m-d h:i:s', strtotime($data['start_date']));
-        $data['end_date']   = date('Y-m-d h:i:s', strtotime($data['end_date']));
+        $data['start_date'] = date('Y-m-d H:i:s', strtotime($data['start_date']));
+        $data['end_date']   = (!empty($data['end_date']) && strtotime($data['end_date']) > 0) ? date('Y-m-d H:i:s', strtotime($data['end_date'])) : NULL;
 
         $validator = $model::validators($data);
 
@@ -83,8 +83,8 @@ class CalendarController extends \App\Http\Controllers\BaseController
 
                 if ($record) {
                     $data['user_id']    = auth()->user()->id;
-                    $data['start_date'] = date('Y-m-d h:i:s', strtotime($data['start_date']));
-                    $data['end_date']   = date('Y-m-d h:i:s', strtotime($data['end_date']));
+                    $data['start_date'] = date('Y-m-d H:i:s', strtotime($data['start_date']));
+                    $data['end_date']   = (!empty($data['end_date']) && strtotime($data['end_date']) > 0) ? date('Y-m-d H:i:s', strtotime($data['end_date'])) : NULL;
 
                     $validator = $model::validators($data);
 
