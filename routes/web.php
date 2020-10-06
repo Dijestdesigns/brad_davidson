@@ -44,6 +44,7 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Calendar'], function () {
         Route::resources(['calendar' => 'CalendarController']);
+        Route::post('calendar/update', 'CalendarController@update')->name('calendar.update');
     });
 
     Route::group(['namespace' => 'Diary'], function () {

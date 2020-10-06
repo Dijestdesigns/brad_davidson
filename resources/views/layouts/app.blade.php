@@ -16,6 +16,7 @@
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
     <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+    <script difer src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
 
     @stack('scripts')
@@ -48,6 +49,7 @@
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
     @yield('styles')
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">

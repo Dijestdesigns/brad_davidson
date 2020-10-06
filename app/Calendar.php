@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 
-class Diary extends BaseModel
+class Calendar extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -13,15 +13,18 @@ class Diary extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name', 'content'
+        'name', 'start_date', 'end_date', 'repeats', 'color', 'user_id'
     ];
 
     public static function validators(array $data, $returnBoolsOnly = false)
     {
         $validator = Validator::make($data, [
-            'name'    => ['required', 'string', 'max:255'],
-            'content' => ['nullable', 'string'],
-            'user_id' => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
+            'name'       => ['required', 'string', 'max:255'],
+            'start_date' => ['nullable', 'date_format:Y-m-d h:i:s'],
+            'end_date'   => ['nullable', 'date_format:Y-m-d h:i:s'],
+            'repeats'    => ['nullable', 'integer'],
+            'color'      => ['nullable', 'string', 'max:255'],
+            'user_id'    => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
         ]);
 
         if ($returnBoolsOnly === true) {
