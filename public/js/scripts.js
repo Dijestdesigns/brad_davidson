@@ -213,65 +213,67 @@ jQuery(document).ready(function( $ ) {
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
-    if (typeof calendarDatas !== typeof undefined) {
-      let myOptions = {
-          header: {
-              left: null,
-              center: "prev,title,next",
-              right: "month,agendaWeek,agendaDay"
-          },
-          defaultDate: ((typeof selectedDate !== typeof undefined) ? selectedDate : yyyy + '-' + mm + '-' + dd),
-          selectable: !0,
-          selectHelper: !0,
-          select: function(event) {
-              $("#addNewEvent").modal("show"),
-              $("#starts").datetimepicker("update", event._d);
-          },
-          editable: !0,
-          eventLimit: !0,
-          windowResize: function(view) {
-              var width = $(window).outerWidth()
-                , options = Object.assign({}, myOptions);
-              options.events = view.calendar.clientEvents(),
-              options.aspectRatio = width < 667 ? .5 : 1.35,
-              $("#calendar").fullCalendar("destroy"),
-              $("#calendar").fullCalendar(options)
-          },
-          eventClick: function(event) {
-              var color = event.backgroundColor ? event.backgroundColor : "blue";
-              $("#editEname").val(event.title),
-              event.start ? $("#editStarts").datetimepicker("update", event.start._i) : $("#editStarts").datetimepicker("update", ""),
-              event.end ? $("#editEnds").datetimepicker("update", event.end._i) : $("#editEnds").datetimepicker("update", ""),
-              $("#editColor [type=radio]").each(function() {
-                  var $this = $(this)
-                    , _value = $this.data("color").split("|");
-                  _value[0] === color ? $this.prop("checked", !0) : $this.prop("checked", !1)
-              }),
-              $("#editRepeats").val(event.repeats),
-              $("#calendarId").val(event.calendarId),
-              $("#editNewEvent").modal("show").one("hidden.bs.modal", function(e) {
-                  event.title = $("#editEname").val();
-                  if ($("#editColor [type=radio]:checked").length > 0) {
-                      var color = $("#editColor [type=radio]:checked").data("color").split("|");
-                      color = color[0]
-                  } else {
-                      color = "blue";
-                  }
-                  event.backgroundColor = color,
-                  event.borderColor = color,
-                  event.start = new Date($("#editStarts").data("datetimepicker").getDate()),
-                  event.end = new Date($("#editEnds").data("datetimepicker").getDate());
-                  // $("#calendar").fullCalendar("updateEvent", event);
-              });
-          },
-          events: calendarDatas,
-          droppable: !0
-      };
+    setTimeout(function() {
+        if (typeof calendarDatas !== typeof undefined) {
+          let myOptions = {
+              header: {
+                  left: null,
+                  center: "prev,title,next",
+                  right: "month,agendaWeek,agendaDay"
+              },
+              defaultDate: ((typeof selectedDate !== typeof undefined) ? selectedDate : yyyy + '-' + mm + '-' + dd),
+              selectable: !0,
+              selectHelper: !0,
+              select: function(event) {
+                  $("#addNewEvent").modal("show"),
+                  $("#starts").datetimepicker("update", event._d);
+              },
+              editable: !0,
+              eventLimit: !0,
+              windowResize: function(view) {
+                  var width = $(window).outerWidth()
+                    , options = Object.assign({}, myOptions);
+                  options.events = view.calendar.clientEvents(),
+                  options.aspectRatio = width < 667 ? .5 : 1.35,
+                  $("#calendar").fullCalendar("destroy"),
+                  $("#calendar").fullCalendar(options)
+              },
+              eventClick: function(event) {
+                  var color = event.backgroundColor ? event.backgroundColor : "blue";
+                  $("#editEname").val(event.title),
+                  event.start ? $("#editStarts").datetimepicker("update", event.start._i) : $("#editStarts").datetimepicker("update", ""),
+                  event.end ? $("#editEnds").datetimepicker("update", event.end._i) : $("#editEnds").datetimepicker("update", ""),
+                  $("#editColor [type=radio]").each(function() {
+                      var $this = $(this)
+                        , _value = $this.data("color").split("|");
+                      _value[0] === color ? $this.prop("checked", !0) : $this.prop("checked", !1)
+                  }),
+                  $("#editRepeats").val(event.repeats),
+                  $("#calendarId").val(event.calendarId),
+                  $("#editNewEvent").modal("show").one("hidden.bs.modal", function(e) {
+                      event.title = $("#editEname").val();
+                      if ($("#editColor [type=radio]:checked").length > 0) {
+                          var color = $("#editColor [type=radio]:checked").data("color").split("|");
+                          color = color[0]
+                      } else {
+                          color = "blue";
+                      }
+                      event.backgroundColor = color,
+                      event.borderColor = color,
+                      event.start = new Date($("#editStarts").data("datetimepicker").getDate()),
+                      event.end = new Date($("#editEnds").data("datetimepicker").getDate());
+                      // $("#calendar").fullCalendar("updateEvent", event);
+                  });
+              },
+              events: calendarDatas,
+              droppable: !0
+          };
 
-      try {
-          var calendar = $('#calendar').fullCalendar(myOptions);
-      } catch(e) {}
-    }
+          try {
+              var calendar = $('#calendar').fullCalendar(myOptions);
+          } catch(e) {}
+        }
+    }, 500);
 
     // $(document).find('.datetimepicker').datetimepicker();
     $(document).find('input.datetimepicker').focus(function() {
