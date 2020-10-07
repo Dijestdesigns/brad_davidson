@@ -62,6 +62,10 @@ class DiaryController extends \App\Http\Controllers\BaseController
         $model = new Diary();
 
         if (!empty($data['deletedId'])) {
+            if (!auth()->user()->can('diary_delete')) {
+                abort(403, 'User does not have the right permissions.');
+            }
+
             $id = (int)$data['deletedId'];
 
             $find = $model::where('id', $id)->get();
@@ -78,6 +82,10 @@ class DiaryController extends \App\Http\Controllers\BaseController
                 }
             }
         } elseif (!empty($data['newName'])) {
+            if (!auth()->user()->can('diary_create')) {
+                abort(403, 'User does not have the right permissions.');
+            }
+
             $data['name'] = $data['newName'];
 
             $validator = $model::validators($data);
@@ -91,9 +99,16 @@ class DiaryController extends \App\Http\Controllers\BaseController
             if ($model->id) {
                 $id = $model->id;
 
+                $find = $model::find($id);
+                self::createLog($find, __("Created diary {$find->name}"), Log::CREATE, [], $find->toArray());
+
                 return redirect('diary?i=' . $id)->with('success', __("New diary created!"));
             }
         } elseif (!empty($data['currentId'])) {
+            if (!auth()->user()->can('diary_edit')) {
+                abort(403, 'User does not have the right permissions.');
+            }
+
             $id     = (int)$data['currentId'];
             $record = $model::find($id);
 
@@ -104,9 +119,14 @@ class DiaryController extends \App\Http\Controllers\BaseController
 
             $validator->validate();
 
+            $oldData = $record->toArray();
+
             $update = $record->update($data);
 
             if ($update) {
+                $find = $model::find($id);
+                self::createLog($find, __("Updated diary {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
                 return redirect('diary?i=' . $id)->with('success', __("Diary updated!"));
             }
         }

@@ -54,39 +54,41 @@
     </section>
 
     <section class="wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Recent activity (Top 10)') }}</h3>
+        @can('logs_access')
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-head">
+                        <h3><i class="fa fa-angle-right"></i> {{ __('Recent activity (Top 10)') }}</h3>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 {{ ((!empty($logs) && !$logs->isEmpty())) ? 'ds' : '' }}">
-                @if (!empty($logs) && !$logs->isEmpty())
-                    @foreach ($logs as $log)
-                        <div class="desc">
-                            <div class="thumb">
-                                <a href="{{ route('logs.index', ['hash' => $log->id]) }}" target="__blank">
-                                    <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                                </a>
+            <div class="row">
+                <div class="col-lg-12 {{ ((!empty($logs) && !$logs->isEmpty())) ? 'ds' : '' }}">
+                    @if (!empty($logs) && !$logs->isEmpty())
+                        @foreach ($logs as $log)
+                            <div class="desc">
+                                <div class="thumb">
+                                    <a href="{{ route('logs.index', ['hash' => $log->id]) }}" target="__blank">
+                                        <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
+                                    </a>
+                                </div>
+                                <div class="details">
+                                    <p>
+                                        <a href="#">{{ $log->userCreatedBy->name }}</a> {{ $log->message }} - {{ $log->created_at }} ({{ $log->ip_address }})<br>
+                                    </p>
+                                </div>
                             </div>
+                        @endforeach
+                    @else
+                        <div class="desc text-center">
                             <div class="details">
                                 <p>
-                                    <a href="#">{{ $log->userCreatedBy->name }}</a> {{ $log->message }} - {{ $log->created_at }} ({{ $log->ip_address }})<br>
+                                    <mark>{{ __('No record found!') }}</mark>
                                 </p>
                             </div>
                         </div>
-                    @endforeach
-                @else
-                    <div class="desc text-center">
-                        <div class="details">
-                            <p>
-                                <mark>{{ __('No record found!') }}</mark>
-                            </p>
-                        </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
-        </div>
+        @endcan
 @endsection
