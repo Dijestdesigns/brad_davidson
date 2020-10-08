@@ -140,11 +140,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <div class="col-md-12">
                                 <label>{{ __('Notes') }} : </label>
 
-                                <textarea class="form-control{{ $errors->has('notes') ? ' is-invalid' : '' }}" name="notes">{{ old('notes', $record->notes) }}</textarea>
+                                <textarea class="form-control{{ $errors->has('notes') ? ' is-invalid' : '' }}" name="notes"></textarea>
 
                                 @if ($errors->has('notes'))
                                     <span class="invalid-feedback" role="alert">
@@ -152,7 +152,76 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
+                        @if(!empty(old('note_dates')))
+                            @foreach (old('note_dates') as $index => $noteDate)
+                                <div class="form-group row" id="{{ $index == 0 ? 'row-notes' : 'new-notes' }}">
+                                    <div class="col-md-2">
+                                        <label>{{ __('Date') }} : </label>
+
+                                        <input type="text" name="note_dates[]" class='form-control{{ $errors->has("note_dates. $index") ? " is-invalid" : "" }} datepicker' value="{{ $noteDate }}">
+
+                                        @if ($errors->has("note_dates.$index"))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first("note_dates.$index") }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-10">
+                                        <label>{{ __('Notes') }} : </label>
+
+                                        <div class="form-inline">
+                                            <textarea class='form-control{{ $errors->has("notes.$index") ? " is-invalid" : "" }}' style="width: 96%;" name="notes[]">{{ old("notes.$index") }}</textarea>
+
+                                            <button id="{{ $index == 0 ? 'plus-notes' : 'minus-notes' }}" class="btn btn-primary pull-right" style="margin: 0 auto;" type="button">
+                                                <i class="fa {{ $index == 0 ? 'fa-plus' : 'fa-trash' }}"></i>
+                                            </button>
+                                        </div>
+
+                                        @if ($errors->has("notes.$index"))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first("notes.$index") }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        @elseif(!empty($record->notes))
+                            @foreach ($record->notes as $index => $noteData)
+                                <div class="form-group row" id="{{ $index == 0 ? 'row-notes' : 'new-notes' }}">
+                                    <div class="col-md-2">
+                                        <label>{{ __('Date') }} : </label>
+
+                                        <input type="text" name="note_dates[]" class='form-control{{ $errors->has("note_dates. $index") ? " is-invalid" : "" }} datepicker' value="{{ date('Y-m-d', $noteData->note_date) }}">
+
+                                        @if ($errors->has("note_dates.$index"))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first("note_dates.$index") }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-10">
+                                        <label>{{ __('Notes') }} : </label>
+
+                                        <div class="form-inline">
+                                            <textarea class='form-control{{ $errors->has("notes.$index") ? " is-invalid" : "" }}' style="width: 96%;" name="notes[]">{{ $noteData->notes }}</textarea>
+
+                                            <button id="{{ $index == 0 ? 'plus-notes' : 'minus-notes' }}" class="btn btn-primary pull-right" style="margin: 0 auto;" type="button">
+                                                <i class="fa {{ $index == 0 ? 'fa-plus' : 'fa-trash' }}"></i>
+                                            </button>
+                                        </div>
+
+                                        @if ($errors->has("notes.$index"))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first("notes.$index") }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+
+                        <div id="cloned-notes"></div>
 
                         <div class="form-group row">
                             <div class="col-md-6">

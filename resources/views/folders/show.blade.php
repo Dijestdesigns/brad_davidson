@@ -80,8 +80,27 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-2">{{ __('Notes') }}</div>
-                                        <div class="col-md-8">
-                                            {{ $client->notes }}
+                                        <div class="col-md-10">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{ __('Note Date') }}</th>
+                                                            <th>{{ __('Notes') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if(!empty($client->notes))
+                                                            @foreach ($client->notes as $note)
+                                                                <tr>
+                                                                    <td>{{ date('Y-m-d', $note->note_date) }}</td>
+                                                                    <td>{{ $note->notes }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">

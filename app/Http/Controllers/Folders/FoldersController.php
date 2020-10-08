@@ -10,6 +10,7 @@ use App\ClientPhoto;
 use App\ClientItem;
 use App\Log;
 use App\Role;
+use App\UserNote;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -89,6 +90,78 @@ class FoldersController extends \App\Http\Controllers\BaseController
         return view('folders.create', compact('tags', 'categories', 'roles'));
     }
 
+    public function addNotes(Request $request, int $id)
+    {
+        $isCreate = false;
+        $model    = new UserNote();
+        $data     = $request->all();
+
+        if (!empty($data['note_dates'])) {
+            $create = [];
+
+            foreach ($data['note_dates'] as $index => $noteDate) {
+                if (empty($noteDate) || strtotime($noteDate) <= 0) {
+                    continue;
+                }
+
+                $createData = [
+                    'note_date' => $noteDate,
+                    'notes'     => !empty($data['notes'][$index]) ? $data['notes'][$index] : NULL,
+                    'user_id'   => $id
+                ];
+
+                $validator = $model::validators($createData, true);
+
+                if ($validator) {
+                    $create[$index] = $createData;
+                }
+            }
+
+            if (!empty($create)) {
+                $isCreate = $model::insert($create);
+            }
+        }
+
+        return $isCreate;
+    }
+
+    public function updateNotes(Request $request, int $id)
+    {
+        $isUpdate = false;
+        $model    = new UserNote();
+        $data     = $request->all();
+
+        if (!empty($data['note_dates'])) {
+            $create = [];
+
+            $model::where('user_id', $id)->delete();
+
+            foreach ($data['note_dates'] as $index => $noteDate) {
+                if (empty($noteDate) || strtotime($noteDate) <= 0) {
+                    continue;
+                }
+
+                $createData = [
+                    'note_date' => $noteDate,
+                    'notes'     => !empty($data['notes'][$index]) ? $data['notes'][$index] : NULL,
+                    'user_id'   => $id
+                ];
+
+                $validator = $model::validators($createData, true);
+
+                if ($validator) {
+                    $create[$index] = $createData;
+                }
+            }
+
+            if (!empty($create)) {
+                $isUpdate = $model::insert($create);
+            }
+        }
+
+        return $isUpdate;
+    }
+
     public function store(Request $request)
     {
         $data               = $request->all();
@@ -107,6 +180,8 @@ class FoldersController extends \App\Http\Controllers\BaseController
         if ($create) {
             $find = $model::find($create->id);
             self::createLog($find, __("Created client {$find->name}"), Log::CREATE, [], $find->toArray());
+
+            $this->addNotes($request, $create->id);
 
             // Assign role
             if (!empty($data['role_id'])) {
@@ -222,6 +297,8 @@ class FoldersController extends \App\Http\Controllers\BaseController
             if ($update) {
                 $find = $model::find($id);
                 self::createLog($find, __("Updated client {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
+                $this->updateNotes($request, $id);
 
                 $tagData['user_id'] = $id;
                 $tagData['tag_id']  = (!empty($data['tags'])) ? $data['tags'] : [];

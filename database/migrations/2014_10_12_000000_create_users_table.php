@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('notes')->nullable();
+            // $table->text('notes')->nullable();
             $table->bigInteger('created_by')->unsigned()->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('updated_by')->unsigned()->nullable();

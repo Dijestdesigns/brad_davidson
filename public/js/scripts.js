@@ -308,6 +308,40 @@ jQuery(document).ready(function( $ ) {
             $(this).datetimepicker('hide');
         });
     });
+
+    $(document).find('input.datepicker').focus(function() {
+        $(this).datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd'});
+
+        $(document).find('input.datepicker').datetimepicker('hide');
+        $(this).datetimepicker('show');
+
+        $(this).on('changeDate', function(ev) {
+            $(this).datetimepicker('hide');
+        });
+    });
+
+    $(document).find("#plus-notes").on("click", function() {
+        let clone         = $("#row-notes").clone()
+                                           .prop("id", "new-notes")
+                                           .find("#plus-notes").prop("id", "minus-notes").end()
+                                           .find("#minus-notes i").removeClass("fa-plus").addClass("fa-trash").end()
+                                           .find("input").val("").datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd'}).end()
+                                           .find("textarea").val("").end(),
+            clonnedNotes = $("#cloned-notes");
+
+        if (clonnedNotes) {
+            clonnedNotes.before(clone);
+        }
+    });
+
+    $(document).on("click", "#minus-notes", function() {
+        let self = $(this),
+            div  = self.parents("div#new-notes").get(0);
+
+        if (div) {
+            div.remove();
+        }
+    });
 });
 
 function getValue(element) {

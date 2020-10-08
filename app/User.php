@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'contact', 'category', 'email', 'password', 'is_superadmin', 'notes', 'created_by', 'updated_by'
+        'name', 'surname', 'contact', 'category', 'email', 'password', 'is_superadmin', 'created_by', 'updated_by'
     ];
 
     /**
@@ -94,7 +94,6 @@ class User extends Authenticatable
             'contact'    => ['nullable', 'string', 'max:255'],
             'category'   => ['in:' . implode(",", array_keys(self::$categories))],
             'email'      => array_merge(['required', 'string', 'email', 'max:255'], $email),
-            'notes'      => ['nullable'],
             'password'   => $password,
             'created_by' => $createdBy,
             'updated_by' => $updatedBy,
@@ -131,5 +130,10 @@ class User extends Authenticatable
     public function photos()
     {
         return $this->hasMany('App\ClientPhoto', 'user_id', 'id');
+    }
+
+    public function notes()
+    {
+        return $this->hasMany('App\UserNote', 'user_id', 'id');
     }
 }
