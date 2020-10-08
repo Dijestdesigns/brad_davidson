@@ -140,19 +140,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group row">
-                            <div class="col-md-12">
-                                <label>{{ __('Notes') }} : </label>
-
-                                <textarea class="form-control{{ $errors->has('notes') ? ' is-invalid' : '' }}" name="notes"></textarea>
-
-                                @if ($errors->has('notes'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('notes') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div> -->
                         @if(!empty(old('note_dates')))
                             @foreach (old('note_dates') as $index => $noteDate)
                                 <div class="form-group row" id="{{ $index == 0 ? 'row-notes' : 'new-notes' }}">
