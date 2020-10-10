@@ -70,8 +70,7 @@
                             <div class="desc">
                                 <div class="text-center">
                                     <h4>
-                                        {{ __('Supplement Date') }}
-                                        {{ date('Y-m-d', strtotime($supplements->date)) }}
+                                        {{ __('Supplement Date') }} {{ date('Y-m-d', strtotime($supplements->date)) }}
                                     </h4>
                                 </div>
                                 <div>
