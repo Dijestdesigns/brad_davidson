@@ -310,7 +310,9 @@ jQuery(document).ready(function( $ ) {
     });
 
     $(document).find('input.datepicker').focus(function() {
-        $(this).datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd'});
+        let datesDisabled = (typeof $(this).data('disabled-dates') !== typeof undefined) ? $(this).data('disabled-dates').split(',') : [];
+
+        $(this).datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd', datesDisabled: datesDisabled});
 
         $(document).find('input.datepicker').datetimepicker('hide');
         $(this).datetimepicker('show');

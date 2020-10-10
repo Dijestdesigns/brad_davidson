@@ -53,6 +53,9 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Supplements'], function () {
         Route::resources(['supplements' => 'SupplementsController']);
+        Route::get('supplements/{userId}/{date}/edit', 'SupplementsController@edit')->name('supplements.edit');
+        Route::post('supplements/{userId}/{date}/update', 'SupplementsController@update')->name('supplements.update');
+        Route::delete('supplements/{userId}/{date}/destroy', 'SupplementsController@destroy')->name('supplements.destroy');
     });
 
     Route::group(['namespace' => 'StockLevels'], function () {
