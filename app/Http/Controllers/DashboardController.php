@@ -43,7 +43,7 @@ class DashboardController extends BaseController
         $logs = Log::orderBy('id', 'DESC')->limit(10)->get();
 
         if ($user->isSuperAdmin()) {
-
+            $supplements = [];
         } else {
             $supplements = UserSupplement::where('user_id', $userId)->orderBy('date', 'DESC')->first();
         }
