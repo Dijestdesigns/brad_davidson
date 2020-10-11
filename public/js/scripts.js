@@ -344,6 +344,13 @@ jQuery(document).ready(function( $ ) {
             div.remove();
         }
     });
+
+    if ($("#showtime").length > 0) {
+        $.backstretch("img/brad_lock_screen_dark.jpg", {
+            speed: 500
+        });
+        getTime();
+    }
 });
 
 function getValue(element) {
@@ -368,6 +375,28 @@ function readURL(input) {
           reader.readAsDataURL(input.files[index]);
         });
     }
+}
+
+function getTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    // add a zero in front of numbers<10
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('showtime').innerHTML = h + ":" + m + ":" + s;
+    t = setTimeout(function() {
+      getTime()
+    }, 500);
+}
+
+function checkTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+
+    return i;
 }
 
 $("#imgUpload").change(function() {

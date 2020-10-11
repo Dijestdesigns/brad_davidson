@@ -1395,6 +1395,14 @@ table.full-inputs td input, table.full-inputs td textarea {
     resize: none;
 }
 
+.color-white {
+    color: #ffffff;
+}
+
+.backstretch img {
+    /*filter: brightness(30%);*/
+}
+
 @media (max-width:320px)  {
     .noContent .saveDiary {
         position: unset;
