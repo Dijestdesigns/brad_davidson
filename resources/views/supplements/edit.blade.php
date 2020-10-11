@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label>{{ __('Select Date') }} : </label>
-                                <input name="date" type="text" class="form-control datepicker{{ $errors->has('*.date') ? ' is-invalid' : '' }}" placeholder="yyyy-mm-dd" value="{{ (!empty(old('date')) && strtotime(old('date')) > 0) ? date('Y-m-d', strtotime(old('date'))) : (!empty($date) && $date > 0) ? date('Y-m-d', $date) : '' }}" data-disabled-dates="{{ $disabledDates }}">
+                                <input name="date" type="text" class="form-control datepicker{{ $errors->has('*.date') ? ' is-invalid' : '' }}" placeholder="yyyy-mm-dd" value="{{ (!empty(old('date')) && strtotime(old('date')) > 0) ? date('Y-m-d', strtotime(old('date'))) : ((!empty($date) && $date > 0) ? date('Y-m-d', $date) : '') }}" data-disabled-dates="{{ $disabledDates }}">
 
                                 @if ($errors->has('*.date'))
                                     <span class="invalid-feedback" role="alert">
