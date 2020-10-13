@@ -39,9 +39,14 @@
                 <div class="app-notebook">
                     <div class="page-aside" style="overflow-x: hidden;">
                         <div class="page-aside-inner">
-                            @if(!empty($records) && !$records->isEmpty())
+                            @if((!empty($records) && !$records->isEmpty()) || $request->has('s'))
                                 <div class="input-search">
                                     <form action="{{ route('notes.index') }}" method="GET">
+                                        @if($request->has('s'))
+                                            <!-- <a href="{{route('notes.index')}}" class="btn btn-light">
+                                                <i class="fa fa-trash"></i>
+                                            </a> -->
+                                        @endif
                                         <button class="input-search-btn" type="submit">
                                             <i class="fa fa-search" aria-hidden="true"></i>
                                         </button>

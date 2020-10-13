@@ -148,6 +148,20 @@ ul.sidebar-menu li a i {
     -webkit-transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
     -o-transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
     transition: visibility .1s ease,top .3s ease,left .5s ease,right .5s ease;
+    overflow-y: scroll;
+}
+
+.page-aside::-webkit-scrollbar {
+    width: 5px;
+}
+.page-aside::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.page-aside::-webkit-scrollbar-thumb {
+    background: #4ecdc4;
+}
+.page-aside::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .page-aside .app-notebook-list .list-group li {
