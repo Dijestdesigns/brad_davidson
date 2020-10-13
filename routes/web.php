@@ -30,8 +30,9 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['tags' => 'TagsController']);
     });
 
-    Route::group(['namespace' => 'Folders'], function () {
-        Route::resources(['folders' => 'FoldersController']);
+    Route::group(['namespace' => 'Clients'], function () {
+        Route::resources(['clients' => 'ClientsController']);
+        Route::get('clients/{id}/me', 'ClientsController@myProfile')->name('clients.myprofile');
     });
 
     Route::group(['namespace' => 'Training'], function () {

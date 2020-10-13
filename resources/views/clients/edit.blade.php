@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-panel">
-                    <form class="form-group p-10" enctype="multipart/form-data" action="{{ route('folders.update', $record->id) }}" method="POST">
+                    <form class="form-group p-10" enctype="multipart/form-data" action="{{ route('clients.update', $record->id) }}" method="POST">
                         @method('PATCH')
                         @csrf
 
@@ -292,7 +292,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                                <a class="btn btn-default" href="{{ route('folders.index') }}"><i class="fa fa-arrow-left"></i></a>
+                                <a class="btn btn-default" href="{{ route('clients.index') }}"><i class="fa fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </form>

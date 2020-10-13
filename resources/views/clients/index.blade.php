@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h4>{{ __('Search Form : ') }}</h4>
-                <form class="form-inline search-form" method="__GET" action="{{ route('folders.index') }}">
+                <form class="form-inline search-form" method="__GET" action="{{ route('clients.index') }}">
                     <div class="">
                         <div class="form-group">
                             <input type="text" name="s" class="form-control" placeholder="{{ __('Search by name') }}" value="{{ $request->get('s', '') }}">
@@ -48,7 +48,7 @@
                                 @endif
                             </select>
                             @if($isFiltered == true || $request->get('c') == "0")
-                                <a href="{{route('folders.index')}}" class="btn btn-light">
+                                <a href="{{route('clients.index')}}" class="btn btn-light">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             @endif
@@ -58,7 +58,7 @@
 
                     @can('clients_create')
                         <div class="pull-right add-new-button">
-                            <a class="btn btn-primary" href="{{ route('folders.create') }}"><i class="fa fa-plus"></i></a>
+                            <a class="btn btn-primary" href="{{ route('clients.create') }}"><i class="fa fa-plus"></i></a>
                         </div>
                     @endcan
                 </form>
@@ -133,19 +133,19 @@
                                                     <td>{{ $record->userCreatedBy->name }}</td>
                                                     <td class="form-inline">
                                                         @can('clients_edit')
-                                                            <a href="{{ route('folders.edit', $record->id) }}" title="{{ __('Edit') }}">
+                                                            <a href="{{ route('clients.edit', $record->id) }}" title="{{ __('Edit') }}">
                                                                 <i class="fa fa-edit fa-2x"></i>
                                                             </a>
                                                         &nbsp;
                                                         @endcan
                                                         @can('clients_show')
-                                                            <a href="{{route('folders.show', $record->id)}}" target="__blank" data-toggle="tooltip" data-placement="top" title="{{__('View Client')}}">
+                                                            <a href="{{route('clients.show', $record->id)}}" target="__blank" data-toggle="tooltip" data-placement="top" title="{{__('View Client')}}">
                                                                 <i class="fa fa-eye fa-2x"></i>
                                                             </a>
                                                         &nbsp;
                                                         @endcan
                                                         @can('clients_delete')
-                                                            <form action="{{ route('folders.destroy', $record->id) }}" method="POST">
+                                                            <form action="{{ route('clients.destroy', $record->id) }}" method="POST">
                                                                 @method('DELETE')
                                                                 @csrf
                                                                 <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>

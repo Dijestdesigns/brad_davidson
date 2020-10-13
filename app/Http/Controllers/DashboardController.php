@@ -36,7 +36,7 @@ class DashboardController extends BaseController
 
         $totalStocks = $totalValues = 0;
         if (!empty($totalStockValues)) {
-            $totalStocks = $totalStockValues->qty;
+            $totalStocks = !empty($totalStockValues->qty) ? $totalStockValues->qty : 0;
             $totalValues = number_format($totalStockValues->value, 2);
         }
 

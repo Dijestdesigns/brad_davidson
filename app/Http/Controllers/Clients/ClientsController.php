@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Folders;
+namespace App\Http\Controllers\Clients;
 
 use Illuminate\Http\Request;
 use App\User;
@@ -15,7 +15,7 @@ use DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 
-class FoldersController extends \App\Http\Controllers\BaseController
+class ClientsController extends \App\Http\Controllers\BaseController
 {
     public function __construct()
     {
@@ -36,6 +36,8 @@ class FoldersController extends \App\Http\Controllers\BaseController
 
         $cleanup = $requestClonned->except(['page']);
         $requestClonned->query = new \Symfony\Component\HttpFoundation\ParameterBag($cleanup);
+
+        $userId = auth()->user()->id;
 
         if (count($requestClonned->all()) > 0) {
             $isFiltered = (!empty(array_filter($requestClonned->all())));
@@ -69,6 +71,7 @@ class FoldersController extends \App\Http\Controllers\BaseController
 
         $modelQuery->leftJoin(ClientItem::getTableName(), $model::getTableName() . '.id', '=', ClientItem::getTableName() . '.user_id');
         $modelQuery->where($model::getTableName() . '.id', '!=', $model::$superadminId);
+        $modelQuery->where($model::getTableName() . '.id', '!=', $userId);
         $modelQuery->groupBy($model::getTableName() . '.id');
         $modelQuery->select(DB::raw($model::getTableName() . ".*, SUM(" . ClientItem::getTableName() . '.qty) as qty'));
 
@@ -78,7 +81,7 @@ class FoldersController extends \App\Http\Controllers\BaseController
         $tags       = Tag::all();
         $categories = User::$categories;
 
-        return view('folders.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'categories'));
+        return view('clients.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'categories'));
     }
 
     public function create()
@@ -87,7 +90,7 @@ class FoldersController extends \App\Http\Controllers\BaseController
         $categories = User::$categories;
         $roles      = Role::orderBy('id', 'ASC')->get();
 
-        return view('folders.create', compact('tags', 'categories', 'roles'));
+        return view('clients.create', compact('tags', 'categories', 'roles'));
     }
 
     public function addNotes(Request $request, int $id)
@@ -212,10 +215,10 @@ class FoldersController extends \App\Http\Controllers\BaseController
                 }
             }
 
-            return redirect('folders')->with('success', __("Folder created!"));
+            return redirect('clients')->with('success', __("Folder created!"));
         }
 
-        return redirect('folders/create')->with('error', __("There has been an error!"));
+        return redirect('clients/create')->with('error', __("There has been an error!"));
     }
 
     public function photos($id, $datas, $flag = 'create')
@@ -258,10 +261,10 @@ class FoldersController extends \App\Http\Controllers\BaseController
             $categories = User::$categories;
             $roles      = Role::orderBy('id', 'ASC')->get();
 
-            return view('folders.edit', compact('record', 'tags', 'categories', 'roles'));
+            return view('clients.edit', compact('record', 'tags', 'categories', 'roles'));
         }
 
-        return redirect('folders')->with('error', __("Not found!"));
+        return redirect('clients')->with('error', __("Not found!"));
     }
 
     public function update(Request $request, int $id)
@@ -271,7 +274,7 @@ class FoldersController extends \App\Http\Controllers\BaseController
 
         if ($record) {
             if ($record->id == $model::$superadminId) {
-                return redirect('folders')->with('error', __("You can't change Superadmin!"));
+                return redirect('clients')->with('error', __("You can't change Superadmin!"));
             }
 
             $data               = $request->all();
@@ -348,11 +351,11 @@ class FoldersController extends \App\Http\Controllers\BaseController
                     }
                 }
 
-                return redirect('folders')->with('success', __("Folder updated!"));
+                return redirect('clients')->with('success', __("Folder updated!"));
             }
         }
 
-        return redirect('folders')->with('error', __("There has been an error!"));
+        return redirect('clients')->with('error', __("There has been an error!"));
     }
 
     public function destroy(int $id)
@@ -374,15 +377,15 @@ class FoldersController extends \App\Http\Controllers\BaseController
 
                 DB::commit();
 
-                return redirect('folders')->with('success', __("Folder deleted!"));
+                return redirect('clients')->with('success', __("Folder deleted!"));
             } else {
                 DB::rollBack();
 
-                return redirect('folders')->with('error', __("There has been an error!"));
+                return redirect('clients')->with('error', __("There has been an error!"));
             }
         }
 
-        return redirect('folders')->with('error', __("Not found!"));
+        return redirect('clients')->with('error', __("Not found!"));
     }
 
     public function show($id)
@@ -392,9 +395,9 @@ class FoldersController extends \App\Http\Controllers\BaseController
         if ($record) {
             $permissions = app('App\Http\Controllers\Roles\RoleController')->getPermissionsByGroup();
 
-            return view('folders.show', ['client' => $record, 'groups' => $permissions]);
+            return view('clients.show', ['client' => $record, 'groups' => $permissions]);
         }
 
-        return redirect('folders')->with('error', __("Client not found!"));
+        return redirect('clients')->with('error', __("Client not found!"));
     }
 }
