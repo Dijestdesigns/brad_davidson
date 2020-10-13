@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Diary') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Note') }}</h3>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                         <div class="page-aside-inner">
                             @if(!empty($records) && !$records->isEmpty())
                                 <div class="input-search">
-                                    <form action="{{ route('diary.index') }}" method="GET">
+                                    <form action="{{ route('notes.index') }}" method="GET">
                                         <button class="input-search-btn" type="submit">
                                             <i class="fa fa-search" aria-hidden="true"></i>
                                         </button>
@@ -56,14 +56,14 @@
                                     <div data-role="content" class="scrollable-content" style="width: 259px;">
                                         <ul class="list-group">
                                             @if(!empty($records) && !$records->isEmpty())
-                                                @foreach($records as $index => $diary)
-                                                    <li class="list-group-item {{ ($selectedId == $diary->id) ? 'active' : '' }}" data-toggle="context" data-target="#contextMenu" data-id="{{ $diary->id }}">
-                                                        <h4 class="list-group-item-heading mt-0">{{ $diary->name }}</h4>
-                                                        <p class="list-group-item-text">{{ $diary->content }}</p>
+                                                @foreach($records as $index => $note)
+                                                    <li class="list-group-item {{ ($selectedId == $note->id) ? 'active' : '' }}" data-toggle="context" data-target="#contextMenu" data-id="{{ $note->id }}">
+                                                        <h4 class="list-group-item-heading mt-0">{{ $note->name }}</h4>
+                                                        <p class="list-group-item-text">{{ $note->content }}</p>
                                                         <div class="info">
                                                             <i class="icon wb-folder "></i>
-                                                            @if(strtotime($diary->created_at) > 0)
-                                                                <span class="time">{{ date('M dS\, h:i:s A', strtotime($diary->created_at)) }}</span>
+                                                            @if(strtotime($note->created_at) > 0)
+                                                                <span class="time">{{ date('M dS\, h:i:s A', strtotime($note->created_at)) }}</span>
                                                             @endif
                                                         </div>
                                                     </li>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="page-main" style="margin-left: 260px;display: none;">
-                        <form action="{{ route('diary.store') }}" method="POST">
+                        <form action="{{ route('notes.store') }}" method="POST">
                             @csrf
 
                             @php
@@ -89,20 +89,20 @@
                             @endphp
 
                             @if(!empty($records) && !$records->isEmpty())
-                                @foreach($records as $index => $diary)
-                                    <textarea name="contents[{{ $diary->id }}]" data-provide="markdown" rows="160" data-iconlibrary="fa" data-exit-fullscreen="false" style="resize: none;" data-id="{{ $diary->id }}" id="contentBook-{{ $diary->id }}">{{ $diary->content }}</textarea>
+                                @foreach($records as $index => $note)
+                                    <textarea name="contents[{{ $note->id }}]" data-provide="markdown" rows="160" data-iconlibrary="fa" data-exit-fullscreen="false" style="resize: none;" data-id="{{ $note->id }}" id="contentBook-{{ $note->id }}">{{ $note->content }}</textarea>
 
-                                    <input type="hidden" name="names[{{ $diary->id }}]" value="{{ $diary->name }}">
+                                    <input type="hidden" name="names[{{ $note->id }}]" value="{{ $note->name }}">
 
                                     @php
-                                        if ($selectedId == $diary->id) {
+                                        if ($selectedId == $note->id) {
                                             $selectedIndex = $index;
                                         }
                                     @endphp
                                 @endforeach
                             @else
                                 <div class="noContent">
-                                    <button class="saveDiary btn btn-primary" title="Create New" data-title="Create New" type="button"><i class="fa fa-plus"></i> {{ __('Create New') }}</button>
+                                    <button class="saveNotes btn btn-primary" title="Create New" data-title="Create New" type="button"><i class="fa fa-plus"></i> {{ __('Create New') }}</button>
                                 </div>
                             @endif
 
@@ -123,6 +123,6 @@
     </style>
 
     <script type="text/javascript">
-        var store = "{{ route('diary.store') }}";
+        var store = "{{ route('notes.store') }}";
     </script>
 @endsection

@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Diary;
+namespace App\Http\Controllers\Notes;
 
 use Illuminate\Http\Request;
 use App\Log;
-use App\Diary;
+use App\Note;
 
-class DiaryController extends \App\Http\Controllers\BaseController
+class NoteController extends \App\Http\Controllers\BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:diary_access'])->only('index');
-        $this->middleware(['permission:diary_create'])->only(['create','store']);
-        $this->middleware(['permission:diary_edit'])->only(['edit','update']);
-        $this->middleware(['permission:diary_delete'])->only('destroy');
+        $this->middleware(['permission:note_access'])->only('index');
+        $this->middleware(['permission:note_create'])->only(['create','store']);
+        $this->middleware(['permission:note_edit'])->only(['edit','update']);
+        $this->middleware(['permission:note_delete'])->only('destroy');
     }
 
     public function index(Request $request)
     {
         $userId = auth()->user()->id;
 
-        $model  = new Diary();
+        $model  = new Note();
 
         $modelQuery = $model::query();
 
@@ -47,7 +47,7 @@ class DiaryController extends \App\Http\Controllers\BaseController
             }
         }
 
-        return view('diary.index', compact('records', 'request', 'firstId', 'selectedId'));
+        return view('notes.index', compact('records', 'request', 'firstId', 'selectedId'));
     }
 
     public function store(Request $request)
@@ -59,10 +59,10 @@ class DiaryController extends \App\Http\Controllers\BaseController
         $data['user_id'] = auth()->user()->id;
         $data['content'] = !empty($data['contents'][$id]) ? $data['contents'][$id] : NULL;
 
-        $model = new Diary();
+        $model = new Note();
 
         if (!empty($data['deletedId'])) {
-            if (!auth()->user()->can('diary_delete')) {
+            if (!auth()->user()->can('note_delete')) {
                 abort(403, 'User does not have the right permissions.');
             }
 
@@ -76,13 +76,13 @@ class DiaryController extends \App\Http\Controllers\BaseController
                 $isRemoved = self::remove($find);
 
                 if ($isRemoved) {
-                    self::createLog($record[0], __("Deleted diary " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+                    self::createLog($record[0], __("Deleted note " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
 
-                    return redirect('diary')->with('success', __("Diary deleted!"));
+                    return redirect('notes')->with('success', __("Note deleted!"));
                 }
             }
         } elseif (!empty($data['newName'])) {
-            if (!auth()->user()->can('diary_create')) {
+            if (!auth()->user()->can('note_create')) {
                 abort(403, 'User does not have the right permissions.');
             }
 
@@ -100,12 +100,12 @@ class DiaryController extends \App\Http\Controllers\BaseController
                 $id = $model->id;
 
                 $find = $model::find($id);
-                self::createLog($find, __("Created diary {$find->name}"), Log::CREATE, [], $find->toArray());
+                self::createLog($find, __("Created note {$find->name}"), Log::CREATE, [], $find->toArray());
 
-                return redirect('diary?i=' . $id)->with('success', __("New diary created!"));
+                return redirect('notes?i=' . $id)->with('success', __("New note created!"));
             }
         } elseif (!empty($data['currentId'])) {
-            if (!auth()->user()->can('diary_edit')) {
+            if (!auth()->user()->can('note_edit')) {
                 abort(403, 'User does not have the right permissions.');
             }
 
@@ -125,12 +125,12 @@ class DiaryController extends \App\Http\Controllers\BaseController
 
             if ($update) {
                 $find = $model::find($id);
-                self::createLog($find, __("Updated diary {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+                self::createLog($find, __("Updated note {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
 
-                return redirect('diary?i=' . $id)->with('success', __("Diary updated!"));
+                return redirect('notes?i=' . $id)->with('success', __("Note updated!"));
             }
         }
 
-        return redirect('diary')->with('error', __("There has been an error!"));
+        return redirect('notes')->with('error', __("There has been an error!"));
     }
 }

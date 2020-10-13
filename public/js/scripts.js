@@ -173,7 +173,7 @@ jQuery(document).ready(function( $ ) {
     $(document).find('[id^=slider]').carousel('pause');
 
     setTimeout(function() {
-        $(document).find(".md-header.btn-toolbar").find(".md-controls").append('<div class="pull-left"><button class="btn btn-primary btn-sm" style="margin-right: 5px;" type="submit"><i class="fa fa-save"></i></button><button class="saveDiary btn btn-primary btn-sm" style="margin-right: 5px;" title="Create New" data-title="Create New" type="button"><i class="fa fa-plus"></i></button><a href="#" class="deleteBtnDiary btn btn-danger btn-sm" data-confirm-message="Are you sure you want to delete this?" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></div>');
+        $(document).find(".md-header.btn-toolbar").find(".md-controls").append('<div class="pull-left"><button class="btn btn-primary btn-sm" style="margin-right: 5px;" type="submit"><i class="fa fa-save"></i></button><button class="saveNotes btn btn-primary btn-sm" style="margin-right: 5px;" title="Create New" data-title="Create New" type="button"><i class="fa fa-plus"></i></button><a href="#" class="deleteBtnNotes btn btn-danger btn-sm" data-confirm-message="Are you sure you want to delete this?" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></div>');
         $(document).find(".md-control.md-control-fullscreen").on("click", function() {
             // $(this).css("visibility", "hidden");
         });

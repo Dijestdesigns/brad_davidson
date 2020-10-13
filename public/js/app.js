@@ -71136,7 +71136,7 @@ $(document).ready(function () {
   });
 
   setTimeout(function() {
-    $(document).find(".saveDiary").on('click', function (event) {
+    $(document).find(".saveNotes").on('click', function (event) {
       event.preventDefault();
       var form = $(this).parents('form:first');
 
@@ -71157,7 +71157,7 @@ $(document).ready(function () {
       });
     });
 
-    $(".deleteBtnDiary").on('click', function (event) {
+    $(".deleteBtnNotes").on('click', function (event) {
       event.preventDefault();
       var form = $(this).parents('form:first');
       var message = $(this).attr('data-confirm-message');

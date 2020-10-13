@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 
-class Diary extends BaseModel
+class Note extends BaseModel
 {
     /**
      * The attributes that are mass assignable.

@@ -175,7 +175,7 @@ ul.sidebar-menu li a i {
     background: #fff;
 }
 
-.noContent .saveDiary {
+.noContent .saveNotes {
     position: absolute;
     left: 55%;
     top:50%;
@@ -1404,17 +1404,17 @@ table.full-inputs td input, table.full-inputs td textarea {
 }
 
 @media (max-width:320px)  {
-    .noContent .saveDiary {
+    .noContent .saveNotes {
         position: unset;
     }
 }
 @media (max-width:480px)  {
-    .noContent .saveDiary {
+    .noContent .saveNotes {
         position: unset;
     }
 }
 @media (max-width:600px)  {
-    .noContent .saveDiary {
+    .noContent .saveNotes {
         position: unset;
     }
 }

@@ -418,12 +418,12 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('diary_access')
+                        @can('note_access')
                             <li class="sub-menu">
-                                <a class="{{ (request()->is('diary*') ? 'active' : '') }}" href="{{ route('diary.index') }}">
+                                <a class="{{ (request()->is('notes*') ? 'active' : '') }}" href="{{ route('notes.index') }}">
                                     <!-- <i class="fa fa-users"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path id="menu-svg" d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/></svg>
-                                    <span>{{ __('Diary') }}</span>
+                                    <span>{{ __('Notes') }}</span>
                                 </a>
                             </li>
                         @endcan
