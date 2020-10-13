@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Note') }}</h3>
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Notes') }}</h3>
                 </div>
             </div>
         </div>
