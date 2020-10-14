@@ -45,6 +45,86 @@
 
                         <div class="form-group row">
                             <div class="col-md-6">
+                                <label>{{ __('Contact') }} : </label>
+
+                                <input type="text" class="form-control{{ $errors->has('contact') ? ' is-invalid' : '' }}" name="contact" value="{{ old('contact', $record->contact) }}"/>
+
+                                @if ($errors->has('contact'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('contact') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>{{ __('Age') }} : </label>
+
+                                <input type="number" class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" name="age" value="{{ old('age', $record->age) }}" />
+
+                                @if ($errors->has('age'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('age') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>{{ __('Weight') }} : </label>
+
+                                        <input type="number" class="form-control{{ $errors->has('weight') ? ' is-invalid' : '' }}" name="weight" value="{{ old('weight', $record->weight) }}"/>
+
+                                        @if ($errors->has('weight'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('weight') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>{{ __('Weight Unit') }} : </label>
+
+                                        <select name="weight_unit" class="form-control{{ $errors->has('weight_unit') ? ' is-invalid' : '' }}">
+                                            @if(!empty(App\User::$weightUnits))
+                                                @foreach(App\User::$weightUnits as $value => $weightUnit)
+                                                    <option value="{{ $value }}" {{ (old('weight_unit', $record->weight_unit) == $value) ? 'selected' : '' }}>{{ $weightUnit }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+
+                                        @if ($errors->has('weight_unit'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('weight_unit') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>{{ __('Gender') }} : </label>
+
+                                <select name="gender" class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}">
+                                    @if(!empty(App\User::$genders))
+                                        @foreach(App\User::$genders as $value => $gender)
+                                            <option value="{{ $value }}" {{ (old('gender', $record->gender) == $value) ? 'selected' : '' }}>{{ $gender }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
+                                @if ($errors->has('gender'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
                                 <label>{{ __('Email') }} : </label>
 
                                 <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email', $record->email) }}" required="" />
@@ -120,6 +200,20 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label>{{ __('Shipping Address') }} : </label>
+
+                                <textarea class="form-control{{ $errors->has('shipping_address') ? ' is-invalid' : '' }}" name="shipping_address">{{ old('shipping_address', $record->shipping_address) }}</textarea>
+
+                                @if ($errors->has('shipping_address'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('shipping_address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
                                 <label>{{ __('Category') }} : </label>
 
                                 <select name="category" class="form-control{{ $errors->has('category') ? ' is-invalid' : '' }}">
@@ -135,6 +229,30 @@
                                 @if ($errors->has('category'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('category') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>{{ __('Role') }} : </label>
+
+                                <select class="form-control{{ $errors->has('role_id') ? ' is-invalid' : '' }}" name="role_id" required="true">
+                                    <option value="">{{ __('Select Role') }}</option>
+
+                                    @if ($record->isSuperAdmin())
+                                        <span class="badge badge-lg badge-secondary text-white">
+                                            {{ __('Superadmin') }}
+                                        </span>
+                                    @else
+                                        @foreach($roles as $role)
+                                            <option value="{{$role->id}}" {{ (old('role_id') == $role->id || $record->hasRole($role) ? 'selected="true"' : '') }}>{{ $role->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
+                                @if ($errors->has('role_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('role_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -242,33 +360,16 @@
                         <div id="cloned-notes"></div>
 
                         <div class="form-group row">
-                            <div class="col-md-6">
-                                <label>{{ __('Role') }} : </label>
-
-                                <select class="form-control{{ $errors->has('role_id') ? ' is-invalid' : '' }}" name="role_id" required="true">
-                                    <option value="">{{ __('Select Role') }}</option>
-
-                                    @if ($record->isSuperAdmin())
-                                        <span class="badge badge-lg badge-secondary text-white">
-                                            {{ __('Superadmin') }}
-                                        </span>
-                                    @else
-                                        @foreach($roles as $role)
-                                            <option value="{{$role->id}}" {{ (old('role_id') == $role->id || $record->hasRole($role) ? 'selected="true"' : '') }}>{{ $role->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-
-                                @if ($errors->has('role_id'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('role_id') }}</strong>
+                            <div class="col-md-1">
+                                <div class="fileupload-buttonbar">
+                                    <span class="btn btn-success fileinput-button">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>{{ __('Profile Photo') }}</span>
+                                        <input type="file" name="profile_photo" id="imgProfileUpload" accept="image/*">
                                     </span>
-                                @endif
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-12">
+                            <div class="col-md-1">
                                 <div class="fileupload-buttonbar">
                                     <span class="btn btn-success fileinput-button">
                                         <i class="glyphicon glyphicon-plus"></i>
@@ -277,6 +378,14 @@
                                     </span>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group row" id="preview-profile-image">
+                            @if (!empty($record->profile_photo))
+                                <div class="col-md-4">
+                                    <img src="{{ $record->profile_photo }}" style="width:100%;height: 100%;object-fit: cover;" />
+                                </div>
+                            @endif
                         </div>
 
                         <div class="form-group row" id="preview-image">

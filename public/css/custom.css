@@ -1417,6 +1417,14 @@ table.full-inputs td input, table.full-inputs td textarea {
     /*filter: brightness(30%);*/
 }
 
+.border-bottom {
+    border-bottom: 1px solid #c9cdd7;
+}
+
+.nav-tabs li.active {
+    pointer-events: none;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;

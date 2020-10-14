@@ -11,6 +11,7 @@ use App\ClientItem;
 use App\Log;
 use App\Role;
 use App\UserNote;
+use App\Note;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -181,6 +182,10 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $create = $model::create($data);
 
         if ($create) {
+            if (!empty($request->profile_photo)) {
+                $this->profilePhoto($create->id, $request->profile_photo);
+            }
+
             $find = $model::find($create->id);
             self::createLog($find, __("Created client {$find->name}"), Log::CREATE, [], $find->toArray());
 
@@ -252,6 +257,30 @@ class ClientsController extends \App\Http\Controllers\BaseController
         return $create;
     }
 
+    public function profilePhoto(int $id, UploadedFile $profilePhoto)
+    {
+        $create = false;
+
+        if (!empty($profilePhoto)) {
+            if ($profilePhoto instanceof UploadedFile) {
+                $imageName = time() . '_' . $id . '.' . $profilePhoto->getClientOriginalExtension();
+                $moveFiles = $profilePhoto->storeAs(User::$storageParentFolderName . "/{$id}/" . User::$storageFolderName, $imageName, User::$fileSystems);
+
+                if ($moveFiles) {
+                    $model = User::find($id);
+
+                    if ($model) {
+                        $model->profile_photo = $imageName;
+
+                        $create = $model->save();
+                    }
+                }
+            }
+        }
+
+        return $create;
+    }
+
     public function edit(int $id)
     {
         $record = User::find($id);
@@ -298,6 +327,10 @@ class ClientsController extends \App\Http\Controllers\BaseController
             $update = $record->update($data);
 
             if ($update) {
+                if (!empty($request->profile_photo)) {
+                    $this->profilePhoto($id, $request->profile_photo, 'update');
+                }
+
                 $find = $model::find($id);
                 self::createLog($find, __("Updated client {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
 
@@ -399,5 +432,87 @@ class ClientsController extends \App\Http\Controllers\BaseController
         }
 
         return redirect('clients')->with('error', __("Client not found!"));
+    }
+
+    public function myProfile()
+    {
+        $model  = new User();
+        $userId = auth()->user()->id;
+
+        $record = auth()->user();
+
+        $roleNames  = "";
+        $totalNotes = 0;
+        $tagNames   = [];
+        $category   = "";
+        if ($record) {
+            $roleNames = $record->getRoleNames();
+
+            if (!empty($roleNames)) {
+                $roleNames = implode(", ", $roleNames->toArray());
+            }
+
+            $totalNotes = Note::where('user_id', $userId)->count();
+
+            $tags = ClientTag::where('user_id', $userId)->get();
+
+            if (!empty($tags) && !$tags->isEmpty()) {
+                $tags->map(function($tag) use(&$tagNames) {
+                    $tagNames[] = $tag->tag->name;
+                });
+            }
+
+            $category = (!empty($record->category) && !empty($model::$categories[$record->category])) ? $model::$categories[$record->category] : __('None');
+        }
+
+        if (!empty($tagNames)) {
+            $tagNames = implode(", ", $tagNames);
+        } else {
+            $tagNames = "-";
+        }
+
+        return view('clients.profile', compact('record', 'roleNames', 'totalNotes', 'tagNames', 'category'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user   = auth()->user();
+        $id     = $user->id;
+        $model  = new User();
+
+        if ($user) {
+            $data               = $request->all();
+            $data['updated_by'] = $id;
+            $data['email']      = $user->email;
+
+            if (empty($data['password'])) {
+                unset($data['password']);
+            }
+
+            $validator = $model::validators($data, false, true, $user);
+
+            $validator->validate();
+
+            $oldData = $user->toArray();
+
+            if (!empty($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            }
+
+            $update = $user->update($data);
+
+            if ($update) {
+                if (!empty($request->profile_photo)) {
+                    $this->profilePhoto($id, $request->profile_photo, 'update');
+                }
+
+                $find = $model::find($id);
+                self::createLog($find, __("Updated client {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+
+                return redirect('clients/me#')->with('success', __("Profile updated!"));
+            }
+        }
+
+        return redirect('clients/me#')->with('error', __("There has been an error!"));
     }
 }

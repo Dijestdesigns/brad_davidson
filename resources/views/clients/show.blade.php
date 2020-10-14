@@ -41,19 +41,49 @@
                                     <div class="form-group row">
                                         <div class="col-md-2">{{ __('Name') }}</div>
                                         <div class="col-md-8">
-                                            {{ $client->name }}
+                                            {{ !empty($client->name) ? $client->name : '-' }}
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-2">{{ __('Surname') }}</div>
                                         <div class="col-md-8">
-                                            {{ $client->surname }}
+                                            {{ !empty($client->surname) ? $client->surname : '-' }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Contact') }}</div>
+                                        <div class="col-md-8">
+                                            {{ !empty($client->contact) ? $client->contact : '-' }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Age') }}</div>
+                                        <div class="col-md-8">
+                                            {{ !empty($client->age) ? $client->age : '-' }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Weight') }}</div>
+                                        <div class="col-md-8">
+                                            {{ $client->weight }} {{ ($client->weight_unit != 'n' && !empty(App\User::$weightUnits[$client->weight_unit])) ? App\User::$weightUnits[$client->weight_unit] : '-' }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Gender') }}</div>
+                                        <div class="col-md-8">
+                                            {{ ($client->gender != 'n' && !empty(App\User::$genders[$client->gender])) ? App\User::$genders[$client->gender] : '-' }}
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-2">{{ __('Email') }}</div>
                                         <div class="col-md-8">
-                                            {{ $client->email }}
+                                            {{ !empty($client->email) ? $client->email : '-' }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Shipping Address') }}</div>
+                                        <div class="col-md-8">
+                                            {{ !empty($client->shipping_address) ? $client->shipping_address : '-' }}
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -69,7 +99,7 @@
                                                 }
                                             @endphp
 
-                                            {{ implode(", ", $tagNames) }}
+                                            {{ !empty($tagNames) ? implode(", ", $tagNames) : '-' }}
                                         </div>
                                     </div>
                                     <div class="form-group row">

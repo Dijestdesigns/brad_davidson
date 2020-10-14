@@ -78,7 +78,7 @@
     <div class="col-lg-12 col-lg-offset-4">
         <div class="lock-screen">
             <h2>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModel">
+                <button type="button" class="btn btn-default loginModel" data-toggle="modal" data-target="#loginModel">
                     <i class="fa fa-lock color-white"></i>
                 </button>
             </h2>
@@ -92,7 +92,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title">{{ __('Welcome Back') }}</h4>
                         </div>
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('login') }}#loginModel">
                             <div class="modal-body">
                                 @csrf
 

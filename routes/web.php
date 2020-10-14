@@ -31,8 +31,9 @@ Route::middleware($middlewares)->group(function() {
     });
 
     Route::group(['namespace' => 'Clients'], function () {
+        Route::get('clients/me', 'ClientsController@myProfile')->name('clients.myprofile');
+        Route::post('clients/me/update', 'ClientsController@updateProfile')->name('clients.myprofile.update');
         Route::resources(['clients' => 'ClientsController']);
-        Route::get('clients/{id}/me', 'ClientsController@myProfile')->name('clients.myprofile');
     });
 
     Route::group(['namespace' => 'Training'], function () {

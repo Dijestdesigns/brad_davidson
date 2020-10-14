@@ -351,6 +351,35 @@ jQuery(document).ready(function( $ ) {
         });
         getTime();
     }
+
+    $(document).find(".nav-tabs li").on("click", function() {
+        let self = $(this);
+
+        self.parent("ul").find("li").each(function() {
+            $(document).find(".tab-panel.active").removeClass("active");
+            self.addClass("active");
+
+            let hashId = self.find("a").attr('href');
+
+            window.location.hash = hashId;
+
+            $(document).find(".tab-pane.active").removeClass("active");
+            $(document).find(hashId).addClass("active");
+        });
+    });
+
+    var locationHash = window.location.hash;
+    if (locationHash != null) {
+        if (locationHash == '#overview' || locationHash == '#edit') {
+            $(document).find("a[href='"+locationHash+"']").parent("li").click();
+        } else if (locationHash == '#loginModel') {
+            $(document).find(".loginModel").click();
+        }
+    }
+
+    $('#loginModel').on('hidden.bs.modal', function () {
+        window.location.hash = '';
+    });
 });
 
 function getValue(element) {
@@ -370,6 +399,23 @@ function readURL(input) {
 
           reader.onload = function(e) {
               $('#preview-image').append('<div class="col-md-4"><img src="' + e.target.result + '" style="width:100%;height: 100%;object-fit: cover;" /></div>');
+          }
+
+          reader.readAsDataURL(input.files[index]);
+        });
+    }
+}
+
+function readURLProfile(input) {
+    if (input.files) {
+        $('#preview-profile-image').html("");
+
+        $.each(input.files, function(index) {
+
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+              $('#preview-profile-image').append('<div class="col-md-4"><img src="' + e.target.result + '" style="width:100%;height: 100%;object-fit: cover;" /></div>');
           }
 
           reader.readAsDataURL(input.files[index]);
@@ -401,6 +447,10 @@ function checkTime(i) {
 
 $("#imgUpload").change(function() {
     readURL(this);
+});
+
+$("#imgProfileUpload").change(function() {
+    readURLProfile(this);
 });
 
 let togglePassword = $(".togglePassword");

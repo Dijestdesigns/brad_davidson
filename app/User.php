@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -23,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'contact', 'category', 'email', 'password', 'is_superadmin', 'created_by', 'updated_by'
+        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'created_by', 'updated_by'
     ];
 
     /**
@@ -58,6 +59,23 @@ class User extends Authenticatable
         '4' => 'Monthly Breakthrough',
     ];
 
+    public static $weightUnits = [
+        'n' => 'Select',
+        'k' => 'KG',
+        'p' => 'Pound'
+    ];
+
+    public static $genders = [
+        'n' => 'Select',
+        'm' => 'Male',
+        'f' => 'Female'
+    ];
+
+    public static $fileSystems             = 'public';
+    public static $storageParentFolderName = 'client_photos';
+    public static $storageFolderName       = 'profile';
+    public static $allowedExtensions       = ['jpg', 'jpeg', 'png', 'gif'];
+
     public static function getTableName()
     {
         return with(new static)->getTable();
@@ -88,17 +106,33 @@ class User extends Authenticatable
             }
         }
 
+        $weightUnits = ['in:n'];
+        $weight      = ['nullable'];
+        if (!empty($data['weight'])) {
+            $weightUnits = ['required', 'in:k,p'];
+        }
+        if (!empty($data['weight_unit']) && $data['weight_unit'] != 'n') {
+            $weightUnits = ['required', 'in:k,p'];
+            $weight      = ['required'];
+        }
+
         $validator = Validator::make($data, [
-            'name'       => ['required', 'string', 'max:255'],
-            'surname'    => ['nullable', 'string', 'max:255'],
-            'contact'    => ['nullable', 'string', 'max:255'],
-            'category'   => ['in:' . implode(",", array_keys(self::$categories))],
-            'email'      => array_merge(['required', 'string', 'email', 'max:255'], $email),
-            'password'   => $password,
-            'created_by' => $createdBy,
-            'updated_by' => $updatedBy,
-            'is_superadmin' => ['in:0,1'],
-            'tags.*'     => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
+            'name'             => ['required', 'string', 'max:255'],
+            'surname'          => ['nullable', 'string', 'max:255'],
+            'profile_photo'    => ['nullable', 'mimes:' . implode(",", self::$allowedExtensions), 'max:255'],
+            'shipping_address' => ['nullable'],
+            'gender'           => ['in:' . implode(",", array_keys(self::$genders))],
+            'age'              => ['nullable', 'integer'],
+            'weight'           => array_merge(['integer'], $weight),
+            'weight_unit'      => array_merge([], $weightUnits),
+            'contact'          => ['nullable', 'string', 'max:255'],
+            'category'         => ['in:' . implode(",", array_keys(self::$categories))],
+            'email'            => array_merge(['required', 'string', 'email', 'max:255'], $email),
+            'password'         => $password,
+            'created_by'       => $createdBy,
+            'updated_by'       => $updatedBy,
+            'is_superadmin'    => ['in:0,1'],
+            'tags.*'           => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
         ]);
 
         if ($returnBoolsOnly === true) {
@@ -110,6 +144,30 @@ class User extends Authenticatable
         }
 
         return $validator;
+    }
+
+    public function getProfilePhotoAttribute($value)
+    {
+        $defaultProfilePhoto = asset('img/friends/fr-05.jpg');
+
+        if (empty($value)) {
+            return $defaultProfilePhoto;
+        }
+
+        $storageParentFolderName = (str_ireplace("\\", "/", self::$storageParentFolderName));
+        $storageFolderName       = (str_ireplace("\\", "/", self::$storageFolderName));
+        $fileName                = $storageParentFolderName . '/' . $this->id . '/' . $storageFolderName . '/' . $value;
+
+        if (Storage::disk(self::$fileSystems)->has($fileName)) {
+            return $profilePhoto = Storage::disk(self::$fileSystems)->url($fileName);
+        } else {
+            return $defaultProfilePhoto;
+        }
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name . ' ' . $this->surname;
     }
 
     public function userCreatedBy()

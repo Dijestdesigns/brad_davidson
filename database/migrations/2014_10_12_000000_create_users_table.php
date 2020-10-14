@@ -23,6 +23,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             // $table->text('notes')->nullable();
+            $table->string('profile_photo')->nullable();
+            $table->text('shipping_address')->nullable();
+            $table->enum('gender', ['n', 'm', 'f'])->comment('n: None, m: Malem f:Female')->default('n');
+            $table->integer('age')->nullable();
+            $table->integer('weight')->nullable();
+            $table->enum('weight_unit', ['n', 'k', 'p'])->comment('n: None, k: KG, p: Pound')->default('n');
             $table->bigInteger('created_by')->unsigned()->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('updated_by')->unsigned()->nullable();

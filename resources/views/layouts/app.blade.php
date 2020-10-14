@@ -342,9 +342,9 @@
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
                         <p class="centered">
-                            <a href="#">
-                                @if(Auth::guard('admin')->user()->isSuperAdmin())
-                                    <img src="{{ asset('img/me/me.png') }}" class="img-circle" width="80">
+                            <a href="{{ route('clients.myprofile') }}">
+                                @if(!empty(auth()->user()->profile_photo))
+                                    <img src="{{ auth()->user()->profile_photo }}" class="img-circle" width="80">
                                 @else
                                     <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80">
                                 @endif
@@ -352,9 +352,9 @@
                         </p>
                         <h5 class="centered">
                             @if(Auth::guard('admin')->check())
-                                {{ Auth::guard('admin')->user()->name }}
+                                {{ Auth::guard('admin')->user()->fullname }}
                             @elseif(Auth::guard('client')->check())
-                                {{ Auth::guard('client')->user()->name }}
+                                {{ Auth::guard('client')->user()->fullname }}
                             @endif
                         </h5>
                         <li class="mt">
