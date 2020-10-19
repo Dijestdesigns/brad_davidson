@@ -63,7 +63,7 @@
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                                <a class="btn btn-default" href="{{ route('folders.index') }}"><i class="fa fa-arrow-left"></i></a>
+                                <a class="btn btn-default" href="{{ route('roles.index') }}"><i class="fa fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </form>
