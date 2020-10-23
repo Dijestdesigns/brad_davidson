@@ -57,6 +57,12 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'chat_create', 'display_name' => 'Chat Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_edit', 'display_name' => 'Chat Edit', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_delete', 'display_name' => 'Chat Delete', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_access', 'display_name' => 'Chat Group Access', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_add_user', 'display_name' => 'Chat Group Add User', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_create', 'display_name' => 'Chat Group Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_edit', 'display_name' => 'Chat Group Edit', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_delete', 'display_name' => 'Chat Group Delete', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_delete_user', 'display_name' => 'Chat Group Delete User', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
 
             ['name' => 'calendar_access', 'display_name' => 'Calendar Access', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
             ['name' => 'calendar_create', 'display_name' => 'Calendar Create', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],

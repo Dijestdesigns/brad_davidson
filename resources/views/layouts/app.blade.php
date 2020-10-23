@@ -501,10 +501,9 @@
                 @yield('content')
             </section>
         </main>
-
+    </div>
+</body>
         <script type="text/javascript">
             @stack('custom_scripts')
         </script>
-    </div>
-</body>
 </html>

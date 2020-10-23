@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Tag;
+use App\Chat;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -165,6 +166,27 @@ class User extends Authenticatable
         }
     }
 
+    public function getUnread($default = 0)
+    {
+        $myUserId = auth()->user()->id;
+        $userId   = $this->id;
+        $count    = $default;
+
+        if ($this instanceof self) {
+            $chats = $this->chatsWithSender;
+
+            if (!empty($chats) && !$chats->isEmpty()) {
+                foreach ($chats as $chat) {
+                    if (!$chat->isRead()) {
+                        $count++;
+                    }
+                }
+            }
+        }
+
+        return $count;
+    }
+
     public function getFullNameAttribute()
     {
         return $this->name . ' ' . $this->surname;
@@ -193,5 +215,22 @@ class User extends Authenticatable
     public function notes()
     {
         return $this->hasMany('App\UserNote', 'user_id', 'id');
+    }
+
+    public function chatRooms()
+    {
+        return $this->belongsToMany(ChatRoom::class)->withTimestamps();
+    }
+
+    public function chats()
+    {
+        return $this->hasMany('App\Chat', 'user_id', 'id');
+    }
+
+    public function chatsWithSender()
+    {
+        $myUserId = auth()->user()->id;
+
+        return $this->hasMany('App\Chat', 'send_by', 'id')->where('user_id', $myUserId);
     }
 }

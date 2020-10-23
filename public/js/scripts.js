@@ -380,6 +380,308 @@ jQuery(document).ready(function( $ ) {
     $('#loginModel').on('hidden.bs.modal', function () {
         window.location.hash = '';
     });
+
+    chatBodyScroll();
+
+    $("#menu-toggle").on('click', function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+  $(".checkall").on('click', function () {
+    var status = $(this).attr('checked');
+    $(this).parent().parent().parent().find('input').attr('checked', !status);
+  });
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
+  $('.popover-dismiss').popover({
+    trigger: 'focus'
+  });
+  $(".deleteBtn").on('click', function () {
+    var form = $(this).parent();
+    form = (form && form.length > 1) ? form[0] : form;
+    var message = $(this).attr('data-confirm-message');
+    bootbox.confirm({
+      message: message,
+      buttons: {
+        confirm: {
+          className: 'btn-primary'
+        },
+        cancel: {
+          className: 'btn-danger'
+        }
+      },
+      locale: window.appLocale,
+      callback: function callback(result) {
+        if (result) form.submit();
+      }
+    });
+  });
+  $(".confirmBtn").on('click', function (event) {
+    event.preventDefault();
+    var message = $(this).attr('data-confirm-message');
+    var url = $(this).attr('href');
+    bootbox.confirm({
+      message: message,
+      buttons: {
+        confirm: {
+          className: 'btn-primary'
+        },
+        cancel: {
+          className: 'btn-danger'
+        }
+      },
+      locale: window.appLocale,
+      callback: function callback(result) {
+        if (result) window.location = url;
+      }
+    });
+  });
+  
+
+  $(".changeQuantity").on('click', function (event) {
+    event.preventDefault();
+    var title = $(this).attr('data-title'),
+        value = $(this).attr('data-value'),
+        form  = $(this).parent();
+
+    bootbox.prompt({
+      title: title,
+      centerVertical: true,
+      inputType: 'number',
+      value: value,
+      callback: function(result){ 
+          if (result) {
+            form.find("#qty").val(result);
+
+            form.submit();
+          }
+      }
+    });
+  });
+
+  setTimeout(function() {
+    $(document).find(".saveNotes").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+
+      form.find("#newNotes").val('');
+
+      bootbox.prompt({
+        title: "Create New",
+        centerVertical: true,
+        inputType: 'text',
+        placeholder: "Name of note",
+        callback: function(result){
+            if (result) {
+              form.find("#newNotes").val(result);
+
+              form.submit();
+            }
+        }
+      });
+    });
+
+    $(".deleteBtnNotes").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+      var message = $(this).attr('data-confirm-message');
+
+      form.find("#deletedId").val('');
+
+      bootbox.confirm({
+        message: message,
+        buttons: {
+          confirm: {
+            className: 'btn-primary'
+          },
+          cancel: {
+            className: 'btn-danger'
+          }
+        },
+        locale: window.appLocale,
+        callback: function callback(result) {
+          if (result) {
+            let id = $("#currentId").val();
+
+            form.find("#deletedId").val(id);
+
+            form.submit();
+          }
+        }
+      });
+    });
+
+    $(".deleteBtnCalendar").on('click', function (event) {
+      event.preventDefault();
+      var form = $(this).parents('form:first');
+      var message = $(this).attr('data-confirm-message');
+
+      form.find("#isDelete").val('');
+
+      bootbox.confirm({
+        message: message,
+        buttons: {
+          confirm: {
+            className: 'btn-primary'
+          },
+          cancel: {
+            className: 'btn-danger'
+          }
+        },
+        locale: window.appLocale,
+        callback: function callback(result) {
+          if (result) {
+            form.find("#isDelete").val('true');
+
+            form.submit();
+          }
+        }
+      });
+    });
+  }, 3000);
+
+  $("select[name=MAIL_DRIVER]").change(function () {
+    var val = $(this).val();
+
+    if (val == 'smtp') {
+      $("#smtp_fields").removeClass('d-none');
+    } else {
+      $("#smtp_fields").addClass('d-none');
+    }
+  });
+  $(".social-auth-provider").on('click', function () {
+    var name = $(this).attr('name');
+    var checked = $(this).is(':checked');
+
+    if (checked) {
+      $("#" + name + "-settings").removeClass('d-none');
+    } else {
+      $("#" + name + "-settings").addClass('d-none');
+    }
+  });
+  $(".toEmails").on('click', function () {
+    var html = $($(this).data('html')).clone().prop("class", "");
+    var form = $($(this).data('html'));
+
+    bootbox.confirm({
+      message: html,
+      buttons: {
+        confirm: {
+          className: 'btn-primary'
+        },
+        cancel: {
+          className: 'btn-danger'
+        }
+      },
+      locale: window.appLocale,
+      callback: function callback(result) {
+        if (result) {
+          form.submit();
+        }
+      }
+    });
+  });
+  $(".view-details").on('click', function () {
+    let id   = $(this).data('id'),
+        url  = $(this).data('url'),
+        html = $("#view-details-" + id).html();
+
+    bootbox.dialog({
+      message: html,
+      size: 'large',
+      buttons: {
+        edit: {
+          className: 'btn-primary',
+          callback: function() {
+            window.location.href = url;
+          }
+        },
+        cancel: {
+          className: 'btn-danger'
+        }
+      },
+      locale: window.appLocale
+    });
+  });
+  $(".moveItem").on('click', function () {
+      event.preventDefault();
+
+      var form    = $(this).parent(),
+          form    = (form && form.length > 1) ? form[0] : form,
+          message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
+
+  $(".showLogBtn").on('click', function () {
+      event.preventDefault();
+
+      var message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message
+      });
+  });
+
+  $(document).on("click", ".close-model", function() {
+      bootbox.hideAll();
+  });
+
+  $(".addChatGroups").on('click', function (event) {
+    event.preventDefault();
+
+    var title = $(this).attr('data-title'),
+        form    = $(this).parent(),
+        form    = (form && form.length > 1) ? form[0] : form,
+        message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          title: title,
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
+
+  $(".addChatUsers").on('click', function (event) {
+    event.preventDefault();
+
+    var title = $(this).attr('data-title'),
+        form    = $(this).parent(),
+        form    = (form && form.length > 1) ? form[0] : form,
+        message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          title: title,
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
+
+  $(".editChatGroups").on('click', function (event) {
+    event.preventDefault();
+
+    var title = $(this).attr('data-title'),
+        form    = $(this).parent(),
+        form    = (form && form.length > 1) ? form[0] : form,
+        message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          title: title,
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
 });
 
 function getValue(element) {
@@ -443,6 +745,13 @@ function checkTime(i) {
     }
 
     return i;
+}
+
+function chatBodyScroll()
+{
+    $(document).find('.chat-body').animate({
+        scrollTop: ($('.chat-body .group-rom:last').length > 0) ? $('.chat-body .group-rom:last').position().top : false
+    }, 'slow');
 }
 
 $("#imgUpload").change(function() {

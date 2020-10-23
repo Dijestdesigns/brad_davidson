@@ -120,14 +120,14 @@
             </div>
         </div>
     </section>
-
-    <style type="text/css">
-        .app-notebook .md-editor:nth-of-type({{ $selectedIndex + 1 }}) {
-            display: block !important;
-        }
-    </style>
-
-    <script type="text/javascript">
-        var store = "{{ route('notes.store') }}";
-    </script>
 @endsection
+
+<style type="text/css">
+    .app-notebook .md-editor:nth-of-type({{ $selectedIndex + 1 }}) {
+        display: block !important;
+    }
+</style>
+
+<script type="text/javascript">
+    var store = "{{ route('notes.store') }}";
+</script>

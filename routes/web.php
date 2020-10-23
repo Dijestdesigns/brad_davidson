@@ -42,6 +42,15 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Chat'], function () {
         Route::resources(['chat' => 'ChatController']);
+        Route::get('chat/{userId}/individual', 'ChatController@individual')->name('chat.individual');
+        Route::get('chat/{groupId}/group', 'ChatController@group')->name('chat.group');
+
+        Route::post('chat/individual', 'ChatController@individualPost')->name('chat.individual.post');
+        Route::post('chat/room', 'ChatController@groupPost')->name('chat.room.post');
+
+        Route::post('chat/markAsRead/{chatId}', 'ChatController@markAsRead')->name('chat.room.markAsRead');
+
+        Route::delete('chat/room/{chatRoomId}/destroyUser', 'ChatController@destroyUser')->name('chat.room.destroyUser');
     });
 
     Route::group(['namespace' => 'Calendar'], function () {

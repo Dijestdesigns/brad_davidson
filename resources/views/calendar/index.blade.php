@@ -311,14 +311,14 @@
             </div>
         </div>
     </section>
-
-    <script type="text/javascript">
-        @if (!empty($calendars))
-            var calendarDatas = {!! $calendars->toJson() !!};
-        @else
-            var calendarDatas = [];
-        @endif
-
-        var selectedDate = '{{ $selectedDate }}';
-    </script>
 @endsection
+
+<script type="text/javascript">
+    @if (!empty($calendars))
+        var calendarDatas = {!! $calendars->toJson() !!};
+    @else
+        var calendarDatas = [];
+    @endif
+
+    var selectedDate = '{{ $selectedDate }}';
+</script>

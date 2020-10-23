@@ -254,10 +254,10 @@ ul.sidebar-menu li a i {
 
 .color-selector>li input[type=radio]:checked+label:after {
     position: absolute;
-    top: 0;
+    top: 6; /*0*/
     left: 8px;
     display: inline-block;
-    margin-top: -2px;
+    /*margin-top: -2px;*/
     font-size: 16px;
     line-height: 1;
     color: #fff;
@@ -1423,6 +1423,65 @@ table.full-inputs td input, table.full-inputs td textarea {
 
 .nav-tabs li.active {
     pointer-events: none;
+}
+
+.room-desk .room-box {
+    cursor: pointer;
+}
+
+.chat-body::-webkit-scrollbar {
+    width: 5px;
+}
+.chat-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.chat-body::-webkit-scrollbar-thumb {
+    background: #4ecdc4;
+}
+.chat-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Jessica changes 19102020 */
+#loginModel .modal-header {
+    background: white;
+    border-bottom: none;
+}
+
+#loginModel .modal-header h4.modal-title {
+    font-weight: 300;
+    font-family: 'Open Sans',sans-serif;
+    color: black;
+}
+
+#loginModel .modal-body {
+    background-color: white;
+}
+
+#loginModel .modal-footer {
+    border-top:none;
+    background-color: white;
+}
+
+.fa.fa-eye.fa-2x, .fa.fa-edit.fa-2x, .fa-trash.fa-2x {
+    color: #5ec3b2;
+}
+
+.noContent .saveNotes {
+    background-color: #5ec3b2;
+}
+
+table.full-inputs th {
+    background-color: #f16432;
+    color: white;
+}
+
+table.full-inputs .form-control[disabled] {
+    background-color: #f7f8f7;
+}
+
+.btn-round {
+    border-radius: 50%;
 }
 
 @media (max-width:320px)  {
