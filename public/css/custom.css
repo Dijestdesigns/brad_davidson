@@ -1484,6 +1484,10 @@ table.full-inputs .form-control[disabled] {
     border-radius: 50%;
 }
 
+.chat-body.full-footer footer {
+    width: 100%;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;

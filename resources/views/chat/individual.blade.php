@@ -36,7 +36,7 @@
                             </div>
                             </div>
                         </div>
-                        <div class="chat-body">
+                        <div class="chat-body full-footer">
                             <chat :users="{{ $user }}" :user-id="{{ $myUserId }}" :chat-messages="{{ $chatMessages }}"></chat>
                         </div>
                     </aside>
