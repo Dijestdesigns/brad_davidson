@@ -70,8 +70,10 @@
                     return false;
                 }
 
+                let title = data.user.name + (typeof data.user !== typeof undefined && typeof data.user.surname !== null && data.user.surname.length > 0 ? ' ' + data.user.surname : '') + ' send you message.';
+
                 Notification.requestPermission(permission => {
-                    let notification = new Notification(data.user.name + ' ' + data.user.surname + ' send you message', {
+                    let notification = new Notification(title, {
                         body: data.message,
                         icon: data.profile_photo
                     });
