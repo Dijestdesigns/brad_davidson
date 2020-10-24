@@ -1972,6 +1972,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       }, 50);
     },
+    desktopNotification: function desktopNotification(data) {
+      if (!('Notification' in window)) {
+        console.log('Web Notification is not supported');
+        return false;
+      }
+
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+
+      Notification.requestPermission(function (permission) {
+        var notification = new Notification(data.user.name + ' ' + data.user.surname + ' send you message', {
+          body: data.message,
+          icon: data.profile_photo
+        }); // link to page on clicking the notification
+
+        notification.onclick = function () {
+          window.open(window.location.href);
+        };
+      });
+    },
     store: function store() {
       var _this2 = this;
 
@@ -2010,6 +2031,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           if (_typeof(e) !== ( true ? "undefined" : undefined) && Object.values(e).length > 0) {
             _this3.conversations.push(e);
 
+            _this3.desktopNotification(e);
+
             _this3.markAsRead(e);
 
             _this3.scrollToElement();
@@ -2019,6 +2042,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         Echo["private"]('users.' + this.userId + '.' + this.users.id).listen('NewMessageIndividual', function (e) {
           if (_typeof(e) !== ( true ? "undefined" : undefined) && Object.values(e).length > 0) {
             _this3.conversations.push(e);
+
+            _this3.desktopNotification(e);
 
             _this3.markAsRead(e);
 

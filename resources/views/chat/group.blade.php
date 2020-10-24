@@ -107,3 +107,8 @@
         </div>
     </section>
 @endsection
+<script type="text/javascript">
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+</script>

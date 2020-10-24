@@ -63,6 +63,26 @@
                 }, 50);
             },
 
+            desktopNotification(data) {
+                if (!('Notification' in window)) {
+                    console.log('Web Notification is not supported');
+
+                    return false;
+                }
+
+                Notification.requestPermission(permission => {
+                    let notification = new Notification(data.user.name + ' ' + data.user.surname + ' send you message', {
+                        body: data.message,
+                        icon: data.profile_photo
+                    });
+
+                    // link to page on clicking the notification
+                    notification.onclick = () => {
+                        window.open(window.location.href);
+                    };
+                });
+            },
+
             store() {
                 if (typeof this.room !== typeof undefined && this.room.id != "") {
                     axios.post('/chat/room', {message: this.message, chat_room_id: this.room.id})
@@ -95,6 +115,8 @@
                         if (typeof e !== typeof undefined && Object.values(e).length > 0) {
                             this.conversations.push(e);
 
+                            this.desktopNotification(e);
+
                             this.markAsRead(e);
 
                             this.scrollToElement();
@@ -105,6 +127,8 @@
                     .listen('NewMessageIndividual', (e) => {
                         if (typeof e !== typeof undefined && Object.values(e).length > 0) {
                             this.conversations.push(e);
+
+                            this.desktopNotification(e);
 
                             this.markAsRead(e);
 
