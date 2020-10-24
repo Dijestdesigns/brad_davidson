@@ -364,7 +364,7 @@ class ChatController extends \App\Http\Controllers\BaseController
 
                     broadcast(new NewMessage($chat))->toOthers();
 
-                    $chat = Chat::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
+                    $chat = $model::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
                                 ->where(Chat::getTableName() . '.id', $chat->id)
                                 ->join(ChatRoomUser::getTableName(), Chat::getTableName() . '.chat_room_user_id', '=', ChatRoomUser::getTableName() . '.id')
                                 ->with('user')->first();
@@ -404,7 +404,13 @@ class ChatController extends \App\Http\Controllers\BaseController
 
                 broadcast(new NewMessageIndividual($chat))->toOthers();
 
-                $chat = Chat::select(Chat::getTableName() . '.*', Chat::getTableName() . '.id as chat_id')->where(Chat::getTableName() . '.id', $chat->id)->with('user')->first();
+                $chat = $model::select(Chat::getTableName() . '.*', Chat::getTableName() . '.id as chat_id')->where(Chat::getTableName() . '.id', $chat->id)->with('sentUser')->first();
+
+                if (!empty($chat)) {
+                    $user = !empty($chat->sentUser) ? $chat->sentUser : [];
+
+                    $chat->user = $user;
+                }
 
                 return $chat;
             }

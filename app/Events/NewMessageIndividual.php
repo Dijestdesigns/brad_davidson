@@ -40,7 +40,13 @@ class NewMessageIndividual implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        $chat = Chat::select(Chat::getTableName() . '.*', Chat::getTableName() . '.id as chat_id')->where(Chat::getTableName() . '.id', $this->chat->id)->with('user')->first();
+        $chat = Chat::select(Chat::getTableName() . '.*', Chat::getTableName() . '.id as chat_id')->where(Chat::getTableName() . '.id', $this->chat->id)->with('sentUser')->first();
+
+        if (!empty($chat)) {
+            $user = !empty($chat->sentUser) ? $chat->sentUser : [];
+
+            $chat->user = $user;
+        }
 
         return !empty($chat) ? $chat->toArray() : [];
     }
