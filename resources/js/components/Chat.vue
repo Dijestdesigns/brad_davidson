@@ -70,7 +70,11 @@
                     return false;
                 }
 
-                let title = data.user.name + (typeof data.user !== typeof undefined && typeof data.user.surname !== null && data.user.surname.length > 0 ? ' ' + data.user.surname : '') + ' send you message.';
+                if (typeof data.user !== typeof undefined && data.user.surname !== null) {
+                    var title = data.user.name + ' ' + data.user.surname + ' send you message.';
+                } else {
+                    var title = data.user.name + ' send you message.';
+                }
 
                 Notification.requestPermission(permission => {
                     let notification = new Notification(title, {
