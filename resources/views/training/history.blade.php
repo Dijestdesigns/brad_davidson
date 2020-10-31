@@ -154,12 +154,16 @@
                                 </div>
                             @endif
 
-                            <div class="float-left ml-10">
-                                @if(!empty($request))
-                                    {{ $records->appends($request->all())->links() }}
-                                @else
-                                    {{ $records->links() }}
-                                @endif
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="float-left ml-10">
+                                        @if(!empty($request))
+                                            {{ $records->appends($request->all())->links() }}
+                                        @else
+                                            {{ $records->links() }}
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
