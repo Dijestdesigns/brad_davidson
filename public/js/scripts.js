@@ -309,17 +309,26 @@ jQuery(document).ready(function( $ ) {
         });
     });
 
+    (function($) {
+        $.fn.datepickerFunctions = function () {
+            let datesDisabled = (typeof $(this).data('disabled-dates') !== typeof undefined) ? $(this).data('disabled-dates').split(',') : [];
+
+            $(this).datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd', datesDisabled: datesDisabled});
+
+            // $(document).find('input.datepicker').datetimepicker('hide');
+            $(this).datetimepicker('show');
+
+            $(this).on('changeDate', function(ev) {
+                if ($.fn.setTotalDays) {
+                    $(this).setTotalDays();
+                }
+                $(this).datetimepicker('hide');
+            });
+        };
+    })(jQuery);
+
     $(document).find('input.datepicker').focus(function() {
-        let datesDisabled = (typeof $(this).data('disabled-dates') !== typeof undefined) ? $(this).data('disabled-dates').split(',') : [];
-
-        $(this).datetimepicker({autoclose: true, minView: 2, format: 'yyyy-mm-dd', datesDisabled: datesDisabled});
-
-        $(document).find('input.datepicker').datetimepicker('hide');
-        $(this).datetimepicker('show');
-
-        $(this).on('changeDate', function(ev) {
-            $(this).datetimepicker('hide');
-        });
+        $(this).datepickerFunctions();
     });
 
     $(document).find("#plus-notes").on("click", function() {
@@ -618,6 +627,55 @@ jQuery(document).ready(function( $ ) {
       });
   });
 
+  $(".createTrainings").on('click', function () {
+      event.preventDefault();
+
+      var form    = $(this).parent(),
+          form    = (form && form.length > 1) ? form[0] : form,
+          id      = $(this).attr('data-id'),
+          message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+
+      $(document).find('input.datepicker').focus(function() {
+          $(this).datepickerFunctions();
+      });
+
+      (function($) {
+          $.fn.setTotalDays = function () {
+              let start     = $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.started_at-' + id),
+                  completed = $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.finished_at-' + id);
+
+              if (start.val() && completed.val() && start.val().length > 0 && completed.val().length > 0) {
+                  $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(datediff(parseDate(start.val(), completed.val())) + 1);
+              } else {
+                  $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(0);
+              }
+          }
+      })(jQuery);
+  });
+
+  $(".updateTrainings").on('click', function () {
+      event.preventDefault();
+
+      var form    = $(this).parent(),
+          form    = (form && form.length > 1) ? form[0] : form,
+          id      = $(this).attr('data-id'),
+          message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
+
   $(".showLogBtn").on('click', function () {
       event.preventDefault();
 
@@ -682,6 +740,34 @@ jQuery(document).ready(function( $ ) {
           }
       });
   });
+
+    $(document).find("input[name='is_daily']").on("click", function() {
+        let self  = $(this),
+            value = self.val(),
+            customDaysDiv = $("#custom_days");
+
+        if (customDaysDiv) {
+            if (value == '0') {
+                customDaysDiv.fadeIn(200);
+            } else {
+                customDaysDiv.fadeOut(200);
+            }
+        }
+    });
+
+    $(document).on('click', '.panel-heading span.clickable', function(e){
+        var $this = $(this);
+
+        if(!$this.hasClass('panel-collapsed')) {
+            $this.parents('.panel').find('.panel-body').slideUp();
+            $this.addClass('panel-collapsed');
+            $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        } else {
+            $this.parents('.panel').find('.panel-body').slideDown();
+            $this.removeClass('panel-collapsed');
+            $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
+    });
 });
 
 function getValue(element) {
@@ -752,6 +838,18 @@ function chatBodyScroll()
     $(document).find('.chat-body').animate({
         scrollTop: ($('.chat-body .group-rom:last').length > 0) ? $('.chat-body .group-rom:last').position().top : false
     }, 'slow');
+}
+
+// new Date("dateString") is browser-dependent and discouraged, so we'll write
+// a simple parse function for U.S. date format (which does no error checking)
+function parseDate(start, end) {
+    return new Date(end) - new Date(start);
+}
+
+function datediff(diffInMs) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    return Math.round((diffInMs)/(1000*60*60*24)) || 0;
 }
 
 $("#imgUpload").change(function() {

@@ -7,6 +7,8 @@ use App\Item;
 use App\User;
 use App\Log;
 use App\UserSupplement;
+use App\ClientTraining;
+use Carbon\Carbon;
 use DB;
 
 class DashboardController extends BaseController
@@ -33,6 +35,7 @@ class DashboardController extends BaseController
         $itemCount        = Item::count();
         $userCount        = User::where('id', '!=', User::$superadminId)->count();
         $totalStockValues = Item::select(DB::raw('SUM(qty) as qty, SUM(`value`) as value'))->first();
+        $now              = Carbon::now();
 
         $totalStocks = $totalValues = 0;
         if (!empty($totalStockValues)) {
@@ -48,6 +51,11 @@ class DashboardController extends BaseController
             $supplements = UserSupplement::where('user_id', $userId)->orderBy('date', 'DESC')->first();
         }
 
-        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements'));
+        $trainings = [];
+        if (auth()->user()->can('training_show_to_clients')) {
+            $trainings = ClientTraining::whereDate('date', $now)->where('user_id', $userId)->get();
+        }
+
+        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements', 'trainings'));
     }
 }

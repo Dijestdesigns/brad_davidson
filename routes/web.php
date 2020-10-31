@@ -37,7 +37,15 @@ Route::middleware($middlewares)->group(function() {
     });
 
     Route::group(['namespace' => 'Training'], function () {
+        Route::post('training/client/store', 'TrainingController@clientStore')->name('training.client.store');
+        Route::post('training/client/{userId}/info/create', 'TrainingController@clientInfoCreate')->name('training.client.info.create');
+        Route::post('training/client/{userId}/info/update', 'TrainingController@clientInfoUpdate')->name('training.client.info.update');
+        Route::get('training/client/{userId}/history', 'TrainingController@clientHistory')->name('training.client.history');
         Route::resources(['training' => 'TrainingController']);
+    });
+
+    Route::group(['namespace' => 'Constants'], function () {
+        Route::resources(['constants' => 'ConstantsController']);
     });
 
     Route::group(['namespace' => 'Chat'], function () {

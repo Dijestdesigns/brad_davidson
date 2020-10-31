@@ -1463,7 +1463,7 @@ table.full-inputs td input, table.full-inputs td textarea {
     background-color: white;
 }
 
-.fa.fa-eye.fa-2x, .fa.fa-edit.fa-2x, .fa-trash.fa-2x {
+.fa.fa-eye.fa-2x, .fa.fa-edit.fa-2x, .fa-trash.fa-2x, .fa-plus.fa-2x {
     color: #5ec3b2;
 }
 
@@ -1488,14 +1488,68 @@ table.full-inputs .form-control[disabled] {
     width: 100%;
 }
 
+.disp-none {
+    display: none;
+}
+
+.browse-file {
+    display: none !important;
+}
+
+.row-no-padding .right {
+    padding-right: 0 !important;
+}
+
+.row-no-padding .left {
+    padding-left: 0 !important;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.panel-heading span {
+    margin-top: -20px;
+    font-size: 15px;
+}
+
+.m10 {
+    margin: 10px;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;
+    }
+
+    .row-no-padding .right {
+        padding-right: 15px !important;
+    }
+
+    .row-no-padding .left {
+        padding-left: 15px !important;
     }
 }
 @media (max-width:480px)  {
     .noContent .saveNotes {
         position: unset;
+    }
+
+    .row-no-padding .right {
+        padding-right: 15px !important;
+    }
+
+    .row-no-padding .left {
+        padding-left: 15px !important;
+    }
+}
+@media (max-width:767px)  {
+    .row-no-padding .right {
+        padding-right: 15px !important;
+    }
+
+    .row-no-padding .left {
+        padding-left: 15px !important;
     }
 }
 @media (max-width:600px)  {

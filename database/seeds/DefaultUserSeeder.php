@@ -52,6 +52,10 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'training_create', 'display_name' => 'Training Create', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
             ['name' => 'training_edit', 'display_name' => 'Training Edit', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
             ['name' => 'training_delete', 'display_name' => 'Training Delete', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'training_show_to_clients', 'display_name' => 'Training Show to Clients', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'training_info_access', 'display_name' => 'Training Info Access', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'training_info_create', 'display_name' => 'Training Info Create', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'training_info_edit', 'display_name' => 'Training Info Edit', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
 
             ['name' => 'chat_access', 'display_name' => 'Chat Access', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_create', 'display_name' => 'Chat Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
@@ -86,6 +90,8 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'logs_access', 'display_name' => 'Log Access', 'group_name' => 'Logs', 'group_slug' => 'logs', 'guard_name' => 'admin'],
 
             ['name' => 'trash_access', 'display_name' => 'Trash Access', 'group_name' => 'Trashes', 'group_slug' => 'trashes', 'guard_name' => 'admin'],
+
+            ['name' => 'constant_update', 'display_name' => 'Constants Update', 'group_name' => 'Constants', 'group_slug' => 'constants', 'guard_name' => 'admin'],
 
             ['name' => 'roles_access', 'display_name' => 'Access', 'group_name' => 'Roles', 'group_slug' => 'roles', 'guard_name' => 'admin'],
             ['name' => 'roles_create', 'display_name' => 'Create', 'group_name' => 'Roles', 'group_slug' => 'roles', 'guard_name' => 'admin'],
