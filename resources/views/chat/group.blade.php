@@ -81,7 +81,7 @@
                                 @foreach ($chatRoomUsers as $chatRoomUser)
                                     <li>
                                         <a href="{{ route('chat.individual', $chatRoomUser->user_id) }}">
-                                            <img class="img-circle" src="{{ $chatRoomUser->user->profile_photo }}" width="32">
+                                            <img class="img-circle" src="{{ !empty($chatRoomUser->user->profile_photo) ? $chatRoomUser->user->profile_photo : asset('img/friends/fr-05.jpg') }}" width="32">
                                             {{ $chatRoomUser->user->fullName }}
                                         </a>
                                     </li>
