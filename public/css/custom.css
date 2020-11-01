@@ -1447,6 +1447,18 @@ table.full-inputs td input, table.full-inputs td textarea {
     cursor: pointer;
 }
 
+.room-desk .room-box h5 {
+    font-size: 18px;
+}
+
+.room-desk .room-box p {
+    font-size: 18px;
+}
+
+.chat-available-user {
+    font-size: 18px;
+}
+
 .chat-body::-webkit-scrollbar {
     width: 5px;
 }
