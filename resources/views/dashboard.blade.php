@@ -15,7 +15,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h1>{{ __('Welcome to your ultimate comeback challenge') }}</h1>
+                    <h1 id="header">{{ __('Welcome to your ultimate comeback challenge') }}</h1>
                 </div>
             </div>
         </section>
