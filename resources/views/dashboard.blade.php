@@ -233,6 +233,10 @@
                 <div class="col-lg-12 {{ ((!empty($logs) && !$logs->isEmpty())) ? 'ds' : '' }}">
                     @if (!empty($logs) && !$logs->isEmpty())
                         @foreach ($logs as $log)
+                            @if (empty($log->userCreatedBy))
+                                @continue
+                            @endif
+
                             <div class="desc">
                                 <div class="thumb">
                                     <a href="{{ route('logs.index', ['hash' => $log->id]) }}" target="__blank">
