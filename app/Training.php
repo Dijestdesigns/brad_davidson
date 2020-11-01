@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\RequiredIf;
+use App\ClientTraining;
+use Carbon\Carbon;
 
 class Training extends BaseModel
 {
@@ -51,5 +53,17 @@ class Training extends BaseModel
         }
 
         return $validator;
+    }
+
+    public function clientTraining($date)
+    {
+        $userId = auth()->user()->id;
+
+        return $this->hasOne('App\ClientTraining', 'training_id', 'id')->where('user_id', $userId)->whereDate('date', $date);
+    }
+
+    public function isDone($date)
+    {
+        return $this->clientTraining($date)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
     }
 }

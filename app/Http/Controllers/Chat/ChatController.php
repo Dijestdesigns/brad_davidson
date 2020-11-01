@@ -48,7 +48,13 @@ class ChatController extends \App\Http\Controllers\BaseController
             $i = $request->get('i');
 
             $chatRoomName  = ChatRoom::find((int)$i);
-            $chatRoomUsers = ChatRoomUser::where('chat_room_id', (int)$i)->get();
+            $chatRoomUsers = ChatRoomUser::where('chat_room_id', (int)$i);
+
+            if (!$user->isSuperAdmin()) {
+                $chatRoomUsers->where('user_id', $userId);
+            }
+
+            $chatRoomUsers = $chatRoomUsers->get();
 
             $chatUsers = User::select(User::getTableName() . '.*')
                               ->where(User::getTableName() . '.id', '!=', auth()->user()->id)

@@ -36,6 +36,7 @@ class DashboardController extends BaseController
         $userCount        = User::where('id', '!=', User::$superadminId)->count();
         $totalStockValues = Item::select(DB::raw('SUM(qty) as qty, SUM(`value`) as value'))->first();
         $now              = Carbon::now();
+        $currentUserRole  = !empty($user->getRoleNames()[0]) ? $user->getRoleNames()[0] : false;
 
         $totalStocks = $totalValues = 0;
         if (!empty($totalStockValues)) {
@@ -56,6 +57,6 @@ class DashboardController extends BaseController
             $trainings = ClientTraining::whereDate('date', $now)->where('user_id', $userId)->get();
         }
 
-        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements', 'trainings'));
+        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements', 'trainings', 'currentUserRole'));
     }
 }

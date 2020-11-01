@@ -24,6 +24,8 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
         $this->middleware(['permission:training_info_create'])->only(['clientInfoCreate']);
         $this->middleware(['permission:training_info_edit'])->only(['clientInfoUpdate']);
+
+        $this->middleware(['permission:training_show_to_clients'])->only(['clientIndex']);
     }
 
     public function index(Request $request)
@@ -169,7 +171,8 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $model  = new ClientTraining();
         $userId = auth()->user()->id;
 
-        if (!empty($data['wholeDayTrainings']) && !empty($data['client_training_info_id']) && is_numeric($data['client_training_info_id']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
+        // Old logic.
+        if (false && !empty($data['wholeDayTrainings']) && !empty($data['client_training_info_id']) && is_numeric($data['client_training_info_id']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
             $errorTrainingName = [];
             $isUpdate          = false;
             $trainingInfoId    = (int)$data['client_training_info_id'];
@@ -255,7 +258,87 @@ class TrainingController extends \App\Http\Controllers\BaseController
             }
         }
 
-        return redirect('/')->with('error', __("Not found!"));
+        if (!empty($data['wholeDayTrainings']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
+            $errorTrainingName = [];
+            $isUpdate          = false;
+            $currentDay        = (int)$data['current_day'];
+            $isError           = false;
+
+            $update = [];
+
+            $updateFunction = function($id, $isUpdateOldRecords = false, $find) use(&$update, $data, $model, $userId) {
+                if (empty($find)) {
+                    return false;
+                }
+
+                if (empty($data['training'][$id])) {
+                    return false;
+                }
+
+                $update[$id]['day']                     = !empty($data['day'][$id]) ? $data['day'][$id] : NULL;
+                $update[$id]['date']                    = !empty($data['date']) && strtotime($data['date']) > 0 ? $data['date'] : NULL;
+                $update[$id]['is_attended']             = empty($data['training'][$id]) ? $model::IS_NOT_ATTENDED : $model::IS_ATTENDED;
+                $update[$id]['training_id']             = $id;
+                $update[$id]['client_training_info_id'] = NULL;
+                $update[$id]['user_id']                 = $userId;
+                $update[$id]['browse_file']             = NULL;
+
+                if (!empty($data['browse_file'][$id]) && $data['browse_file'][$id] instanceof UploadedFile) {
+                    $update[$id]['browse_file'] = $data['browse_file'][$id];
+                }
+
+                if (empty($update[$id]['browse_file']) && $find->browse_file == Training::IS_BROWSE_FILE) {
+                    $errorTrainingName[] = $find->name;
+                }
+            };
+
+            foreach ($data['wholeDayTrainings'] as $id => $training) {
+                $find = Training::find($id);
+
+                $updateFunction($id, false, $find);
+
+                if (empty($update[$id])) {
+                    continue;
+                }
+
+                if (!$model::validators($update[$id], true)) {
+                    $isError = (!empty(session('error'))) ? session('error') : __("There has been an error!");
+                } else {
+                    if (!empty($update[$id]['browse_file'])) {
+                        $imageName = time() . '_' . $id . '_' . $find->user_id . '.' . $data['browse_file'][$id]->getClientOriginalExtension();
+                        $moveFiles = $data['browse_file'][$id]->storeAs($model::$storageFolderName . "/{$id}", $imageName, $model::$fileSystems);
+
+                        if ($moveFiles) {
+                            $update[$id]['browse_file'] = $imageName;
+                        }
+                    }
+                }
+            }
+
+            if (!$isError) {
+                foreach ($data['wholeDayTrainings'] as $id => $training) {
+                    if (empty($update[$id])) {
+                        continue;
+                    }
+
+                    $isUpdate = $model->insert($update[$id]);
+                }
+
+                if ($isUpdate) {
+                    $msg = NULL;
+
+                    if (!empty($errorTrainingName)) {
+                        $msg = " But image not uploaded for " . implode(',', $errorTrainingName) ." training.";
+                    }
+
+                    return redirect('training/client/index')->with('success', __("Training updated!" . $msg));
+                }
+            } else {
+                return redirect('training/client/index')->with('error', $isError);
+            }
+        }
+
+        return redirect('training/client/index')->with('error', __("Not found!"));
     }
 
     public function clientInfoCreate(int $userId, Request $request)
@@ -379,5 +462,15 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
         return view('training.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId'));
+    }
+
+    public function clientIndex()
+    {
+        $user      = auth()->user();
+        $now       = Carbon::now();
+        $userId    = $user->id;
+        $trainings = Training::all();
+
+        return view('training.clientIndex', compact('trainings', 'now'));
     }
 }

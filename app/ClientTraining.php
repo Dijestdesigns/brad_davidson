@@ -40,6 +40,17 @@ class ClientTraining extends BaseModel
             if (!empty($training)) {
                 if ((int)$data['day'] == (int)$training->day_from) {
                     $browseFile = ['required'];
+
+                    if (!empty($data['training_id']) && !empty($data['date']) && strtotime($data['date']) > 0) {
+                        $userId = auth()->user()->id;
+
+                        $check = self::where('training_id', (int)$data['training_id'])->where('user_id', $userId)->whereDate('date', $data['date'])->first();
+                        if (!empty($check)) {
+                            if (!empty($check->browse_file)) {
+                                $browseFile = ['nullable'];
+                            }
+                        }
+                    }
                 } elseif ((int)$data['day'] == (int)$training->day_to) {
                     $browseFile = ['required'];
                 }
@@ -58,7 +69,7 @@ class ClientTraining extends BaseModel
             'is_attended' => ['in:' . implode(",", array_keys(self::$isAttended))],
             'browse_file' => array_merge($browseFile, ['max:255'], $browseFileExcluded),
             'training_id' => ['required', 'integer', 'exists:' . Training::getTableName() . ',id'],
-            'client_training_info_id' => ['required', 'integer', 'exists:' . ClientTrainingInfo::getTableName() . ',id'],
+            'client_training_info_id' => ['nullable', 'integer', 'exists:' . ClientTrainingInfo::getTableName() . ',id'],
             'user_id'     => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
         ]);
 
@@ -80,7 +91,7 @@ class ClientTraining extends BaseModel
         }
 
         $storageFolderName = (str_ireplace("\\", "/", self::$storageFolderName));
-        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->id . '/' . $value);
+        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->training_id . '/' . $value);
     }
 
     public function training()

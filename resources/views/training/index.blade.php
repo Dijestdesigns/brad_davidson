@@ -169,10 +169,10 @@
             </div>
         </div>
 
-        <hr />
+        <!-- <hr /> -->
 
         @can('training_access')
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-md-12">
@@ -253,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         @endcan
     </section>
 

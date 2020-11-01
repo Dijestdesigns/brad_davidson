@@ -1,14 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Inventory summary') }}</h3>
+    @if ($currentUserRole == 'Normal Clients')
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <img src="{{ asset('img/icons/UCC-Logo-dark.png') }}" src="" height="120" width="200">
                 </div>
             </div>
-        </div>
+        </section>
+    @endif
+
+    @if ($currentUserRole == 'Normal Clients')
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1>{{ __('Welcome to your ultimate comeback challenge') }}</h1>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <section class="wrapper">
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <div class="border-head">
+                    <h3><i class="fa fa-angle-right"></i> {{ __('Dashboard') }}</h3>
+                </div>
+            </div>
+        </div> -->
 
         @if (session('success'))
             <div class="alert alert-success" role="alert">
@@ -22,48 +42,108 @@
             </div>
         @endif
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">
-                        <div class="gray-panel pn">
-                            <div class="gray-header">
-                                <h5><p>{{ __('Total Items') }}</p></h5>
+        @if ($currentUserRole != 'Normal Clients')
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2">
+                            <div class="gray-panel pn">
+                                <div class="gray-header">
+                                    <h5><p>{{ __('Total Items') }}</p></h5>
+                                </div>
+                                <p class="user"><i class="fa fa-object-group"></i>&nbsp; {{ $itemCount }}</p>
                             </div>
-                            <p class="user"><i class="fa fa-object-group"></i>&nbsp; {{ $itemCount }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="yellow-panel pn">
+                                <div class="yellow-header">
+                                    <h5><p>{{ __('Total Clients') }}</p></h5>
+                                </div>
+                                <p class="user"><i class="fa fa-users"></i>&nbsp;{{ $userCount }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="green-panel pn">
+                                <div class="green-header">
+                                    <h5><p>{{ __('Total Stock') }}</p></h5>
+                                </div>
+                                <p class="user"><i class="fa fa-database"></i>&nbsp;{{ $totalStocks }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="red-panel pn">
+                                <div class="red-header">
+                                    <h5><p>{{ __('Total Values') }}</p></h5>
+                                </div>
+                                <p class="user"><i class="fa fa-money"></i>&nbsp;${{ $totalValues }}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="yellow-panel pn">
-                            <div class="yellow-header">
-                                <h5><p>{{ __('Total Clients') }}</p></h5>
+                    <!-- /row -->
+                </div>
+                <!-- /col-lg-3 -->
+            </div>
+        @endif
+        <!-- /row -->
+
+        @if ($currentUserRole == 'Normal Clients')
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-2 mb"></div>
+                        @can('chat_access')
+                            <div class="col-lg-2 col-md-2 col-sm-2 mb">
+                                <div class="product-panel-2 h250">
+                                    <img src="{{ asset('img/icons/Message.I01.2k.png') }}" width="180" height="180" alt="">
+                                    <div>&nbsp;</div>
+                                    <a class="btn btn-small btn-theme04" href="{{ route('chat.index') }}">
+                                        {{ __('Chat Now') }}
+                                    </a>
+                                </div>
                             </div>
-                            <p class="user"><i class="fa fa-users"></i>&nbsp;{{ $userCount }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="green-panel pn">
-                            <div class="green-header">
-                                <h5><p>{{ __('Total Stock') }}</p></h5>
+                        @endcan
+
+                        @can('calendar_access')
+                            <div class="col-lg-2 col-md-2 col-sm-2 mb">
+                                <div class="product-panel-2 h250">
+                                    <img src="{{ asset('img/icons/Card_calendar.png') }}" width="180" height="180" alt="">
+                                    <div>&nbsp;</div>
+                                    <a class="btn btn-small btn-theme04" href="{{ route('calendar.index') }}">
+                                        {{ __('Calendar') }}
+                                    </a>
+                                </div>
                             </div>
-                            <p class="user"><i class="fa fa-database"></i>&nbsp;{{ $totalStocks }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="red-panel pn">
-                            <div class="red-header">
-                                <h5><p>{{ __('Total Values') }}</p></h5>
+                        @endcan
+
+                        @can('training_show_to_clients')
+                            <div class="col-lg-2 col-md-2 col-sm-2 mb">
+                                <div class="product-panel-2 h250">
+                                    <img src="{{ asset('img/icons/Dumbbells_blue.png') }}" width="180" height="180" alt="">
+                                    <div>&nbsp;</div>
+                                    <a class="btn btn-small btn-theme04" href="{{ route('training.client.index') }}">
+                                        {{ __('Training') }}
+                                    </a>
+                                </div>
                             </div>
-                            <p class="user"><i class="fa fa-money"></i>&nbsp;${{ $totalValues }}</p>
-                        </div>
+                        @endcan
+
+                        @can('note_access')
+                            <div class="col-lg-2 col-md-2 col-sm-2 mb">
+                                <div class="product-panel-2 h250">
+                                    <img src="{{ asset('img/icons/Sticky_Notes_Green_.png') }}" width="180" height="180" alt="">
+                                    <div>&nbsp;</div>
+                                    <a class="btn btn-small btn-theme04" href="{{ route('notes.index') }}">
+                                        {{ __('Notes') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endcan
+                        <div class="col-lg-1 col-md-1 col-sm-1 mb"></div>
                     </div>
                 </div>
-                <!-- /row -->
             </div>
-            <!-- /col-lg-3 -->
-        </div>
-        <!-- /row -->
+        @endif
     </section>
 
     <section class="wrapper">
@@ -187,7 +267,7 @@
             </div>
         @endcan
 
-        @if (!auth()->user()->isSuperAdmin() && auth()->user()->can('training_show_to_clients') && !empty($trainings) && !$trainings->isEmpty())
+        @if (false && !auth()->user()->isSuperAdmin() && auth()->user()->can('training_show_to_clients') && !empty($trainings) && !$trainings->isEmpty())
             @section('styles')
                 <style type="text/css">
                     @foreach ($trainings as $training)

@@ -41,6 +41,7 @@ Route::middleware($middlewares)->group(function() {
         Route::post('training/client/{userId}/info/create', 'TrainingController@clientInfoCreate')->name('training.client.info.create');
         Route::post('training/client/{userId}/info/update', 'TrainingController@clientInfoUpdate')->name('training.client.info.update');
         Route::get('training/client/{userId}/history', 'TrainingController@clientHistory')->name('training.client.history');
+        Route::get('training/client/index', 'TrainingController@clientIndex')->name('training.client.index');
         Route::resources(['training' => 'TrainingController']);
     });
 

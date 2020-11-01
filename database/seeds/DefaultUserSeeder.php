@@ -73,10 +73,10 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'calendar_edit', 'display_name' => 'Calendar Edit', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
             ['name' => 'calendar_delete', 'display_name' => 'Calendar Delete', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
 
-            ['name' => 'diary_access', 'display_name' => 'Diary Access', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_create', 'display_name' => 'Diary Create', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_edit', 'display_name' => 'Diary Edit', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_delete', 'display_name' => 'Diary Delete', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
+            ['name' => 'note_access', 'display_name' => 'Note Access', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_create', 'display_name' => 'Note Create', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_edit', 'display_name' => 'Note Edit', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_delete', 'display_name' => 'Note Delete', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
 
             ['name' => 'supplements_access', 'display_name' => 'Supplements Access', 'group_name' => 'Supplements', 'group_slug' => 'supplements', 'guard_name' => 'admin'],
             ['name' => 'supplements_create', 'display_name' => 'Supplements Create', 'group_name' => 'Supplements', 'group_slug' => 'supplements', 'guard_name' => 'admin'],
