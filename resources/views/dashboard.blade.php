@@ -1,25 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    @if ($currentUserRole == 'Normal Clients')
-        <section class="wrapper">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <img src="{{ asset('img/icons/UCC-Logo-dark.png') }}" src="" height="120" width="200">
-                </div>
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <img src="{{ asset('img/icons/UCC-Logo-dark.png') }}" src="" height="120" width="200">
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 
-    @if ($currentUserRole == 'Normal Clients')
-        <section class="wrapper">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h1 id="header">{{ __('Welcome to your ultimate comeback challenge') }}</h1>
-                </div>
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 id="header">{{ __('Welcome to your ultimate comeback challenge') }}</h1>
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 
     <section class="wrapper">
         <!-- <div class="row">
