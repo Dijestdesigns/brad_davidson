@@ -23,6 +23,10 @@ input, button {
     font-family: 'Ambient';
 }
 
+.fc-center h2 {
+    font-family: 'Ambient';
+}
+
 .footer-godaddy {
     bottom: 0;
     right: 0;
