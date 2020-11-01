@@ -18,6 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
     <script difer src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
+    <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=RPID2xBpzvHJDn2eUdkP7XNumDKdZtZm8hKwsPaInmywr8ABw62Qw92cxee8" defer></script>
 
     @stack('scripts')
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
@@ -514,6 +515,12 @@
             </section>
         </main>
     </div>
+
+    <footer>
+        <div class="footer-godaddy text-right">
+            <span id="siteseal"></span>
+        </div>
+    </footer>
 </body>
         <script type="text/javascript">
             @stack('custom_scripts')

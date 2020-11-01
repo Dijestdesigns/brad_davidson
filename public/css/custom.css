@@ -19,6 +19,12 @@
     font-family: 'Ambient';
 }
 
+.footer-godaddy {
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
 @font-face {
     font-family: 'FuturaBook';
     src: url('../fonts/Futura Book/FuturaPTBook.otf') format('opentype');
