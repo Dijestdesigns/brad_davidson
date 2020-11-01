@@ -19,6 +19,10 @@
     font-family: 'Ambient';
 }
 
+input, button {
+    font-family: 'Ambient';
+}
+
 .footer-godaddy {
     bottom: 0;
     right: 0;
