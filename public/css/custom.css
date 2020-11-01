@@ -1459,6 +1459,10 @@ table.full-inputs td input, table.full-inputs td textarea {
     font-size: 18px;
 }
 
+.fs18 {
+    font-size: 18px;
+}
+
 .chat-body::-webkit-scrollbar {
     width: 5px;
 }

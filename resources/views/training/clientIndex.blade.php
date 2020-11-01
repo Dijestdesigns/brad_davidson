@@ -57,16 +57,16 @@
                                                                         @endif
 
                                                                         @if ($training->browse_file)
-                                                                            <div class="pull-right">
-                                                                                <label for="browse-file" class="custom-file-upload">
+                                                                            <div class="pull-right fs18">
+                                                                                <label for="browse-file-{{ $training->id }}-1-{{ $day }}" class="custom-file-upload">
                                                                                     <i class="fa fa-cloud-upload"></i> {{ __('Browse File') }}
                                                                                 </label>
 
-                                                                                <input type="file" class="form-control browse-file" id="browse-file" name="browse_file[{{ $training->id }}]" accept="image/*">
+                                                                                <input type="file" class="form-control browse-file" id="browse-file-{{ $training->id }}-1-{{ $day }}" name="browse_file[{{ $training->id }}]" accept="image/*">
                                                                             </div>
                                                                         @endif
                                                                         @if (!empty($training->clientTraining($now)->first()->browse_file))
-                                                                            <div class="pull-right">
+                                                                            <div class="pull-right fs18">
                                                                                 <a href="{{ $training->clientTraining($now)->first()->browse_file }}" target="__blank">
                                                                                     <label style="cursor: pointer;">
                                                                                         {{ __('View') }}&nbsp;&nbsp;
