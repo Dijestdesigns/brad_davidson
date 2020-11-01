@@ -243,7 +243,7 @@
                                 <div class="user-head">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3>{{ __('Your Coach') }}</h3>
+                                            <h3 id="header">{{ __('Your Coach') }}</h3>
                                         </div>
                                     </div>
                                 </div>
