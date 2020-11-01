@@ -20,7 +20,7 @@
             <div class="col-lg-12">
                 <div class="chat-room mt">
                     <aside class="mid-side">
-                        <div class="chat-room-head">
+                        <div class="chat-room-head" id="header">
                             <div class="row">
                             <div class="col-md-5 col-xs-12">
                                 <h3>{{ !empty($user) ? $user->fullname . ' ' : '' }}</h3>

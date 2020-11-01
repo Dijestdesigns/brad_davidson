@@ -20,7 +20,7 @@
             <div class="col-lg-12">
                 <div class="chat-room mt">
                     <aside class="mid-side">
-                        <div class="chat-room-head">
+                        <div class="chat-room-head" id="header">
                             <div class="col-md-5 col-xs-12">
                                 <h3>{{ !empty($chatRoomName) ? $chatRoomName->name . ' ' : '' }} {{ __('Room') }}</h3>
                             </div>
@@ -58,7 +58,7 @@
                         <div class="user-head">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <h3>{{ !empty($chatRoomName) ? $chatRoomName->name . ' ' : '' }}{{ __('Users') }}</h3>
+                                    <h3 id="header">{{ !empty($chatRoomName) ? $chatRoomName->name . ' ' : '' }}{{ __('Users') }}</h3>
                                 </div>
                                 <div class="col-md-4 pull-right text-right">
                                     <div class="create-lobby-user-model d-none">
