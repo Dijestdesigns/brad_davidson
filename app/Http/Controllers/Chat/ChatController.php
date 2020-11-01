@@ -33,7 +33,12 @@ class ChatController extends \App\Http\Controllers\BaseController
 
         $user   = auth()->user();
         $userId = $user->id;
-        $users  = User::where('id', '!=', $userId)->get();
+
+        if (!$user->isSuperAdmin()) {
+            $users = User::where('id', $userId)->get();
+        } else {
+            $users = User::where('id', '!=', $userId)->get();
+        }
 
         if ($user::getTableName() == 'users' && $user->isSuperAdmin() && $user->hasRole($user::$roleAdmin)) {
             $chatRooms = new ChatRoom();
