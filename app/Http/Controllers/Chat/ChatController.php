@@ -35,7 +35,7 @@ class ChatController extends \App\Http\Controllers\BaseController
         $userId = $user->id;
 
         if (!$user->isSuperAdmin()) {
-            $users = User::where('id', $userId)->get();
+            $users = User::where('id', User::$superadminId)->get();
         } else {
             $users = User::where('id', '!=', $userId)->get();
         }

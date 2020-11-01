@@ -1566,6 +1566,10 @@ table.full-inputs .form-control[disabled] {
   border-top: none;
 }
 
+.room-box p {
+    font-size: 15px;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;
