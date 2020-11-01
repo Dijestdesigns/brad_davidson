@@ -67,7 +67,7 @@ class ClientTraining extends BaseModel
             'day'         => ['required', 'integer'],
             'date'        => ['required', 'date_format:Y-m-d'],
             'is_attended' => ['in:' . implode(",", array_keys(self::$isAttended))],
-            'browse_file' => array_merge($browseFile, ['max:255'], $browseFileExcluded),
+            'browse_file' => array_merge($browseFile, $browseFileExcluded),
             'training_id' => ['required', 'integer', 'exists:' . Training::getTableName() . ',id'],
             'client_training_info_id' => ['nullable', 'integer', 'exists:' . ClientTrainingInfo::getTableName() . ',id'],
             'user_id'     => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
