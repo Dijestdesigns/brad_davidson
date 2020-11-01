@@ -1588,6 +1588,10 @@ table.full-inputs .form-control[disabled] {
     font-size: 15px;
 }
 
+.task-title-sp {
+    font-size: 15px;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;
