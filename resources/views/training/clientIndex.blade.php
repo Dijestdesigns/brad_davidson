@@ -38,7 +38,7 @@
                                 <div class="col-md-12">
                                     <div class="tab">
                                         @for ($day = 1; $day <= 7; $day++)
-                                            <button class="tablinks {{ $day == 1 ? 'active': '' }}" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
+                                            <button class="tablinks {{ $day == 1 ? 'active': '' }}" id="header" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
                                         @endfor
                                     </div>
                                     @for ($day = 1; $day <= 7; $day++)

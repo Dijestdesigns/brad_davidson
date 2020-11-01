@@ -15,6 +15,10 @@
 	font-family: 'Ambient';
 }
 
+#header {
+    font-family: 'Ambient';
+}
+
 @font-face {
     font-family: 'FuturaBook';
     src: url('../fonts/Futura Book/FuturaPTBook.otf') format('opentype');
