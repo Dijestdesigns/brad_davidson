@@ -478,7 +478,7 @@
                         @endcan
                         @can('roles_access')
                             <li>
-                                <a href="{{ route('roles*') }}" class="{{ (request()->is('roles*') ? 'mm-active' : '') }}">
+                                <a href="{{ route('roles.index') }}" class="{{ (request()->is('roles*') ? 'mm-active' : '') }}">
                                     <!-- <i class="fa fa-tasks"></i>  -->
                                     <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8 c1.57,0,3.04,0.46,4.28,1.25l1.45-1.45C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12s4.48,10,10,10c1.73,0,3.36-0.44,4.78-1.22 l-1.5-1.5C14.28,19.74,13.17,20,12,20z M19,15h-3v2h3v3h2v-3h3v-2h-3v-3h-2V15z"/></svg>
                                     {{__('Roles')}}
@@ -487,7 +487,7 @@
                         @endcan
                         @can('permissions_access')
                             <li>
-                                <a href="{{ route('permissions*') }}" class="{{ (request()->is('permissions*') ? 'mm-active' : '') }}">
+                                <a href="{{ route('permissions.index') }}" class="{{ (request()->is('permissions*') ? 'mm-active' : '') }}">
                                     <!-- <i class="fa fa-lock"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                                     {{__('Permissions')}}
