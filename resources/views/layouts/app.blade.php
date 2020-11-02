@@ -343,7 +343,7 @@
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered">
+                        <p class="centered profile-pic" style="border: unset;">
                             <a href="{{ route('clients.myprofile') }}">
                                 @if(!empty(auth()->user()->profile_photo))
                                     <img src="{{ auth()->user()->profile_photo }}" class="img-circle" width="80">
