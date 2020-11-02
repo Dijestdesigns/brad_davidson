@@ -120,7 +120,7 @@ class User extends Authenticatable
         $validator = Validator::make($data, [
             'name'             => ['required', 'string', 'max:255'],
             'surname'          => ['nullable', 'string', 'max:255'],
-            'profile_photo'    => ['nullable', 'mimes:' . implode(",", self::$allowedExtensions), 'max:255'],
+            'profile_photo'    => ['nullable', 'mimes:' . implode(",", self::$allowedExtensions)],
             'shipping_address' => ['nullable'],
             'gender'           => ['in:' . implode(",", array_keys(self::$genders))],
             'age'              => ['nullable', 'integer'],

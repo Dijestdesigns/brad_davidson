@@ -237,7 +237,7 @@
                                 <div class="user-head">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 id="header">{{ __('Your Coach') }}</h3>
+                                            <h3 id="header">{{ auth()->user()->isSuperAdmin() ? __('Clients') : __('Your Coach') }}</h3>
                                         </div>
                                     </div>
                                 </div>
