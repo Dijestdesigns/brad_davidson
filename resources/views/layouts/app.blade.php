@@ -343,12 +343,12 @@
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered profile-pic" style="border: unset;">
+                        <p class="centered profile-pic">
                             <a href="{{ route('clients.myprofile') }}">
                                 @if(!empty(auth()->user()->profile_photo))
-                                    <img src="{{ auth()->user()->profile_photo }}" class="img-circle" width="80">
+                                    <img src="{{ auth()->user()->profile_photo }}" class="img-circle" width="80" style="border: unset;">
                                 @else
-                                    <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80">
+                                    <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80" style="border: unset;">
                                 @endif
                             </a>
                         </p>
