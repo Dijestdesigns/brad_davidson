@@ -32,18 +32,14 @@
                                 <div class="col-md-12">
                                     <div class="tab">
                                         @for ($day = 1; $day <= 7; $day++)
-                                            <button class="tablinks {{ strtotime($now1->format('Y-m-d')) == strtotime($now->format('Y-m-d')) ? 'active': '' }}" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
-
-                                            @php
-                                                $now1->addDays(1);
-                                            @endphp
+                                            <button class="tablinks {{ $day == $currentWeekDay ? 'active': '' }}" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
                                         @endfor
                                     </div>
                                     @for ($day = 1; $day <= 7; $day++)
                                         <form method="POST" class="form-group" enctype="multipart/form-data" action="{{ route('training.client.store') }}">
                                             @csrf
 
-                                            <div class="tasks-widget tasks-1-{{ $day }} {{ strtotime($now2->format('Y-m-d')) == strtotime($now->format('Y-m-d')) ? '': 'disp-none' }}">
+                                            <div class="tasks-widget tasks-1-{{ $day }} {{ $day == $currentWeekDay ? '': 'disp-none' }}">
                                                 <div class="panel-body">
                                                     <div class="task-content">
                                                         <ul class="task-list">
@@ -95,7 +91,6 @@
                                         </form>
                                         @php
                                             $weekStartDate->addDays(1);
-                                            $now2->addDays(1);
                                         @endphp
                                     @endfor
                                 </div>

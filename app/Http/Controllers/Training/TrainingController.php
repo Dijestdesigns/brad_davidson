@@ -466,14 +466,13 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
     public function clientIndex()
     {
-        $user          = auth()->user();
-        $now           = Carbon::now();
-        $now1          = Carbon::now();
-        $now2          = Carbon::now();
-        $weekStartDate = new Carbon('2020-11-02');
-        $userId        = $user->id;
-        $trainings     = Training::all();
+        $user           = auth()->user();
+        $now            = Carbon::now();
+        $weekStartDate  = new Carbon('2020-11-02');
+        $currentWeekDay = $weekStartDate->dayOfWeek + 1;
+        $userId         = $user->id;
+        $trainings      = Training::all();
 
-        return view('training.clientIndex', compact('trainings', 'now', 'now1', 'now2', 'weekStartDate'));
+        return view('training.clientIndex', compact('trainings', 'now', 'weekStartDate', 'currentWeekDay'));
     }
 }
