@@ -182,6 +182,12 @@ ul.sidebar-menu li a i {
     background: #555;
 }
 
+.chat-available-user {
+    height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .page-aside .app-notebook-list .list-group li {
     cursor: pointer;
 }
