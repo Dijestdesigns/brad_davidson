@@ -467,7 +467,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
     public function clientIndex()
     {
         $user      = auth()->user();
-        $now       = Carbon::now();
+        $now       = new Carbon('2020-11-02');
         $userId    = $user->id;
         $trainings = Training::all();
 

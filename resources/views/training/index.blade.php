@@ -166,7 +166,7 @@
         <!-- <hr /> -->
 
         @can('training_access')
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-md-12">
@@ -218,8 +218,8 @@
                                                                 <a href="{{ route('training.client.history', $client->id) }}" title="{{ __('History') }}"><i class="fa fa-eye fa-2x"></i></a>
 
                                                                 @can('training_info_create')
-                                                                    &nbsp;
-                                                                    <a href="javascript:void(0);" class="createTrainings" title="{{ __('Create Trainings') }}" data-html="trainings-create-model-{{ $client->id }}" data-id="{{ $client->id }}"><i class="fa fa-plus fa-2x"></i></a>
+                                                                    <!-- &nbsp;
+                                                                    <a href="javascript:void(0);" class="createTrainings" title="{{ __('Create Trainings') }}" data-html="trainings-create-model-{{ $client->id }}" data-id="{{ $client->id }}"><i class="fa fa-plus fa-2x"></i></a> -->
                                                                 @endcan
                                                             </td>
                                                         @endcan
@@ -247,7 +247,7 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
         @endcan
     </section>
 
