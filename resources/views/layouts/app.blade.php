@@ -41,7 +41,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Ruda:400,700,900" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Ruda:400,700,900" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
