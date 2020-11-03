@@ -1608,6 +1608,10 @@ table.full-inputs .form-control[disabled] {
     font-size: 18px;
 }
 
+.img-circle {
+    height: 32px;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;
