@@ -32,25 +32,29 @@
                                 <div class="col-md-12">
                                     <div class="tab">
                                         @for ($day = 1; $day <= 7; $day++)
-                                            <button class="tablinks {{ $day == 1 ? 'active': '' }}" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
+                                            <button class="tablinks {{ strtotime($now1->format('Y-m-d')) == strtotime($now->format('Y-m-d')) ? 'active': '' }}" data-id="tasks" data-week="1" data-day="{{ $day }}">{{ __('Day') }} {{ $day }}</button>
+
+                                            @php
+                                                $now1->addDays(1);
+                                            @endphp
                                         @endfor
                                     </div>
                                     @for ($day = 1; $day <= 7; $day++)
                                         <form method="POST" class="form-group" enctype="multipart/form-data" action="{{ route('training.client.store') }}">
                                             @csrf
 
-                                            <div class="tasks-widget tasks-1-{{ $day }} {{ $day == 1 ? '': 'disp-none' }}">
+                                            <div class="tasks-widget tasks-1-{{ $day }} {{ strtotime($now2->format('Y-m-d')) == strtotime($now->format('Y-m-d')) ? '': 'disp-none' }}">
                                                 <div class="panel-body">
                                                     <div class="task-content">
                                                         <ul class="task-list">
                                                             @foreach ($trainings as $training)
                                                                 <li>
                                                                     <div class="task-checkbox">
-                                                                        <input id="op{{ $training->id }}" name='training[{{ $training->id }}]' type='checkbox' value="{{ $training->id }}" {{ ($training->isDone($now)) ? 'checked="true"' : '' }} />
+                                                                        <input id="op{{ $training->id }}" name='training[{{ $training->id }}]' type='checkbox' value="{{ $training->id }}" {{ ($training->isDone($weekStartDate)) ? 'checked="true"' : '' }} />
                                                                     </div>
                                                                     <div class="task-title">
                                                                         <span class="task-title-sp">{{ $training->name }}</span>
-                                                                        @if ($training->isDone($now))
+                                                                        @if ($training->isDone($weekStartDate))
                                                                             <span class="badge bg-theme">{{ __('Done') }}</span>
                                                                         @else
                                                                             <span class="badge bg-important">{{ __('Pending') }}</span>
@@ -65,9 +69,9 @@
                                                                                 <input type="file" class="form-control browse-file" id="browse-file-{{ $training->id }}-1-{{ $day }}" name="browse_file[{{ $training->id }}]" accept="image/*">
                                                                             </div>
                                                                         @endif
-                                                                        @if (!empty($training->clientTraining($now)->first()->browse_file))
+                                                                        @if (!empty($training->clientTraining($weekStartDate)->first()->browse_file))
                                                                             <div class="pull-right fs18">
-                                                                                <a href="{{ $training->clientTraining($now)->first()->browse_file }}" target="__blank">
+                                                                                <a href="{{ $training->clientTraining($weekStartDate)->first()->browse_file }}" target="__blank">
                                                                                     <label style="cursor: pointer;">
                                                                                         {{ __('View') }}&nbsp;&nbsp;
                                                                                     </label>
@@ -83,14 +87,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: -15px;margin-bottom: 15px;">
-                                                    <input type="hidden" name="date" value="{{ $now->format('Y-m-d') }}">
+                                                    <input type="hidden" name="date" value="{{ $weekStartDate->format('Y-m-d') }}">
                                                     <input type="hidden" name="current_day" value="{{ $day }}">
                                                     <input type="submit" class="btn btn-success" value="{{ __('Submit') }}" id="submit" />
                                                 </div>
                                             </div>
                                         </form>
                                         @php
-                                            $now->addDays(1);
+                                            $weekStartDate->addDays(1);
+                                            $now2->addDays(1);
                                         @endphp
                                     @endfor
                                 </div>
