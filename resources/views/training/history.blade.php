@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="content-panel">
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-8">
                                     <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Trainings') }}</h4>
                                 </div>
@@ -57,7 +57,7 @@
                                         {{__('Showing')}} {{ $records->firstItem() }} - {{ $records->lastItem() }} / {{ $records->total() }} ({{__('page')}} {{ $records->currentPage() }} )&nbsp;
                                     </h5>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <br />
                             <div class="row">
@@ -74,85 +74,79 @@
                                 </div>
                             </div>
 
-                            @if (!empty($records) && !$records->isEmpty())
-                                @foreach ($records as $index => $record)
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel {{ strtotime($now->format('Y-m-d')) > strtotime($record->finished_at) ? ($record->is_done == $record::IS_DONE) ? 'panel-success' : 'panel-danger' : 'panel-primary'}} m10">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title">{{ date('Y-m-d', strtotime($record->started_at)) . ' To ' . date('Y-m-d', strtotime($record->finished_at)) }}</h3>
-                                                    <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
-                                                </div>
-                                                <div class="panel-body disp-none">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-stripped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>{{ __('Day') }}</th>
-                                                                    <th>{{ __('Date') }}</th>
-                                                                    <th>{{ __('Training Name') }}</th>
-                                                                    <th>{{ __('Image') }}</th>
-                                                                    <th>{{ __('Attended') }}</th>
-                                                                </tr>
-                                                            </thead>
+                            @for ($day = 1; $day <= 7; $day++)
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-primary m10">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Day {{ $day }}</h3>
+                                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                                            </div>
+                                            <div class="panel-body disp-none">
+                                                <div class="table-responsive">
+                                                    <table class="table table-stripped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{ __('Date') }}</th>
+                                                                <th>{{ __('Training Name') }}</th>
+                                                                <th>{{ __('Image') }}</th>
+                                                                <th>{{ __('Attended') }}</th>
+                                                            </tr>
+                                                        </thead>
 
-                                                            <tbody>
-                                                                @php
-                                                                    $clientTrainings = $record->clientTrainings;
-                                                                @endphp
+                                                        <tbody>
+                                                            @if (!empty($trainings) && !$trainings->isEmpty())
+                                                                @foreach ($trainings as $index => $training)
+                                                                    @php
+                                                                        $clientTraining = $training->clientTraining($weekStartDate, $userId)->first();
+                                                                    @endphp
 
-                                                                @if (!empty($clientTrainings))
-                                                                    @foreach ($clientTrainings as $clientTraining)
-                                                                        <tr>
-                                                                            <td>
-                                                                                {{ $clientTraining->day }}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{ date('Y-m-d', strtotime($clientTraining->date)) }}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{ $clientTraining->training->name }}
-                                                                            </td>
-                                                                            <td>
-                                                                                @if (!empty($clientTraining->browse_file))
-                                                                                    <a href="{{ $clientTraining->browse_file }}" target="__blank">
-                                                                                        <img src="{{ $clientTraining->browse_file }}" height="50" width="50" />
-                                                                                    </a>
-                                                                                @else
-                                                                                    {{ __('-') }}
-                                                                                @endif
-                                                                            </td>
-                                                                            <td>
-                                                                                <span class="badge {{ $clientTraining->is_attended == $clientTraining::IS_ATTENDED ? 'bg-info' : 'bg-important' }}">
-                                                                                    <i class="fa {{ $clientTraining->is_attended == $clientTraining::IS_ATTENDED ? 'fa-check-circle' : 'fa-close' }}"></i>
-                                                                                </span>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                @else
                                                                     <tr>
-                                                                        <td colspan="5" class="text-center">
-                                                                            <mark>{{ __('No record found.') }}</mark>
+                                                                        <td>
+                                                                            {{ $weekStartDate1->format('Y-m-d') }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ $training->name }}
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (!empty($clientTraining->browse_file))
+                                                                                <a href="{{ $clientTraining->browse_file }}" target="__blank">
+                                                                                    <img src="{{ $clientTraining->browse_file }}" height="50" width="50" />
+                                                                                </a>
+                                                                            @else
+                                                                                {{ __('-') }}
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="badge {{ $training->isDone($weekStartDate, $userId) ? 'bg-info' : 'bg-important' }}">
+                                                                                <i class="fa {{ $training->isDone($weekStartDate, $userId) ? 'fa-check-circle' : 'fa-close' }}"></i>
+                                                                            </span>
                                                                         </td>
                                                                     </tr>
-                                                                @endif
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                                    @php
+                                                                        $weekStartDate1->addDays(1);
+                                                                    @endphp
+                                                                @endforeach
+                                                            @else
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-center">
+                                                                        <label>
+                                                                            <mark>{{ __('No record found.') }}</mark>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                            @else
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <label>
-                                            <mark>{{ __('No record found.') }}</mark>
-                                        </label>
-                                    </div>
                                 </div>
-                            @endif
+                                @php
+                                    $weekStartDate->addDays(1);
+                                @endphp
+                            @endfor
 
                             <div class="row">
                                 <div class="col-md-12">

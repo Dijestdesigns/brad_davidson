@@ -55,15 +55,17 @@ class Training extends BaseModel
         return $validator;
     }
 
-    public function clientTraining($date)
+    public function clientTraining($date, $userId = null)
     {
-        $userId = auth()->user()->id;
+        if (empty($userId)) {
+            $userId = auth()->user()->id;
+        }
 
-        return $this->hasOne('App\ClientTraining', 'training_id', 'id')->where('user_id', $userId)->whereDate('date', $date);
+        return $this->hasOne('App\ClientTraining', 'training_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)));
     }
 
-    public function isDone($date)
+    public function isDone($date, $userId = null)
     {
-        return $this->clientTraining($date)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
+        return $this->clientTraining($date, $userId)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
     }
 }

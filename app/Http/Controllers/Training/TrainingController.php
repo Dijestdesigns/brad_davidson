@@ -423,11 +423,14 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
     public function clientHistory(int $userId, Request $request)
     {
-        $model          = new ClientTrainingInfo();
+        $model          = new ClientTraining();
         $isFiltered     = false;
         $modelQuery     = $model::query();
         $requestClonned = clone $request;
         $now            = Carbon::now();
+        $weekStartDate  = new Carbon('2020-11-02');
+        $weekStartDate1 = new Carbon('2020-11-02');
+        $trainings      = Training::all();
 
         $cleanup = $requestClonned->except(['page']);
         $requestClonned->query = new \Symfony\Component\HttpFoundation\ParameterBag($cleanup);
@@ -461,7 +464,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('training.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId'));
+        return view('training.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'trainings', 'weekStartDate', 'userId', 'weekStartDate1'));
     }
 
     public function clientIndex()
