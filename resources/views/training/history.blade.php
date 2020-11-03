@@ -148,7 +148,7 @@
                                 @endphp
                             @endfor
 
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="float-left ml-10">
                                         @if(!empty($request))
@@ -158,7 +158,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
