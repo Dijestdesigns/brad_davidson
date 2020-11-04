@@ -44,13 +44,14 @@ class ClientsController extends \App\Http\Controllers\BaseController
             $isFiltered = (!empty(array_filter($requestClonned->all())));
         }
 
-        if ($isFiltered || $request->get('c') == "0") {
+        if ($isFiltered || $request->get('c') === "0") {
             if ($request->get('s', false)) {
                 $s = $request->get('s');
 
                 $modelQuery->where(function($query) use($s, $model) {
                     $query->where($model::getTableName() . '.name', 'LIKE', "%$s%")
-                          ->orWhere($model::getTableName() . '.name','LIKE', "%$s%");
+                          ->orWhere($model::getTableName() . '.surname','LIKE', "%$s%")
+                          ->orWhereRaw('CONCAT(' . $model::getTableName() . '.name, " ", ' . $model::getTableName(). '.surname) LIKE "%' . $s . '%"');
                 });
             }
 
@@ -63,7 +64,7 @@ class ClientsController extends \App\Http\Controllers\BaseController
                 });
             }
 
-            if ($request->get('c', false) || $request->get('c') == 0) {
+            if ($request->get('c', false) || $request->get('c') === 0) {
                 $c = $request->get('c');
 
                 $modelQuery->where('category', $c);
