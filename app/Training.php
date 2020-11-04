@@ -72,6 +72,6 @@ class Training extends BaseModel
 
     public function isDone($date, $userId = null, $day = null)
     {
-        return $this->clientTraining($date, $userId)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
+        return $this->clientTraining($date, $userId, $day)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
     }
 }
