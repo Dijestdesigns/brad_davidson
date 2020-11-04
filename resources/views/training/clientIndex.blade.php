@@ -46,11 +46,11 @@
                                                             @foreach ($trainings as $training)
                                                                 <li>
                                                                     <div class="task-checkbox">
-                                                                        <input id="op{{ $training->id }}" name='training[{{ $training->id }}]' type='checkbox' value="{{ $training->id }}" {{ ($training->isDone($weekStartDate)) ? 'checked="true"' : '' }} />
+                                                                        <input id="op{{ $training->id }}" name='training[{{ $training->id }}]' type='checkbox' value="{{ $training->id }}" {{ ($training->isDone($weekStartDate, false, $day)) ? 'checked="true"' : '' }} />
                                                                     </div>
                                                                     <div class="task-title">
                                                                         <span class="task-title-sp">{{ $training->name }}</span>
-                                                                        @if ($training->isDone($weekStartDate))
+                                                                        @if ($training->isDone($weekStartDate, false, $day))
                                                                             <span class="badge bg-theme">{{ __('Done') }}</span>
                                                                         @else
                                                                             <span class="badge bg-important">{{ __('Pending') }}</span>
@@ -65,9 +65,9 @@
                                                                                 <input type="file" class="form-control browse-file" id="browse-file-{{ $training->id }}-1-{{ $day }}" name="browse_file[{{ $training->id }}]" accept="image/*">
                                                                             </div>
                                                                         @endif
-                                                                        @if (!empty($training->clientTraining($weekStartDate)->first()->browse_file))
+                                                                        @if (!empty($training->clientTraining($weekStartDate, false, $day)->first()->browse_file))
                                                                             <div class="pull-right fs18">
-                                                                                <a href="{{ $training->clientTraining($weekStartDate)->first()->browse_file }}" target="__blank">
+                                                                                <a href="{{ $training->clientTraining($weekStartDate, false, $day)->first()->browse_file }}" target="__blank">
                                                                                     <label style="cursor: pointer;">
                                                                                         {{ __('View') }}&nbsp;&nbsp;
                                                                                     </label>

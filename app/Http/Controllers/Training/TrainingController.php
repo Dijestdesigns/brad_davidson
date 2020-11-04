@@ -472,7 +472,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $user           = auth()->user();
         $now            = Carbon::now();
         $weekStartDate  = new Carbon('2020-11-02');
-        $currentWeekDay = $weekStartDate->dayOfWeek + 1;
+        $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
         $trainings      = Training::all();
 
