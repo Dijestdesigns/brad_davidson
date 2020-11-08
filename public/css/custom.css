@@ -1631,6 +1631,14 @@ table.full-inputs .form-control[disabled] {
     height: 32px;
 }
 
+.w-85 {
+    width: 85% !important;
+}
+
+.w-87 {
+    width: 87% !important;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;

@@ -13,6 +13,7 @@ use DB;
 use App\Events\ChatRoomCreated;
 use App\Events\NewMessage;
 use App\Events\NewMessageIndividual;
+use Illuminate\Http\UploadedFile;
 
 class ChatController extends \App\Http\Controllers\BaseController
 {
@@ -351,6 +352,7 @@ class ChatController extends \App\Http\Controllers\BaseController
         if (!empty($chatRoomUserId)) {
             $create = [
                 'message'           => !empty($data['message']) ? $data['message'] : NULL,
+                'file'              => (!empty($data['file']) && $data['file'] instanceof UploadedFile) ? $data['file'] : NULL,
                 'is_individual'     => Chat::IS_NOT_INDIVIDUAL,
                 'chat_room_user_id' => $chatRoomUserId,
                 'send_by'           => $userId
@@ -362,6 +364,16 @@ class ChatController extends \App\Http\Controllers\BaseController
                 $chat = $model::create($create);
 
                 if ($chat) {
+                    if (!empty($data['file']) && $data['file'] instanceof UploadedFile) {
+                        $file      = $data['file'];
+                        $fileName  = time() . '_' . $chat->id . '.' . $file->getClientOriginalExtension();
+                        $moveFiles = $file->storeAs($model::$storageFolderName, $fileName, $model::$fileSystems);
+
+                        if ($moveFiles) {
+                            $model::where('id', $chat->id)->update(['file' => $fileName]);
+                        }
+                    }
+
                     $chatRoomUsers = $chat->chatRoomUsersExceptMe($chatRoomId);
 
                     if (!empty($chatRoomUsers) && !$chatRoomUsers->isEmpty()) {
@@ -375,7 +387,7 @@ class ChatController extends \App\Http\Controllers\BaseController
 
                     broadcast(new NewMessage($chat))->toOthers();
 
-                    $chat = $model::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
+                    $chat = $model::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.file', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
                                 ->where(Chat::getTableName() . '.id', $chat->id)
                                 ->join(ChatRoomUser::getTableName(), Chat::getTableName() . '.chat_room_user_id', '=', ChatRoomUser::getTableName() . '.id')
                                 ->with('user')->first();
@@ -397,6 +409,7 @@ class ChatController extends \App\Http\Controllers\BaseController
 
         $create = [
             'message'       => !empty($data['message']) ? $data['message'] : NULL,
+            'file'          => (!empty($data['file']) && $data['file'] instanceof UploadedFile) ? $data['file'] : NULL,
             'is_individual' => Chat::IS_INDIVIDUAL,
             'user_id'       => $withUserId,
             'send_by'       => $userId
@@ -408,6 +421,16 @@ class ChatController extends \App\Http\Controllers\BaseController
             $chat = $model::create($create);
 
             if ($chat) {
+                if (!empty($data['file']) && $data['file'] instanceof UploadedFile) {
+                    $file      = $data['file'];
+                    $fileName  = time() . '_' . $chat->id . '.' . $file->getClientOriginalExtension();
+                    $moveFiles = $file->storeAs($model::$storageFolderName, $fileName, $model::$fileSystems);
+
+                    if ($moveFiles) {
+                        $model::where('id', $chat->id)->update(['file' => $fileName]);
+                    }
+                }
+
                 ChatStatus::create([
                     'user_id' => $withUserId,
                     'chat_id' => $chat->id

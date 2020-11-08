@@ -355,10 +355,12 @@ jQuery(document).ready(function( $ ) {
     });
 
     if ($("#showtime").length > 0) {
-        $.backstretch("img/brad_lock_screen_dark.jpg", {
-            speed: 500
-        });
-        getTime();
+        setTimeout(function() {
+            $.backstretch("img/brad_lock_screen_dark.jpg", {
+                speed: 500
+            });
+            getTime();
+          }, 400);
     }
 
     $(document).find(".nav-tabs li").on("click", function() {
@@ -781,6 +783,20 @@ jQuery(document).ready(function( $ ) {
         $(document).find('div[class*="tasks-'+week+'"]').fadeOut(10);
         $(document).find('.' + tab + '-' + week + '-' + day).fadeIn(200);
     });
+
+    if ($(document).find(".emojis") && $(document).find(".emojis").length > 0) {
+        setTimeout(function() {
+            $(document).find(".emojis").emojioneArea();
+
+            $(document).find(".emojis").each(function() {
+                let self = $(this);
+
+                self[0].emojioneArea.on("emojibtn.click", function(btn, event) {
+                    self[0].emojioneArea.hidePicker();
+                });
+            });
+        }, 800);
+    }
 });
 
 function getValue(element) {

@@ -41,7 +41,7 @@ class NewMessage implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        $chat = Chat::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
+        $chat = Chat::select(Chat::getTableName() . '.id as chat_id', Chat::getTableName() . '.message', Chat::getTableName() . '.file', Chat::getTableName() . '.created_at', ChatRoomUser::getTableName() . '.*')
                     ->where(Chat::getTableName() . '.id', $this->chat->id)
                     ->join(ChatRoomUser::getTableName(), Chat::getTableName() . '.chat_room_user_id', '=', ChatRoomUser::getTableName() . '.id')
                     ->with('user')->first();

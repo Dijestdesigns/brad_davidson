@@ -5,7 +5,9 @@
                 {{ chatMessage.user.name }} {{ chatMessage.user.surname }}
             </div>
             <div class="second-part">
-                {{ chatMessage.message }}
+                <span v-html="chatMessage.message"></span>
+                <br />
+                <img :src="chatMessage.file" />
             </div>
             <div class="third-part text-right">
                 {{ chatMessage.created_at | formatDate }}
@@ -17,11 +19,18 @@
             <div class="third-part text-right">&nbsp;</div>
         </div>
         <footer>
-            <form>
-                <div class="input-group input-group-lg">
+            <form enctype="multipart/form-data">
+                <div>
                     <div class="row">
                         <div class="col-md-11 col-xs-9">
-                            <input type="text" class="form-control" placeholder="Type your message here..." v-model="message" autofocus />
+                            <div class="input-group">
+                                <input type="text" class="form-control w-87 emojis" placeholder="Type your message here..." v-model="message" autofocus />
+                                <div class="input-group-append">
+                                    <!-- <span type="button" class="btn btn-xs btn-primary p-10"><i class="fa fa-meh-o"></i></span> -->
+                                    <label for="file" class="btn btn-xs btn-primary p-10"><i class="fa fa-paperclip"></i></label>
+                                </div>
+                            </div>
+                            <input type="file" class="form-control d-none" id="file" :ref="fileFieldName" @change="store()" accept="image/*" :name="fileFieldName" />
                         </div>
                         <div class="col-md-1 col-xs-3">
                             <div class="input-group-btn">
@@ -43,13 +52,27 @@
             return {
                 message: '',
                 room_id: (typeof this.room !== typeof undefined && this.room.id != "") ? this.room.id : "",
-                conversations: []
+                conversations: [],
+                fileFieldName: 'file'
             }
         },
 
         mounted() {
             this.conversations = this.chatMessages;
             this.listenForNewMessage();
+
+            let self = this;
+
+            setTimeout(function() {
+                $(".emojionearea .emojionearea-editor").on("keydown", function (e) {
+                    let key = e.which;
+
+                    if (key == 13) {
+                        self.store();
+                        return false;
+                    }
+                });
+            }, 2000);
         },
 
         methods: {
@@ -91,22 +114,48 @@
 
             store() {
                 if (typeof this.room !== typeof undefined && this.room.id != "") {
-                    axios.post('/chat/room', {message: this.message, chat_room_id: this.room.id})
+                    axios.post('/chat/room', this.getDataRoom())
                     .then((response) => {
                         this.message = '';
+                        $(".emojionearea-editor").html('');
                         this.conversations.push(response.data);
 
                         this.scrollToElement();
                     });
                 } else {
-                    axios.post('/chat/individual', {message: this.message, user_id: this.users.id})
+                    axios.post('/chat/individual', this.getDataIndividual())
                     .then((response) => {
                         this.message = '';
+                        $(".emojionearea-editor").html('');
                         this.conversations.push(response.data);
 
                         this.scrollToElement();
                     });
                 }
+            },
+
+            getDataRoom() {
+                const data = new FormData();
+
+                this.message = $(".emojionearea-editor").html();
+
+                data.append('message', this.message);
+                data.append('chat_room_id', this.room.id);
+                data.append('file', this.$refs.file.files[0]);
+
+                return data;
+            },
+
+            getDataIndividual() {
+                const data = new FormData();
+
+                this.message = $(".emojionearea-editor").html();
+
+                data.append('message', this.message);
+                data.append('user_id', this.users.id);
+                data.append('file', this.$refs.file.files[0]);
+
+                return data;
             },
 
             markAsRead(data) {

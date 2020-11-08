@@ -19,6 +19,7 @@
     <script difer src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
     <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=RPID2xBpzvHJDn2eUdkP7XNumDKdZtZm8hKwsPaInmywr8ABw62Qw92cxee8" defer></script>
+    <script type="text/javascript" src="{{ asset('js/emojionearea.min.js') }}" defer></script>
 
     @stack('scripts')
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
@@ -59,6 +60,7 @@
     <link href="{{ asset('css/to-do.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
     @yield('styles')
+    <link rel="stylesheet" href="{{ asset('css/emojionearea.min.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
