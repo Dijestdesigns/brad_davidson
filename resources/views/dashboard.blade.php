@@ -108,13 +108,13 @@
                             </div>
                         @endcan
 
-                        @can('training_show_to_clients')
+                        @can('coaching_show_to_clients')
                             <div class="col-lg-2 col-md-2 col-sm-2 mb">
                                 <div class="product-panel-2 h250">
                                     <img src="{{ asset('img/icons/Dumbbells_blue.png') }}" width="180" height="180" alt="">
                                     <div>&nbsp;</div>
-                                    <a class="btn btn-small btn-theme04" href="{{ route('training.client.index') }}">
-                                        {{ __('Training') }}
+                                    <a class="btn btn-small btn-theme04" href="{{ route('coaching.client.index') }}">
+                                        {{ __('Coaching') }}
                                     </a>
                                 </div>
                             </div>
