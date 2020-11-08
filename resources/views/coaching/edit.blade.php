@@ -2,25 +2,20 @@
 
 @section('content')
     <section class="wrapper site-min-height">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Training Create') }}</h3>
-                </div>
-            </div>
-        </div>
+        @include('ultimateLogo')
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-panel">
-                    <form class="form-group p-10" action="{{ route('training.store') }}" method="POST">
+                    <form class="form-group p-10" action="{{ route('coaching.update', $record->id) }}" method="POST">
+                        @method('PATCH')
                         @csrf
 
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label>{{ __('Name') }} : </label>
 
-                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" autofocus="" required="" />
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $record->name) }}" autofocus="" required="" />
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -35,12 +30,12 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label>
-                                            <input type="radio" class="{{ $errors->has('is_daily') ? ' is-invalid' : '' }}" name="is_daily" checked="" value="{{ App\Training::IS_DAILY }}" />
+                                            <input type="radio" class="{{ $errors->has('is_daily') ? ' is-invalid' : '' }}" name="is_daily" {{ old('is_daily', $record->is_daily) == App\Coaching::IS_DAILY ? 'checked=""' : '' }} value="{{ App\Coaching::IS_DAILY }}" />
                                             {{ __('Daily') }}
                                         </label>
                                         <br />
                                         <label>
-                                            <input type="radio" class="{{ $errors->has('is_daily') ? ' is-invalid' : '' }}" name="is_daily" {{ (old('is_daily') == '0') ? 'checked=true' : '' }} value="{{ App\Training::IS_NOT_DAILY }}" />
+                                            <input type="radio" class="{{ $errors->has('is_daily') ? ' is-invalid' : '' }}" name="is_daily" {{ (old('is_daily', $record->is_daily) == '0') ? 'checked=true' : '' }} value="{{ App\Coaching::IS_NOT_DAILY }}" />
                                             {{ __('Custom Day') }}
                                         </label>
 
@@ -51,11 +46,11 @@
                                         @endif
                                     </div>
 
-                                    <div id="custom_days" class="{{ (old('is_daily') == '0') ? '' : 'disp-none' }}">
+                                    <div id="custom_days" class="{{ (old('is_daily', $record->is_daily) == '0') ? '' : 'disp-none' }}">
                                         <div class="col-md-4">
                                             <label>{{ __('Day From') }}</label>
 
-                                            <input type="number" class="form-control{{ $errors->has('day_from') ? ' is-invalid' : '' }}" name="day_from" value="{{ old('day_from') }}" />
+                                            <input type="number" class="form-control{{ $errors->has('day_from') ? ' is-invalid' : '' }}" name="day_from" value="{{ old('day_from', $record->day_from) }}" />
 
                                             @if ($errors->has('day_from'))
                                                 <span class="invalid-feedback" role="alert">
@@ -66,7 +61,7 @@
                                         <div class="col-md-4">
                                             <label>{{ __('Day To') }}</label>
 
-                                            <input type="number" class="form-control{{ $errors->has('day_to') ? ' is-invalid' : '' }}" name="day_to" value="{{ old('day_to') }}" />
+                                            <input type="number" class="form-control{{ $errors->has('day_to') ? ' is-invalid' : '' }}" name="day_to" value="{{ old('day_to', $record->day_to) }}" />
 
                                             @if ($errors->has('day_to'))
                                                 <span class="invalid-feedback" role="alert">
@@ -87,13 +82,13 @@
                                 @php
                                     $isChecked = false;
                                 @endphp
-                                @foreach (App\Training::$isBrowseFile as $value => $text)
+                                @foreach (App\Coaching::$isBrowseFile as $value => $text)
                                     <label>
                                         @php
                                             if (!$isChecked) {
-                                                if (old('browse_file') == $value) {
+                                                if (old('browse_file', $record->browse_file) == $value) {
                                                     $isChecked = true;
-                                                } elseif (old('browse_file') === NULL && $value == '0') {
+                                                } elseif (old('browse_file') === NULL && $record->browse_file === NULL && $value == '0') {
                                                     $isChecked = true;
                                                 }
                                             } else {
@@ -116,7 +111,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                                <a class="btn btn-default" href="{{ route('training.index') }}"><i class="fa fa-arrow-left"></i></a>
+                                <a class="btn btn-default" href="{{ route('coaching.index') }}"><i class="fa fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </form>

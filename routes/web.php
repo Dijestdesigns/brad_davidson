@@ -36,13 +36,13 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['clients' => 'ClientsController']);
     });
 
-    Route::group(['namespace' => 'Training'], function () {
-        Route::post('training/client/store', 'TrainingController@clientStore')->name('training.client.store');
-        Route::post('training/client/{userId}/info/create', 'TrainingController@clientInfoCreate')->name('training.client.info.create');
-        Route::post('training/client/{userId}/info/update', 'TrainingController@clientInfoUpdate')->name('training.client.info.update');
-        Route::get('training/client/{userId}/history', 'TrainingController@clientHistory')->name('training.client.history');
-        Route::get('training/client/index', 'TrainingController@clientIndex')->name('training.client.index');
-        Route::resources(['training' => 'TrainingController']);
+    Route::group(['namespace' => 'Coaching'], function () {
+        Route::post('coaching/client/store', 'CoachingController@clientStore')->name('coaching.client.store');
+        Route::post('coaching/client/{userId}/info/create', 'CoachingController@clientInfoCreate')->name('coaching.client.info.create');
+        Route::post('coaching/client/{userId}/info/update', 'CoachingController@clientInfoUpdate')->name('coaching.client.info.update');
+        Route::get('coaching/client/{userId}/history', 'CoachingController@clientHistory')->name('coaching.client.history');
+        Route::get('coaching/client/index', 'CoachingController@clientIndex')->name('coaching.client.index');
+        Route::resources(['coaching' => 'CoachingController']);
     });
 
     Route::group(['namespace' => 'Constants'], function () {

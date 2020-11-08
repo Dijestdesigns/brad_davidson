@@ -48,14 +48,14 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'inventories_move_to_folder', 'display_name' => 'Inventories Move To Folder', 'group_name' => 'Inventories', 'group_slug' => 'inventories', 'guard_name' => 'admin'],
             ['name' => 'inventories_delete', 'display_name' => 'Inventories Delete', 'group_name' => 'Inventories', 'group_slug' => 'inventories', 'guard_name' => 'admin'],
 
-            ['name' => 'training_access', 'display_name' => 'Training Access', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_create', 'display_name' => 'Training Create', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_edit', 'display_name' => 'Training Edit', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_delete', 'display_name' => 'Training Delete', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_show_to_clients', 'display_name' => 'Training Show to Clients', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_info_access', 'display_name' => 'Training Info Access', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_info_create', 'display_name' => 'Training Info Create', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_info_edit', 'display_name' => 'Training Info Edit', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'coaching_access', 'display_name' => 'Coaching Access', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_create', 'display_name' => 'Coaching Create', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_edit', 'display_name' => 'Coaching Edit', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_delete', 'display_name' => 'Coaching Delete', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_show_to_clients', 'display_name' => 'Coaching Show to Clients', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_access', 'display_name' => 'Coaching Info Access', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_create', 'display_name' => 'Coaching Info Create', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_edit', 'display_name' => 'Coaching Info Edit', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
 
             ['name' => 'chat_access', 'display_name' => 'Chat Access', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_create', 'display_name' => 'Chat Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
@@ -125,7 +125,7 @@ class DefaultUserSeeder extends Seeder
         $assignCoachesPermissions = $getPermissions->map(function($item) {
             $shiv = [
                 'clients_access', 'clients_create', 'clients_show', 'clients_edit',
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit'
             ];
@@ -159,7 +159,7 @@ class DefaultUserSeeder extends Seeder
 
         $assignVIPClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
                 'diary_access', 'diary_create', 'diary_edit',
@@ -194,7 +194,7 @@ class DefaultUserSeeder extends Seeder
 
         $assignNormalClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
                 'diary_access', 'diary_create', 'diary_edit',

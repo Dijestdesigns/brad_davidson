@@ -20,22 +20,22 @@
             <div class="col-lg-12">
                 <h4>{{ __('Search Form : ') }}</h4>
                 <div class="form-inline search-form">
-                    <form method="__GET" action="{{ route('training.index') }}">
+                    <form method="__GET" action="{{ route('coaching.index') }}">
                         <div class="form-group">
                             <input type="text" name="s" class="form-control" placeholder="{{ __('Search by name') }}" value="{{ $request->get('s', '') }}">
 
-                            @if (!empty(App\Training::$isDaily))
+                            @if (!empty(App\Coaching::$isDaily))
                                 <select class="form-control" name="t">
                                     <option value="">{{ __('Select') }}</option>
 
-                                    @foreach ((array)App\Training::$isDaily as $value => $text)
+                                    @foreach ((array)App\Coaching::$isDaily as $value => $text)
                                         <option value="{{ $value }}" {{ $request->has('t') && $request->get('t') === (string)$value ? 'selected="true"' : '' }}>{{ $text }}</option>
                                     @endforeach
                                 </select>
                             @endif
 
                             @if($isFiltered == true || $request->get('t') == "0")
-                                <a href="{{route('training.index')}}" class="btn btn-light">
+                                <a href="{{route('coaching.index')}}" class="btn btn-light">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             @endif
@@ -44,30 +44,30 @@
                     </form>
 
                     @can('constant_update')
-                        @if (false && defined('TRAINING_CYCLE_DAYS'))
-                            <form method="POST" action="{{ route('constants.update', TRAINING_CYCLE_DAYS_ID) }}">
+                        @if (false && defined('COACHING_CYCLE_DAYS'))
+                            <form method="POST" action="{{ route('constants.update', COACHING_CYCLE_DAYS_ID) }}">
                                 @method('PATCH')
                                 @csrf
 
                                 <div class="pull-right">
                                     &nbsp;
-                                    <input type="number" class="form-control{{ $errors->has('value') ? ' is-invalid' : '' }}" name="value" value="{{ TRAINING_CYCLE_DAYS }}" placeholder="{{ __('Cycle Days') }}" style="width: 30%;">
+                                    <input type="number" class="form-control{{ $errors->has('value') ? ' is-invalid' : '' }}" name="value" value="{{ COACHING_CYCLE_DAYS }}" placeholder="{{ __('Cycle Days') }}" style="width: 30%;">
                                     @if ($errors->has('value'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('value') }}</strong>
                                         </span>
                                     @endif
 
-                                    <input type="hidden" name="key" value="{{ TRAINING_CYCLE_DAYS_KEY }}">
+                                    <input type="hidden" name="key" value="{{ COACHING_CYCLE_DAYS_KEY }}">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i></button>
                                 </div>
                             </form>
                         @endif
                     @endcan
 
-                    @can('training_create')
+                    @can('coaching_create')
                         <div class="pull-right add-new-button">
-                            <a class="btn btn-primary" href="{{ route('training.create') }}"><i class="fa fa-plus"></i></a>
+                            <a class="btn btn-primary" href="{{ route('coaching.create') }}"><i class="fa fa-plus"></i></a>
                         </div>
                     @endcan
                 </div>
@@ -80,7 +80,7 @@
                     <div class="col-md-12">
                         <div class="content-panel">
                             <div class="col-md-8">
-                                <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Trainings') }}</h4>
+                                <h4><i class="fa fa-angle-right"></i>&nbsp;{{ __('Total') }} {{ $total }} {{ __('Coachings') }}</h4>
                             </div>
                             <div class="col-md-4">
                                 <h5 class="float-right text-muted">
@@ -115,22 +115,22 @@
                                                     <td>{{ $record->id }}</td>
                                                     <td>{{ $record->name }}</td>
                                                     <td>
-                                                        @if ($record->is_daily == App\Training::IS_NOT_DAILY)
+                                                        @if ($record->is_daily == App\Coaching::IS_NOT_DAILY)
                                                             {{ $record->day_from . ' - ' . $record->day_to }}
                                                         @else
                                                             {{ __('Daily') }}
                                                         @endif
                                                     </td>
-                                                    <td>{{ (!empty(App\Training::$isBrowseFile[$record->browse_file])) ? App\Training::$isBrowseFile[$record->browse_file] : '-' }}</td>
+                                                    <td>{{ (!empty(App\Coaching::$isBrowseFile[$record->browse_file])) ? App\Coaching::$isBrowseFile[$record->browse_file] : '-' }}</td>
                                                     <td class="form-inline">
-                                                        @can('training_edit')
-                                                            <a href="{{ route('training.edit', $record->id) }}" title="{{ __('Edit') }}">
+                                                        @can('coaching_edit')
+                                                            <a href="{{ route('coaching.edit', $record->id) }}" title="{{ __('Edit') }}">
                                                                 <i class="fa fa-edit fa-2x"></i>
                                                             </a>
                                                         &nbsp;
                                                         @endcan
-                                                        @can('training_delete')
-                                                            <form action="{{ route('training.destroy', $record->id) }}" method="POST">
+                                                        @can('coaching_delete')
+                                                            <form action="{{ route('coaching.destroy', $record->id) }}" method="POST">
                                                                 @method('DELETE')
                                                                 @csrf
                                                                 <a href="#" class="deleteBtn" data-confirm-message="{{__("Are you sure you want to delete this?")}}" data-toggle="tooltip" data-placement="top" title="{{__('Delete')}}"><i class="fa fa-trash fa-2x"></i></a>
@@ -165,7 +165,7 @@
 
         <!-- <hr /> -->
 
-        @can('training_access')
+        @can('coaching_access')
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
@@ -185,7 +185,7 @@
                                         <thead>
                                             <tr>
                                                 <th colspan="4" class="text-center">
-                                                    <h3>{{ __('Client Training Informations') }}</h3>
+                                                    <h3>{{ __('Client Coaching Informations') }}</h3>
                                                 </th>
                                             </tr>
                                             <tr>
@@ -198,7 +198,7 @@
                                                 <th>
                                                     {{ __('Role') }}
                                                 </th>
-                                                @can('training_info_access')
+                                                @can('coaching_info_access')
                                                     <th>
                                                         {{ __('Operations') }}
                                                     </th>
@@ -213,13 +213,13 @@
                                                         <td>{{ $client->id }}</td>
                                                         <td>{{ $client->fullname }}</td>
                                                         <td>{{ @$client->getRoleNames()[0] }}</td>
-                                                        @can('training_info_access')
+                                                        @can('coaching_info_access')
                                                             <td class="form-inline">
-                                                                <a href="{{ route('training.client.history', $client->id) }}" title="{{ __('History') }}"><i class="fa fa-eye fa-2x"></i></a>
+                                                                <a href="{{ route('coaching.client.history', $client->id) }}" title="{{ __('History') }}"><i class="fa fa-eye fa-2x"></i></a>
 
-                                                                @can('training_info_create')
+                                                                @can('coaching_info_create')
                                                                     <!-- &nbsp;
-                                                                    <a href="javascript:void(0);" class="createTrainings" title="{{ __('Create Trainings') }}" data-html="trainings-create-model-{{ $client->id }}" data-id="{{ $client->id }}"><i class="fa fa-plus fa-2x"></i></a> -->
+                                                                    <a href="javascript:void(0);" class="createCoachings" title="{{ __('Create Coachings') }}" data-html="coachings-create-model-{{ $client->id }}" data-id="{{ $client->id }}"><i class="fa fa-plus fa-2x"></i></a> -->
                                                                 @endcan
                                                             </td>
                                                         @endcan
@@ -251,11 +251,11 @@
         @endcan
     </section>
 
-    @can('training_info_create')
+    @can('coaching_info_create')
         @if (!empty($clients) && !$clients->isEmpty())
             @foreach ($clients as $index => $client)
-                <div class="trainings-create-model-{{ $client->id }} d-none">
-                    <form action="{{ route('training.client.info.create', $client->id) }}" method="POST">
+                <div class="coachings-create-model-{{ $client->id }} d-none">
+                    <form action="{{ route('coaching.client.info.create', $client->id) }}" method="POST">
                         @csrf
 
                         <div class="row">
@@ -263,7 +263,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="border-head h3">
-                                            {{ __('Training Informations') }}
+                                            {{ __('Coaching Informations') }}
                                             -
                                             <span class="h4">{{ $client->fullname }}</span>
                                         </div>
@@ -292,14 +292,14 @@
                                 <br />
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label>{{ __('Select Trainings') }}</label>
+                                        <label>{{ __('Select Coachings') }}</label>
 
-                                        <select class="form-control" name="training_ids[]" multiple="" required>
+                                        <select class="form-control" name="coaching_ids[]" multiple="" required>
                                             <!-- <option value="">{{ __('Select') }}</option> -->
 
-                                            @if (!empty($trainings))
-                                                @foreach ($trainings as $training)
-                                                    <option value="{{ $training->id }}">{{ $training->name }}</option>
+                                            @if (!empty($coachings))
+                                                @foreach ($coachings as $coaching)
+                                                    <option value="{{ $coaching->id }}">{{ $coaching->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -321,7 +321,7 @@
         @endif
     @endcan
 
-    @can('training_info_edit')
+    @can('coaching_info_edit')
         @if (!empty($clients) && !$clients->isEmpty())
             @foreach ($clients as $index => $client)
                 

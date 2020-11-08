@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\RequiredIf;
-use App\ClientTraining;
+use App\ClientCoaching;
 use Carbon\Carbon;
 
-class Training extends BaseModel
+class Coaching extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -55,7 +55,7 @@ class Training extends BaseModel
         return $validator;
     }
 
-    public function clientTraining($date, $userId = null, $day = null)
+    public function clientCoaching($date, $userId = null, $day = null)
     {
         if (empty($userId)) {
             $userId = auth()->user()->id;
@@ -64,14 +64,14 @@ class Training extends BaseModel
         if (!empty($day)) {
             $day = (int)$day;
 
-            return $this->hasOne('App\ClientTraining', 'training_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)))->where('day', $day);
+            return $this->hasOne('App\ClientCoaching', 'coaching_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)))->where('day', $day);
         }
 
-        return $this->hasOne('App\ClientTraining', 'training_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)));
+        return $this->hasOne('App\ClientCoaching', 'coaching_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)));
     }
 
     public function isDone($date, $userId = null, $day = null)
     {
-        return $this->clientTraining($date, $userId, $day)->where('is_attended', ClientTraining::IS_ATTENDED)->exists();
+        return $this->clientCoaching($date, $userId, $day)->where('is_attended', ClientCoaching::IS_ATTENDED)->exists();
     }
 }

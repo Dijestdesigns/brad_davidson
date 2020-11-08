@@ -629,7 +629,7 @@ jQuery(document).ready(function( $ ) {
       });
   });
 
-  $(".createTrainings").on('click', function () {
+  $(".createCoachings").on('click', function () {
       event.preventDefault();
 
       var form    = $(this).parent(),
@@ -650,19 +650,19 @@ jQuery(document).ready(function( $ ) {
 
       (function($) {
           $.fn.setTotalDays = function () {
-              let start     = $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.started_at-' + id),
-                  completed = $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.finished_at-' + id);
+              let start     = $(document).find('.coachings-create-model-' + id).not('.d-none').find('input.started_at-' + id),
+                  completed = $(document).find('.coachings-create-model-' + id).not('.d-none').find('input.finished_at-' + id);
 
               if (start.val() && completed.val() && start.val().length > 0 && completed.val().length > 0) {
-                  $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(datediff(parseDate(start.val(), completed.val())) + 1);
+                  $(document).find('.coachings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(datediff(parseDate(start.val(), completed.val())) + 1);
               } else {
-                  $(document).find('.trainings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(0);
+                  $(document).find('.coachings-create-model-' + id).not('.d-none').find('input.total_days-' + id).val(0);
               }
           }
       })(jQuery);
   });
 
-  $(".updateTrainings").on('click', function () {
+  $(".updateCoachings").on('click', function () {
       event.preventDefault();
 
       var form    = $(this).parent(),

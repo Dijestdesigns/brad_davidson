@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\Training;
+use App\Coaching;
 
-class ClientTrainingInfo extends BaseModel
+class ClientCoachingInfo extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -14,7 +14,7 @@ class ClientTrainingInfo extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'total_days', 'started_at', 'finished_at', 'is_done', 'training_ids', 'user_id'
+        'total_days', 'started_at', 'finished_at', 'is_done', 'coaching_ids', 'user_id'
     ];
 
     const IS_DONE     = '1';
@@ -32,7 +32,7 @@ class ClientTrainingInfo extends BaseModel
             'started_at'   => ['required', 'date_format:Y-m-d'],
             'finished_at'  => ['required', 'date_format:Y-m-d'],
             'is_done'      => ['in:' . implode(",", array_keys(self::$isDone))],
-            'training_ids' => ['required', 'string'],
+            'coaching_ids' => ['required', 'string'],
             'user_id'      => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
         ]);
 
@@ -52,8 +52,8 @@ class ClientTrainingInfo extends BaseModel
         return $this->hasOne('App\User', 'id', 'user_id');
     }
 
-    public function clientTrainings()
+    public function clientCoachings()
     {
-        return $this->hasMany('App\ClientTraining', 'client_training_info_id', 'id');
+        return $this->hasMany('App\ClientCoaching', 'client_coaching_info_id', 'id');
     }
 }

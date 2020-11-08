@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\Training;
+use App\Coaching;
 use Illuminate\Support\Facades\Storage;
 
-class ClientTraining extends BaseModel
+class ClientCoaching extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class ClientTraining extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'day', 'is_attended', 'date', 'browse_file', 'training_id', 'client_training_info_id', 'user_id'
+        'day', 'is_attended', 'date', 'browse_file', 'coaching_id', 'client_coaching_info_id', 'user_id'
     ];
 
     public static $fileSystems       = 'public';
@@ -34,24 +34,24 @@ class ClientTraining extends BaseModel
     {
         $browseFile = ['nullable'];
 
-        if (!$excludeBrowseFile && !empty($data['day']) && !empty($data['training_id'])) {
-            $training = Training::find((int)$data['training_id']);
+        if (!$excludeBrowseFile && !empty($data['day']) && !empty($data['coaching_id'])) {
+            $coaching = Coaching::find((int)$data['coaching_id']);
 
-            if (!empty($training)) {
-                if ((int)$data['day'] == (int)$training->day_from) {
+            if (!empty($coaching)) {
+                if ((int)$data['day'] == (int)$coaching->day_from) {
                     $browseFile = ['required'];
 
-                    if (!empty($data['training_id']) && !empty($data['date']) && strtotime($data['date']) > 0) {
+                    if (!empty($data['coaching_id']) && !empty($data['date']) && strtotime($data['date']) > 0) {
                         $userId = auth()->user()->id;
 
-                        $check = self::where('training_id', (int)$data['training_id'])->where('user_id', $userId)->whereDate('date', $data['date'])->first();
+                        $check = self::where('coaching_id', (int)$data['coaching_id'])->where('user_id', $userId)->whereDate('date', $data['date'])->first();
                         if (!empty($check)) {
                             if (!empty($check->browse_file)) {
                                 $browseFile = ['nullable'];
                             }
                         }
                     }
-                } elseif ((int)$data['day'] == (int)$training->day_to) {
+                } elseif ((int)$data['day'] == (int)$coaching->day_to) {
                     $browseFile = ['required'];
                 }
             }
@@ -68,8 +68,8 @@ class ClientTraining extends BaseModel
             'date'        => ['required', 'date_format:Y-m-d'],
             'is_attended' => ['in:' . implode(",", array_keys(self::$isAttended))],
             'browse_file' => array_merge($browseFile, $browseFileExcluded),
-            'training_id' => ['required', 'integer', 'exists:' . Training::getTableName() . ',id'],
-            'client_training_info_id' => ['nullable', 'integer', 'exists:' . ClientTrainingInfo::getTableName() . ',id'],
+            'coaching_id' => ['required', 'integer', 'exists:' . Coaching::getTableName() . ',id'],
+            'client_coaching_info_id' => ['nullable', 'integer', 'exists:' . ClientCoachingInfo::getTableName() . ',id'],
             'user_id'     => ['required', 'integer', 'exists:' . User::getTableName() . ',id']
         ]);
 
@@ -91,16 +91,16 @@ class ClientTraining extends BaseModel
         }
 
         $storageFolderName = (str_ireplace("\\", "/", self::$storageFolderName));
-        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->training_id . '/' . $value);
+        return Storage::disk(self::$fileSystems)->url($storageFolderName . '/' . $this->coaching_id . '/' . $value);
     }
 
-    public function training()
+    public function coaching()
     {
-        return $this->hasOne('App\Training', 'id', 'training_id');
+        return $this->hasOne('App\Coaching', 'id', 'coaching_id');
     }
 
-    public function trainingInfo()
+    public function coachingInfo()
     {
-        return $this->hasOne('App\ClientTrainingInfo', 'id', 'client_training_info_id');
+        return $this->hasOne('App\ClientCoachingInfo', 'id', 'client_coaching_info_id');
     }
 }

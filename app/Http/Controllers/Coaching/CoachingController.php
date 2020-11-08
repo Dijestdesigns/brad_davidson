@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Training;
+namespace App\Http\Controllers\Coaching;
 
 use Illuminate\Http\Request;
-use App\Training;
-use App\ClientTraining;
-use App\ClientTrainingInfo;
+use App\Coaching;
+use App\ClientCoaching;
+use App\ClientCoachingInfo;
 use App\User;
 use App\ModelHasRoles;
 use App\Log;
@@ -13,24 +13,24 @@ use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use DB;
 
-class TrainingController extends \App\Http\Controllers\BaseController
+class CoachingController extends \App\Http\Controllers\BaseController
 {
     public function __construct()
     {
-        $this->middleware(['permission:training_access'])->only('index');
-        $this->middleware(['permission:training_create'])->only(['create','store']);
-        $this->middleware(['permission:training_edit'])->only(['edit','update']);
-        $this->middleware(['permission:training_delete'])->only('destroy');
+        $this->middleware(['permission:coaching_access'])->only('index');
+        $this->middleware(['permission:coaching_create'])->only(['create','store']);
+        $this->middleware(['permission:coaching_edit'])->only(['edit','update']);
+        $this->middleware(['permission:coaching_delete'])->only('destroy');
 
-        $this->middleware(['permission:training_info_create'])->only(['clientInfoCreate']);
-        $this->middleware(['permission:training_info_edit'])->only(['clientInfoUpdate']);
+        $this->middleware(['permission:coaching_info_create'])->only(['clientInfoCreate']);
+        $this->middleware(['permission:coaching_info_edit'])->only(['clientInfoUpdate']);
 
-        $this->middleware(['permission:training_show_to_clients'])->only(['clientIndex']);
+        $this->middleware(['permission:coaching_show_to_clients'])->only(['clientIndex']);
     }
 
     public function index(Request $request)
     {
-        $model          = new Training();
+        $model          = new Coaching();
         $isFiltered     = false;
         $modelQuery     = $model::query();
         $requestClonned = clone $request;
@@ -63,7 +63,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->orderBy('name', 'ASC')->paginate($model::PAGINATE_RECORDS);
 
-        // Client training informations.
+        // Client coaching informations.
         $roles   = [3, 4];
         $clients = User::select(User::getTableName() . '.*')
                        ->join(ModelHasRoles::getTableName(), User::getTableName() . '.id', '=', ModelHasRoles::getTableName() . '.model_id')
@@ -71,20 +71,20 @@ class TrainingController extends \App\Http\Controllers\BaseController
                        ->groupBy(User::getTableName() . '.id')
                        ->paginate($model::PAGINATE_RECORDS, ['*'], 'clientsPage');
 
-        $trainings = Training::all();
+        $coachings = Coaching::all();
 
-        return view('training.index', compact('request', 'isFiltered', 'total', 'records', 'clients', 'trainings'));
+        return view('coaching.index', compact('request', 'isFiltered', 'total', 'records', 'clients', 'coachings'));
     }
 
     public function create()
     {
-        return view('training.create');
+        return view('coaching.create');
     }
 
     public function store(Request $request)
     {
         $data  = $request->all();
-        $model = new Training();
+        $model = new Coaching();
 
         $validator = $model::validators($data);
 
@@ -94,28 +94,28 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
         if ($create) {
             $find = $model::find($create->id);
-            self::createLog($find, __("Created training {$find->name}"), Log::CREATE, [], $find->toArray());
+            self::createLog($find, __("Created coaching {$find->name}"), Log::CREATE, [], $find->toArray());
 
-            return redirect('training')->with('success', __("Training created!"));
+            return redirect('coaching')->with('success', __("Coaching created!"));
         }
 
-        return redirect('training')->with('error', __("There has been an error!"));
+        return redirect('coaching')->with('error', __("There has been an error!"));
     }
 
     public function edit(int $id)
     {
-        $record = Training::find($id);
+        $record = Coaching::find($id);
 
         if ($record) {
-            return view('training.edit', compact('record'));
+            return view('coaching.edit', compact('record'));
         }
 
-        return redirect('training')->with('error', __("Not found!"));
+        return redirect('coaching')->with('error', __("Not found!"));
     }
 
     public function update(Request $request, int $id)
     {
-        $model  = new Training();
+        $model  = new Coaching();
         $record = $model::find($id);
 
         if ($record) {
@@ -131,18 +131,18 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
             if ($update) {
                 $find = $model::find($id);
-                self::createLog($find, __("Updated training {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
+                self::createLog($find, __("Updated coaching {$find->name}"), Log::UPDATE, $oldData, $find->toArray());
 
-                return redirect('training')->with('success', __("Training updated!"));
+                return redirect('coaching')->with('success', __("Coaching updated!"));
             }
         }
 
-        return redirect('training')->with('error', __("There has been an error!"));
+        return redirect('coaching')->with('error', __("There has been an error!"));
     }
 
     public function destroy(int $id)
     {
-        $record = Training::where('id', $id)->get();
+        $record = Coaching::where('id', $id)->get();
 
         if (!empty($record[0])) {
             DB::beginTransaction();
@@ -150,44 +150,44 @@ class TrainingController extends \App\Http\Controllers\BaseController
             $isRemoved = self::remove($record);
 
             if ($isRemoved) {
-                self::createLog($record[0], __("Deleted training " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
+                self::createLog($record[0], __("Deleted coaching " . $record[0]->name), Log::DELETE, $record[0]->toArray(), []);
 
                 DB::commit();
 
-                return redirect('training')->with('success', __("Training deleted!"));
+                return redirect('coaching')->with('success', __("Coaching deleted!"));
             } else {
                 DB::rollBack();
 
-                return redirect('training')->with('error', __("There has been an error!"));
+                return redirect('coaching')->with('error', __("There has been an error!"));
             }
         }
 
-        return redirect('training')->with('error', __("Not found!"));
+        return redirect('coaching')->with('error', __("Not found!"));
     }
 
     public function clientStore(Request $request)
     {
         $data   = $request->all();
-        $model  = new ClientTraining();
+        $model  = new ClientCoaching();
         $userId = auth()->user()->id;
 
         // Old logic.
-        if (false && !empty($data['wholeDayTrainings']) && !empty($data['client_training_info_id']) && is_numeric($data['client_training_info_id']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
-            $errorTrainingName = [];
+        if (false && !empty($data['wholeDayCoachings']) && !empty($data['client_coaching_info_id']) && is_numeric($data['client_coaching_info_id']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
+            $errorCoachingName = [];
             $isUpdate          = false;
-            $trainingInfoId    = (int)$data['client_training_info_id'];
+            $coachingInfoId    = (int)$data['client_coaching_info_id'];
             $currentDay        = (int)$data['current_day'];
             $isError           = false;
 
-            // Get training info.
-            $trainingInfo = ClientTrainingInfo::find($trainingInfoId);
+            // Get coaching info.
+            $coachingInfo = ClientCoachingInfo::find($coachingInfoId);
 
-            if (empty($trainingInfo)) {
-                return redirect('/')->with('error', __("Training info doesn't found!"));
+            if (empty($coachingInfo)) {
+                return redirect('/')->with('error', __("Coaching info doesn't found!"));
             }
 
-            if ($trainingInfo->total_days == $currentDay) {
-                $trainingInfo->update(['is_done' => ClientTrainingInfo::IS_DONE]);
+            if ($coachingInfo->total_days == $currentDay) {
+                $coachingInfo->update(['is_done' => ClientCoachingInfo::IS_DONE]);
             }
 
             $update = [];
@@ -199,9 +199,9 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
                 $update[$id]['day']                     = $find->day;
                 $update[$id]['date']                    = date('Y-m-d', strtotime($find->date));
-                $update[$id]['is_attended']             = empty($data['training'][$id]) ? $model::IS_NOT_ATTENDED : $model::IS_ATTENDED;
-                $update[$id]['training_id']             = $find->training_id;
-                $update[$id]['client_training_info_id'] = $find->client_training_info_id;
+                $update[$id]['is_attended']             = empty($data['coaching'][$id]) ? $model::IS_NOT_ATTENDED : $model::IS_ATTENDED;
+                $update[$id]['coaching_id']             = $find->coaching_id;
+                $update[$id]['client_coaching_info_id'] = $find->client_coaching_info_id;
                 $update[$id]['user_id']                 = $find->user_id;
                 $update[$id]['browse_file']             = NULL;
 
@@ -209,12 +209,12 @@ class TrainingController extends \App\Http\Controllers\BaseController
                     $update[$id]['browse_file'] = $data['browse_file'][$id];
                 }
 
-                if (empty($update[$id]['browse_file']) && $find->training->browse_file == Training::IS_BROWSE_FILE) {
-                    $errorTrainingName[] = $find->training->name;
+                if (empty($update[$id]['browse_file']) && $find->coaching->browse_file == Coaching::IS_BROWSE_FILE) {
+                    $errorCoachingName[] = $find->coaching->name;
                 }
             };
 
-            foreach ($data['wholeDayTrainings'] as $id => $training) {
+            foreach ($data['wholeDayCoachings'] as $id => $coaching) {
                 $find = $model::find($id);
 
                 $updateFunction($id, false, $find);
@@ -234,10 +234,10 @@ class TrainingController extends \App\Http\Controllers\BaseController
             }
 
             if (!$isError) {
-                foreach ($data['wholeDayTrainings'] as $id => $training) {
+                foreach ($data['wholeDayCoachings'] as $id => $coaching) {
                     $find = $model::find($id);
 
-                    if (empty($data['training'][$id])) {
+                    if (empty($data['coaching'][$id])) {
                         $isUpdate = $find->update(['is_attended' => $model::IS_NOT_ATTENDED, 'browse_file' => NULL]);
                     } elseif (!empty($update[$id])) {
                         $isUpdate = $find->update($update[$id]);
@@ -247,19 +247,19 @@ class TrainingController extends \App\Http\Controllers\BaseController
                 if ($isUpdate) {
                     $msg = NULL;
 
-                    if (!empty($errorTrainingName)) {
-                        $msg = " But image not uploaded for " . implode(',', $errorTrainingName) ." training.";
+                    if (!empty($errorCoachingName)) {
+                        $msg = " But image not uploaded for " . implode(',', $errorCoachingName) ." coaching.";
                     }
 
-                    return redirect('/')->with('success', __("Training updated!" . $msg));
+                    return redirect('/')->with('success', __("Coaching updated!" . $msg));
                 }
             } else {
                 return redirect('/')->with('error', $isError);
             }
         }
 
-        if (!empty($data['wholeDayTrainings']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
-            $errorTrainingName = [];
+        if (!empty($data['wholeDayCoachings']) && !empty($data['current_day']) && is_numeric($data['current_day'])) {
+            $errorCoachingName = [];
             $isUpdate          = false;
             $currentDay        = (int)$data['current_day'];
             $isError           = false;
@@ -271,15 +271,15 @@ class TrainingController extends \App\Http\Controllers\BaseController
                     return false;
                 }
 
-                if (empty($data['training'][$id])) {
+                if (empty($data['coaching'][$id])) {
                     return false;
                 }
 
                 $update[$id]['day']                     = !empty($data['day'][$id]) ? $data['day'][$id] : NULL;
                 $update[$id]['date']                    = !empty($data['date']) && strtotime($data['date']) > 0 ? $data['date'] : NULL;
-                $update[$id]['is_attended']             = empty($data['training'][$id]) ? $model::IS_NOT_ATTENDED : $model::IS_ATTENDED;
-                $update[$id]['training_id']             = $id;
-                $update[$id]['client_training_info_id'] = NULL;
+                $update[$id]['is_attended']             = empty($data['coaching'][$id]) ? $model::IS_NOT_ATTENDED : $model::IS_ATTENDED;
+                $update[$id]['coaching_id']             = $id;
+                $update[$id]['client_coaching_info_id'] = NULL;
                 $update[$id]['user_id']                 = $userId;
                 $update[$id]['browse_file']             = NULL;
 
@@ -287,13 +287,13 @@ class TrainingController extends \App\Http\Controllers\BaseController
                     $update[$id]['browse_file'] = $data['browse_file'][$id];
                 }
 
-                if (empty($update[$id]['browse_file']) && $find->browse_file == Training::IS_BROWSE_FILE) {
-                    $errorTrainingName[] = $find->name;
+                if (empty($update[$id]['browse_file']) && $find->browse_file == Coaching::IS_BROWSE_FILE) {
+                    $errorCoachingName[] = $find->name;
                 }
             };
 
-            foreach ($data['wholeDayTrainings'] as $id => $training) {
-                $find = Training::find($id);
+            foreach ($data['wholeDayCoachings'] as $id => $coaching) {
+                $find = Coaching::find($id);
 
                 $updateFunction($id, false, $find);
 
@@ -316,7 +316,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
             }
 
             if (!$isError) {
-                foreach ($data['wholeDayTrainings'] as $id => $training) {
+                foreach ($data['wholeDayCoachings'] as $id => $coaching) {
                     if (empty($update[$id])) {
                         continue;
                     }
@@ -327,28 +327,28 @@ class TrainingController extends \App\Http\Controllers\BaseController
                 if ($isUpdate) {
                     $msg = NULL;
 
-                    if (!empty($errorTrainingName)) {
-                        $msg = " But image not uploaded for " . implode(',', $errorTrainingName) ." training.";
+                    if (!empty($errorCoachingName)) {
+                        $msg = " But image not uploaded for " . implode(',', $errorCoachingName) ." coaching.";
                     }
 
-                    return redirect('training/client/index')->with('success', __("Training updated!" . $msg));
+                    return redirect('coaching/client/index')->with('success', __("Coaching updated!" . $msg));
                 }
             } else {
-                return redirect('training/client/index')->with('error', $isError);
+                return redirect('coaching/client/index')->with('error', $isError);
             }
         }
 
-        return redirect('training/client/index')->with('error', __("Not found!"));
+        return redirect('coaching/client/index')->with('error', __("Not found!"));
     }
 
     public function clientInfoCreate(int $userId, Request $request)
     {
         $data   = $request->all();
-        $model  = new ClientTrainingInfo();
+        $model  = new ClientCoachingInfo();
 
         $startedAt   = (!empty($data['started_at']) && strtotime($data['started_at']) > 0) ? $data['started_at'] : NULL;
         $finishedAt  = (!empty($data['finished_at']) && strtotime($data['finished_at']) > 0) ? $data['finished_at'] : NULL;
-        $trainingIds = !empty($data['training_ids']) ? implode(",", $data['training_ids']) : NULL;
+        $coachingIds = !empty($data['coaching_ids']) ? implode(",", $data['coaching_ids']) : NULL;
         $totalDays   = 0;
         $now         = Carbon::now();
 
@@ -361,7 +361,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
             'started_at'    => $startedAt,
             'finished_at'   => $finishedAt,
             'is_done'       => $model::IS_NOT_DONE,
-            'training_ids'  => $trainingIds,
+            'coaching_ids'  => $coachingIds,
             'user_id'       => $userId
         ];
 
@@ -372,12 +372,12 @@ class TrainingController extends \App\Http\Controllers\BaseController
         // Check date exists or not.
         $exists = $model::whereBetween('started_at', [$startedAt, $finishedAt])->where('user_id', $userId)->first();
         if (!empty($exists)) {
-            return redirect('training')->with('error', __("This start/complete date already exists!"));
+            return redirect('coaching')->with('error', __("This start/complete date already exists!"));
         }
 
         $exists = $model::whereBetween('finished_at', [$startedAt, $finishedAt])->where('user_id', $userId)->first();
         if (!empty($exists)) {
-            return redirect('training')->with('error', __("This start/complete date already exists!"));
+            return redirect('coaching')->with('error', __("This start/complete date already exists!"));
         }
 
         $create = $model::create($createData);
@@ -387,19 +387,19 @@ class TrainingController extends \App\Http\Controllers\BaseController
 
             $index = 0;
             for ($day = 1; $day <= $totalDays; $day++) {
-                foreach ((array)$data['training_ids'] as $trainingId) {
+                foreach ((array)$data['coaching_ids'] as $coachingId) {
                     $insert[$index] = [
                         'day'         => $day,
                         'date'        => Carbon::parse($startedAt)->addDays($day - 1)->format('Y-m-d'),
-                        'is_attended' => ClientTraining::IS_NOT_ATTENDED,
+                        'is_attended' => ClientCoaching::IS_NOT_ATTENDED,
                         'browse_file' => NULL,
-                        'training_id' => $trainingId,
-                        'client_training_info_id' => $create->id,
+                        'coaching_id' => $coachingId,
+                        'client_coaching_info_id' => $create->id,
                         'user_id'     => $userId,
                         'created_at'  => $now
                     ];
 
-                    $validator = ClientTraining::validators($insert[$index], true, true);
+                    $validator = ClientCoaching::validators($insert[$index], true, true);
                     if (!$validator) {
                         unset($insert[$index]);
                     }
@@ -409,28 +409,30 @@ class TrainingController extends \App\Http\Controllers\BaseController
             }
 
             if (!empty($insert)) {
-                ClientTraining::insert($insert);
+                ClientCoaching::insert($insert);
             }
 
             $find = User::find($userId);
-            self::createLog($find, __("Created training for client {$find->fullname}"), Log::CREATE, [], $find->toArray());
+            self::createLog($find, __("Created coaching for client {$find->fullname}"), Log::CREATE, [], $find->toArray());
 
-            return redirect('training')->with('success', __("Client training created!"));
+            return redirect('coaching')->with('success', __("Client coaching created!"));
         }
 
-        return redirect('training')->with('error', __("There has been an error!"));
+        return redirect('coaching')->with('error', __("There has been an error!"));
     }
 
     public function clientHistory(int $userId, Request $request)
     {
-        $model          = new ClientTraining();
+        $model          = new ClientCoaching();
         $isFiltered     = false;
         $modelQuery     = $model::query();
         $requestClonned = clone $request;
         $now            = Carbon::now();
         $weekStartDate  = new Carbon('2020-11-02');
         $weekStartDate1 = new Carbon('2020-11-02');
-        $trainings      = Training::all();
+        $weekStartDate2 = new Carbon('2020-11-09');
+        $weekStartDate3 = new Carbon('2020-11-09');
+        $coachings      = Coaching::all();
 
         $cleanup = $requestClonned->except(['page']);
         $requestClonned->query = new \Symfony\Component\HttpFoundation\ParameterBag($cleanup);
@@ -464,7 +466,7 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('training.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'trainings', 'weekStartDate', 'userId', 'weekStartDate1'));
+        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3'));
     }
 
     public function clientIndex()
@@ -472,10 +474,11 @@ class TrainingController extends \App\Http\Controllers\BaseController
         $user           = auth()->user();
         $now            = Carbon::now();
         $weekStartDate  = new Carbon('2020-11-02');
+        $weekStartDate1 = new Carbon('2020-11-09');
         $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
-        $trainings      = Training::all();
+        $coachings      = Coaching::all();
 
-        return view('training.clientIndex', compact('trainings', 'now', 'weekStartDate', 'currentWeekDay'));
+        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1'));
     }
 }
