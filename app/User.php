@@ -170,7 +170,7 @@ class User extends Authenticatable
 
     public function getProfilePhotoIconAttribute($value)
     {
-        $defaultProfilePhotoIcon = asset('img/friends/fr-05.jpg');
+        $defaultProfilePhotoIcon = $this->profile_photo;
 
         if (empty($value)) {
             return $defaultProfilePhotoIcon;
