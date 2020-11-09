@@ -7,7 +7,7 @@ use App\Item;
 use App\User;
 use App\Log;
 use App\UserSupplement;
-use App\ClientTraining;
+use App\ClientCoaching;
 use Carbon\Carbon;
 use DB;
 
@@ -52,11 +52,11 @@ class DashboardController extends BaseController
             $supplements = UserSupplement::where('user_id', $userId)->orderBy('date', 'DESC')->first();
         }
 
-        $trainings = [];
-        if (auth()->user()->can('training_show_to_clients')) {
-            $trainings = ClientTraining::whereDate('date', $now)->where('user_id', $userId)->get();
+        $coachings = [];
+        if (auth()->user()->can('coaching_show_to_clients')) {
+            $coachings = ClientCoaching::whereDate('date', $now)->where('user_id', $userId)->get();
         }
 
-        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements', 'trainings', 'currentUserRole'));
+        return view('dashboard', compact('itemCount', 'userCount', 'totalStocks', 'totalValues', 'logs', 'supplements', 'coachings', 'currentUserRole'));
     }
 }
