@@ -797,6 +797,51 @@ jQuery(document).ready(function( $ ) {
             });
         }, 800);
     }
+
+    if ($(document).find("#profile_photo") && $(document).find("#profile_photo").length > 0) {
+        $(document).find("#profile_photo").croppie('destroy');
+
+        var $profilePhoto = $(document).find("#profile_photo").croppie({
+            enableExif: true,
+            viewport: {
+                width: 200,
+                height: 200,
+                type: 'circle'
+            },
+            boundary: {
+                width: 300,
+                height: 300
+            }
+        });
+
+        $(document).find("#imgProfileUpload").on('change', function () {
+            let reader = new FileReader(),
+                self   = $(this);
+
+            reader.onload = function (e) {
+                $profilePhoto.croppie('bind', {
+                    url: e.target.result
+                }).then(function() {});
+            }
+
+            reader.readAsDataURL(this.files[0]);
+
+            reader.addEventListener("load", function(e) {
+                $(document).find("#imgProfileIconUpload").val(e.target.result);
+            });
+
+            $("." + self.attr('data-html')).modal('show');
+        });
+
+        $('.profile-photo-save').on('click', function () {
+            $profilePhoto.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function (resp) {
+                $(document).find("#imgProfileIconUpload").val(resp);
+            });
+        });
+    }
 });
 
 function getValue(element) {

@@ -15,6 +15,7 @@ use App\Note;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ClientsController extends \App\Http\Controllers\BaseController
 {
@@ -180,11 +181,16 @@ class ClientsController extends \App\Http\Controllers\BaseController
 
         $data['password'] = (!empty($data['password'])) ? Hash::make($data['password']) : '';
 
+        if (isset($data['profile_photo_icon'])) {
+            $profilePhotoIcon = $data['profile_photo_icon'];
+            unset($data['profile_photo_icon']);
+        }
+
         $create = $model::create($data);
 
         if ($create) {
             if (!empty($request->profile_photo)) {
-                $this->profilePhoto($create->id, $request->profile_photo);
+                $this->profilePhoto($create->id, $request->profile_photo, $profilePhotoIcon);
             }
 
             $find = $model::find($create->id);
@@ -258,20 +264,41 @@ class ClientsController extends \App\Http\Controllers\BaseController
         return $create;
     }
 
-    public function profilePhoto(int $id, UploadedFile $profilePhoto)
+    public function profilePhoto(int $id, UploadedFile $profilePhoto, $profilePhotoIcon = NULL)
     {
         $create = false;
 
         if (!empty($profilePhoto)) {
+            $iconName = NULL;
+
             if ($profilePhoto instanceof UploadedFile) {
                 $imageName = time() . '_' . $id . '.' . $profilePhoto->getClientOriginalExtension();
                 $moveFiles = $profilePhoto->storeAs(User::$storageParentFolderName . "/{$id}/" . User::$storageFolderName, $imageName, User::$fileSystems);
 
                 if ($moveFiles) {
+                    // Store Icon.
+                    if (!empty($profilePhotoIcon)) {
+                        $extensions = !empty(explode('/', mime_content_type($profilePhotoIcon))[1]) ? explode('/', mime_content_type($profilePhotoIcon))[1] : false;
+
+                        if (!empty($extensions) && in_array($extensions, User::$allowedExtensions)) {
+                            $icon              = substr($profilePhotoIcon, strpos($profilePhotoIcon, ',') + 1);
+                            $profilePhotoIcon  = str_replace(' ', '+', $profilePhotoIcon);
+                            $profilePhotoIcon  = base64_decode($icon);
+
+                            if ($profilePhotoIcon) {
+                                $iconName      = time() . '_' . $id . '.' . $extensions;
+                                $moveFilesIcon = Storage::disk(User::$fileSystems)->put(User::$storageParentFolderName . "/{$id}/" . User::$storageFolderNameIcon . "/" . $iconName, $profilePhotoIcon);
+                            }
+                        }
+                    } else {
+                        // Compress image code.
+                    }
+
                     $model = User::find($id);
 
                     if ($model) {
-                        $model->profile_photo = $imageName;
+                        $model->profile_photo      = $imageName;
+                        $model->profile_photo_icon = $iconName;
 
                         $create = $model->save();
                     }
@@ -325,11 +352,16 @@ class ClientsController extends \App\Http\Controllers\BaseController
                 $data['password'] = Hash::make($data['password']);
             }
 
+            if (isset($data['profile_photo_icon'])) {
+                $profilePhotoIcon = $data['profile_photo_icon'];
+                unset($data['profile_photo_icon']);
+            }
+
             $update = $record->update($data);
 
             if ($update) {
                 if (!empty($request->profile_photo)) {
-                    $this->profilePhoto($id, $request->profile_photo, 'update');
+                    $this->profilePhoto($id, $request->profile_photo, $profilePhotoIcon);
                 }
 
                 $find = $model::find($id);
@@ -490,6 +522,11 @@ class ClientsController extends \App\Http\Controllers\BaseController
                 unset($data['password']);
             }
 
+            if (!empty($data['profile_photo_icon'])) {
+                $profilePhotoIcon = $data['profile_photo_icon'];
+                unset($data['profile_photo_icon']);
+            }
+
             $validator = $model::validators($data, false, true, $user);
 
             $validator->validate();
@@ -504,7 +541,7 @@ class ClientsController extends \App\Http\Controllers\BaseController
 
             if ($update) {
                 if (!empty($request->profile_photo)) {
-                    $this->profilePhoto($id, $request->profile_photo, 'update');
+                    $this->profilePhoto($id, $request->profile_photo, $profilePhotoIcon);
                 }
 
                 $find = $model::find($id);

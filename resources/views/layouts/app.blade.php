@@ -17,9 +17,10 @@
     <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
     <script difer src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" defer></script>
-    <script difer src="{{ asset('js/scripts.js') }}" defer></script>
     <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=RPID2xBpzvHJDn2eUdkP7XNumDKdZtZm8hKwsPaInmywr8ABw62Qw92cxee8" defer></script>
     <script type="text/javascript" src="{{ asset('js/emojionearea.min.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/croppie.js') }}" defer></script>
+    <script difer src="{{ asset('js/scripts.js') }}" defer></script>
 
     @stack('scripts')
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
@@ -61,6 +62,7 @@
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
     @yield('styles')
     <link rel="stylesheet" href="{{ asset('css/emojionearea.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/croppie.min.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
@@ -347,8 +349,8 @@
                     <ul class="sidebar-menu" id="nav-accordion">
                         <p class="centered profile-pic">
                             <a href="{{ route('clients.myprofile') }}">
-                                @if(!empty(auth()->user()->profile_photo))
-                                    <img src="{{ auth()->user()->profile_photo }}" class="img-circle" width="80" style="border: unset;">
+                                @if(!empty(auth()->user()->profile_photo_icon))
+                                    <img src="{{ auth()->user()->profile_photo_icon }}" class="img-circle" width="80" style="border: unset;">
                                 @else
                                     <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80" style="border: unset;">
                                 @endif

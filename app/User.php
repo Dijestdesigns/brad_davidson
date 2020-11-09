@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'created_by', 'updated_by'
+        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'profile_photo_icon', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'created_by', 'updated_by'
     ];
 
     /**
@@ -75,6 +75,7 @@ class User extends Authenticatable
     public static $fileSystems             = 'public';
     public static $storageParentFolderName = 'client_photos';
     public static $storageFolderName       = 'profile';
+    public static $storageFolderNameIcon   = 'profile\\icons';
     public static $allowedExtensions       = ['jpg', 'jpeg', 'png', 'gif'];
 
     public static function getTableName()
@@ -121,6 +122,7 @@ class User extends Authenticatable
             'name'             => ['required', 'string', 'max:255'],
             'surname'          => ['nullable', 'string', 'max:255'],
             'profile_photo'    => ['nullable', 'mimes:' . implode(",", self::$allowedExtensions)],
+            'profile_photo_icon' => ['nullable', 'string'],
             'shipping_address' => ['nullable'],
             'gender'           => ['in:' . implode(",", array_keys(self::$genders))],
             'age'              => ['nullable', 'integer'],
@@ -163,6 +165,25 @@ class User extends Authenticatable
             return $profilePhoto = Storage::disk(self::$fileSystems)->url($fileName);
         } else {
             return $defaultProfilePhoto;
+        }
+    }
+
+    public function getProfilePhotoIconAttribute($value)
+    {
+        $defaultProfilePhotoIcon = asset('img/friends/fr-05.jpg');
+
+        if (empty($value)) {
+            return $defaultProfilePhotoIcon;
+        }
+
+        $storageParentFolderName = (str_ireplace("\\", "/", self::$storageParentFolderName));
+        $storageFolderNameIcon   = (str_ireplace("\\", "/", self::$storageFolderNameIcon));
+        $fileName                = $storageParentFolderName . '/' . $this->id . '/' . $storageFolderNameIcon . '/' . $value;
+
+        if (Storage::disk(self::$fileSystems)->has($fileName)) {
+            return $profilePhotoIcon = Storage::disk(self::$fileSystems)->url($fileName);
+        } else {
+            return $defaultProfilePhotoIcon;
         }
     }
 

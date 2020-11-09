@@ -207,7 +207,7 @@
                                         @foreach ($chatRoomUsers as $chatRoomUser)
                                             <li>
                                                 <a href="{{ route('chat.individual', $chatRoomUser->user_id) }}">
-                                                    <img class="img-circle" src="{{ !empty($chatRoomUser->user->profile_photo) ? $chatRoomUser->user->profile_photo : asset('img/friends/fr-05.jpg') }}" width="32">
+                                                    <img class="img-circle" src="{{ !empty($chatRoomUser->user->profile_photo_icon) ? $chatRoomUser->user->profile_photo_icon : asset('img/friends/fr-05.jpg') }}" width="32">
                                                     {{ $chatRoomUser->user->fullName }}
                                                 </a>
                                                 @can('chat_group_delete_user')
@@ -246,7 +246,7 @@
                                         @foreach ($users as $user)
                                             <li>
                                                 <a href="{{ route('chat.individual', $user->id) }}">
-                                                    <img class="img-circle" src="{{ $user->profile_photo }}" width="32">
+                                                    <img class="img-circle" src="{{ $user->profile_photo_icon }}" width="32">
                                                     {{ $user->fullName }}
                                                 </a>
                                                 <a class="btn btn-default btn-xs btn-round pull-right" href="{{ route('chat.individual', $user->id) }}" data-toggle="tooltip" data-placement="top" title="{{__('New Messages')}}">{{ $user->getUnread() }}</a>
