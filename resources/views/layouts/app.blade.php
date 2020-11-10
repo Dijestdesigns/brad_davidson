@@ -589,7 +589,7 @@
         <div class="footer-godaddy text-right">
             @auth
                 @can('support_access')
-                    <button class="btn btn-default support" title="{{ __('Support') }}" data-html="support-model"><i class="fa fa-question-circle"></i> {{ __('Support') }}</button>
+                    <!-- <button class="btn btn-default support" title="{{ __('Support') }}" data-html="support-model"><i class="fa fa-question-circle"></i> {{ __('Support') }}</button> -->
                 @endcan
             @endauth
             <span id="siteseal"></span>
