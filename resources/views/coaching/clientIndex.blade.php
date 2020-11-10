@@ -62,7 +62,7 @@
                                                                                     <span class="badge bg-important">{{ __('Pending') }}</span>
                                                                                 @endif
 
-                                                                                @if (false && $coaching->browse_file)
+                                                                                @if ($coaching->browse_file)
                                                                                     <div class="pull-right fs18">
                                                                                         <label for="browse-file-{{ $coaching->id }}-1-{{ $day }}" class="custom-file-upload">
                                                                                             <i class="fa fa-cloud-upload"></i> {{ __('Browse File') }}
