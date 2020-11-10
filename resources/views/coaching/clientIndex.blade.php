@@ -52,7 +52,7 @@
                                                                     @foreach ($coachings as $coaching)
                                                                         <li>
                                                                             <div class="task-checkbox">
-                                                                                <input id="op{{ $coaching->id }}" name='coaching[{{ $coaching->id }}]' type='checkbox' value="{{ $coaching->id }}" {{ ($coaching->isDone($weekStartDate, false, $day)) ? 'checked="true"' : '' }} disabled />
+                                                                                <input id="op{{ $coaching->id }}" name='coaching[{{ $coaching->id }}]' type='checkbox' value="{{ $coaching->id }}" {{ ($coaching->isDone($weekStartDate, false, $day)) ? 'checked="true"' : '' }} />
                                                                             </div>
                                                                             <div class="task-title">
                                                                                 <span class="task-title-sp">{{ $coaching->name }}</span>
