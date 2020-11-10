@@ -102,6 +102,9 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'permissions_create', 'display_name' => 'Create', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
             ['name' => 'permissions_edit', 'display_name' => 'Edit', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
             ['name' => 'permissions_delete', 'display_name' => 'Delete', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
+
+            ['name' => 'support_access', 'display_name' => 'Support Access', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+            ['name' => 'support_create', 'display_name' => 'Support Create', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
         ];
 
         Permission::insert($permissions);

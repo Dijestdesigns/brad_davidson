@@ -102,6 +102,10 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['permissions' => 'PermissionController']);
     });
 
+    Route::group(['namespace' => 'Support'], function () {
+        Route::resources(['support' => 'SupportController']);
+    });
+
     Route::get('/storage/link', function () {
         Artisan::call('storage:link');
 

@@ -629,6 +629,21 @@ jQuery(document).ready(function( $ ) {
       });
   });
 
+  $(".support").on('click', function () {
+      event.preventDefault();
+
+      var form    = $(this).parent(),
+          form    = (form && form.length > 1) ? form[0] : form,
+          message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+  });
+
   $(".createCoachings").on('click', function () {
       event.preventDefault();
 

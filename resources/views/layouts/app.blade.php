@@ -520,8 +520,78 @@
         </main>
     </div>
 
+    @auth
+        @can('support_access')
+            <div class="support-model d-none">
+                <form action="{{ route('support.store') }}" method="POST">
+                    @csrf
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="border-head h3">
+                                        {{ __('Support Forum') }}
+                                        <br />
+                                        <span class="h6">{{ __('Tell us your issue in brief please.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-{{ !empty(auth()->user()->surname) ? '6' : '12' }}">
+                                    <label>{{ __('Name') }}</label>
+                                    <input type="text" disabled="" value="{{ auth()->user()->name }}" class="form-control" />
+                                </div>
+
+                                @if (!empty(auth()->user()->surname))
+                                    <div class="col-md-6">
+                                        <label>{{ __('Surname') }}</label>
+                                        <input type="text" disabled="" value="{{ auth()->user()->surname }}" class="form-control" />
+                                    </div>
+                                @endif
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{ __('Email') }}</label>
+                                    <input type="email" disabled="" value="{{ auth()->user()->email }}" class="form-control" />
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{ __('Your Query') }}</label>
+                                    <textarea class="form-control" name="query" placeholder="{{ __('Describe here your queries.') }}" autofocus="true"></textarea>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" value="{{ auth()->user()->fullName }}" name="name" />
+                                    <input type="hidden" value="{{ auth()->user()->email }}" name="email" />
+                                    <button class="btn btn-primary"><i class="fa fa-save"></i></button>
+                                    <button type="button" class="btn btn-secondary btn-default bootbox-cancel close-model" style="float: none;"><i class="fa fa-close"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @endcan
+    @endauth
+
     <footer>
         <div class="footer-godaddy text-right">
+            @auth
+                @can('support_access')
+                    <button class="btn btn-default support" title="{{ __('Support') }}" data-html="support-model"><i class="fa fa-question-circle"></i> {{ __('Support') }}</button>
+                @endcan
+            @endauth
             <span id="siteseal"></span>
         </div>
     </footer>
