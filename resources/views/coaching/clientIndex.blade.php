@@ -147,11 +147,11 @@
 
                                                                                 @if ($coaching->browse_file)
                                                                                     <div class="pull-right fs18">
-                                                                                        <label for="browse-file-{{ $coaching->id }}-1-{{ $day }}" class="custom-file-upload">
+                                                                                        <label for="browse-file-{{ $coaching->id }}-2-{{ $day }}" class="custom-file-upload">
                                                                                             <i class="fa fa-cloud-upload"></i> {{ __('Browse File') }}
                                                                                         </label>
 
-                                                                                        <input type="file" class="form-control browse-file" id="browse-file-{{ $coaching->id }}-1-{{ $day }}" name="browse_file[{{ $coaching->id }}]" accept="image/*">
+                                                                                        <input type="file" class="form-control browse-file" id="browse-file-{{ $coaching->id }}-2-{{ $day }}" name="browse_file[{{ $coaching->id }}]" accept="image/*">
                                                                                     </div>
                                                                                 @endif
                                                                                 @if (!empty($coaching->clientcoaching($weekStartDate1, false, $day)->first()->browse_file))

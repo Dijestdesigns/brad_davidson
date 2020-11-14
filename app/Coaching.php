@@ -64,6 +64,12 @@ class Coaching extends BaseModel
         if (!empty($day)) {
             $day = (int)$day;
 
+            $getImage = $this->hasMany('App\ClientCoaching', 'coaching_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)))->where('day', $day)->whereNotNull('browse_file')->where('browse_file', '<>', '');
+
+            if (!empty($getImage->get()) && !$getImage->get()->isEmpty()) {
+                return $this->hasMany('App\ClientCoaching', 'coaching_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)))->where('day', $day)->whereNotNull('browse_file')->where('browse_file', '<>', '');
+            }
+
             return $this->hasOne('App\ClientCoaching', 'coaching_id', 'id')->where('user_id', $userId)->whereDate('date', date('Y-m-d', strtotime($date)))->where('day', $day);
         }
 
