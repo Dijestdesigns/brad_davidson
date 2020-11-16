@@ -432,6 +432,8 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate1 = new Carbon('2020-11-02');
         $weekStartDate2 = new Carbon('2020-11-09');
         $weekStartDate3 = new Carbon('2020-11-09');
+        $weekStartDate4 = new Carbon('2020-11-16');
+        $weekStartDate5 = new Carbon('2020-11-16');
         $coachings      = Coaching::all();
 
         $cleanup = $requestClonned->except(['page']);
@@ -466,7 +468,7 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3'));
+        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5'));
     }
 
     public function clientIndex()
@@ -475,10 +477,11 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $now            = Carbon::now();
         $weekStartDate  = new Carbon('2020-11-02');
         $weekStartDate1 = new Carbon('2020-11-09');
+        $weekStartDate2 = new Carbon('2020-11-16');
         $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
         $coachings      = Coaching::all();
 
-        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1'));
+        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2'));
     }
 }
