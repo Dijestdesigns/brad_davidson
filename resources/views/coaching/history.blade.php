@@ -240,7 +240,7 @@
                                         <div class="panel panel-primary m10">
                                             <div class="panel-heading">
                                                 <h3 class="panel-title">Day {{ $day }}</h3>
-                                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-up"></i></span>
                                             </div>
                                             <div class="panel-body disp-none">
                                                 <div class="table-responsive">
@@ -305,6 +305,86 @@
                                 </div>
                                 @php
                                     $weekStartDate5->addDays(1);
+                                @endphp
+                            @endfor
+
+                            <div class="col-md-12">
+                                <label>
+                                    <h2 id="header">{{ __('Week 4') }}</h2>
+                                </label>
+                            </div>
+
+                            @for ($day = 1; $day <= 7; $day++)
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-primary m10">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Day {{ $day }}</h3>
+                                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                                            </div>
+                                            <div class="panel-body disp-none">
+                                                <div class="table-responsive">
+                                                    <table class="table table-stripped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{ __('Date') }}</th>
+                                                                <th>{{ __('Coaching Name') }}</th>
+                                                                <th>{{ __('Image') }}</th>
+                                                                <th>{{ __('Attended') }}</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            @if (!empty($coachings) && !$coachings->isEmpty())
+                                                                @foreach ($coachings as $index => $coaching)
+                                                                    @php
+                                                                        $clientCoaching = $coaching->clientCoaching($weekStartDate7, $userId)->first();
+                                                                    @endphp
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            {{ $weekStartDate6->format('Y-m-d') }}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{ $coaching->name }}
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (!empty($clientCoaching->browse_file))
+                                                                                <a href="{{ $clientCoaching->browse_file }}" target="__blank">
+                                                                                    <img src="{{ $clientCoaching->browse_file }}" height="50" width="50" />
+                                                                                </a>
+                                                                            @else
+                                                                                {{ __('-') }}
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="badge {{ $coaching->isDone($weekStartDate7, $userId) ? 'bg-info' : 'bg-important' }}">
+                                                                                <i class="fa {{ $coaching->isDone($weekStartDate7, $userId) ? 'fa-check-circle' : 'fa-close' }}"></i>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php
+                                                                        $weekStartDate6->addDays(1);
+                                                                    @endphp
+                                                                @endforeach
+                                                            @else
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-center">
+                                                                        <label>
+                                                                            <mark>{{ __('No record found.') }}</mark>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @php
+                                    $weekStartDate7->addDays(1);
                                 @endphp
                             @endfor
 
