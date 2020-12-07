@@ -438,6 +438,8 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate7 = new Carbon('2020-11-23');
         $weekStartDate8 = new Carbon('2020-11-30');
         $weekStartDate9 = new Carbon('2020-11-30');
+        $weekStartDate10 = new Carbon('2020-12-07');
+        $weekStartDate11 = new Carbon('2020-12-07');
         $coachings      = Coaching::all();
 
         $cleanup = $requestClonned->except(['page']);
@@ -472,7 +474,7 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9'));
+        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9', 'weekStartDate10', 'weekStartDate11'));
     }
 
     public function clientIndex()
@@ -484,10 +486,11 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate2 = new Carbon('2020-11-16');
         $weekStartDate3 = new Carbon('2020-11-23');
         $weekStartDate4 = new Carbon('2020-11-30');
+        $weekStartDate5 = new Carbon('2020-12-07');
         $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
         $coachings      = Coaching::all();
 
-        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4'));
+        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5'));
     }
 }
