@@ -440,6 +440,8 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate9 = new Carbon('2020-11-30');
         $weekStartDate10 = new Carbon('2020-12-07');
         $weekStartDate11 = new Carbon('2020-12-07');
+        $weekStartDate12 = new Carbon('2020-12-14');
+        $weekStartDate13 = new Carbon('2020-12-14');
         $coachings      = Coaching::all();
 
         $cleanup = $requestClonned->except(['page']);
@@ -474,7 +476,7 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9', 'weekStartDate10', 'weekStartDate11'));
+        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9', 'weekStartDate10', 'weekStartDate11', 'weekStartDate12', 'weekStartDate13'));
     }
 
     public function clientIndex()
@@ -487,10 +489,11 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate3 = new Carbon('2020-11-23');
         $weekStartDate4 = new Carbon('2020-11-30');
         $weekStartDate5 = new Carbon('2020-12-07');
+        $weekStartDate6 = new Carbon('2020-12-14');
         $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
         $coachings      = Coaching::all();
 
-        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5'));
+        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6'));
     }
 }
