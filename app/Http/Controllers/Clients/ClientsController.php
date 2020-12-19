@@ -78,7 +78,7 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $modelQuery->groupBy($model::getTableName() . '.id');
         $modelQuery->select(DB::raw($model::getTableName() . ".*, SUM(" . ClientItem::getTableName() . '.qty) as qty'));
 
-        $total   = $modelQuery->count();
+        $total   = $modelQuery->get()->count();
         $records = $modelQuery->orderBy('name', 'ASC')->paginate($model::PAGINATE_RECORDS);
 
         $tags       = Tag::all();
