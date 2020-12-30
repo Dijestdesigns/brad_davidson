@@ -34,3 +34,19 @@ Broadcast::channel('rooms.{room}', function ($user, $chatRoomId) {
     return false;
     // return $chat->hasUser($user->id);
 });
+
+Broadcast::channel('dashboard-notifications', function ($user) {
+    return $user;
+    // return User::where('id', $id)->first();
+    // return ['id' => $id, 'senderId' => $senderId];
+});
+
+Broadcast::channel('dashboard-read-notifications', function ($user) {
+    return $user;
+});
+
+Broadcast::channel('users', function ($user) {
+    return $user;
+    // return User::where('id', $id)->first();
+    // return ['id' => $id, 'senderId' => $senderId];
+});

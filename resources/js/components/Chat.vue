@@ -191,6 +191,14 @@
                         }
                     });
                 }
+
+                Echo.join('users')
+                .joining((user) => {
+                    axios.post('/chat' + '/online/' + user.id);
+                })
+                .leaving((user) => {
+                    axios.post('/chat' + '/offline/' + user.id);
+                });
             }
         }
     }

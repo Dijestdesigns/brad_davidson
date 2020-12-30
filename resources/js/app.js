@@ -25,6 +25,7 @@ import moment from 'moment';
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('create-chat-user', require('./components/CreateChatUser.vue').default);
 Vue.component('chat', require('./components/Chat.vue').default);
+Vue.component('notifications', require('./components/Notifications.vue').default);
 
 Vue.filter('formatDate', function(value) {
     if (value) {

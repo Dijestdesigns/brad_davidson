@@ -59,6 +59,10 @@ Route::middleware($middlewares)->group(function() {
 
         Route::post('chat/markAsRead/{chatId}', 'ChatController@markAsRead')->name('chat.room.markAsRead');
 
+        Route::post('chat/online/{chatId}', 'ChatController@setOnline')->name('chat.room.setOnline');
+
+        Route::post('chat/offline/{chatId}', 'ChatController@setOffline')->name('chat.room.setOffline');
+
         Route::delete('chat/room/{chatRoomId}/destroyUser', 'ChatController@destroyUser')->name('chat.room.destroyUser');
     });
 
@@ -104,6 +108,11 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Support'], function () {
         Route::resources(['support' => 'SupportController']);
+    });
+
+    Route::group(['namespace' => 'Notifications'], function () {
+        Route::get('notifications/{userId}/read', 'NotificationsController@read')->name('notifications.read');
+        Route::resources(['notifications' => 'NotificationsController']);
     });
 
     Route::get('/storage/link', function () {

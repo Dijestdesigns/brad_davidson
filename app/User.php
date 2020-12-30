@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'profile_photo_icon', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'created_by', 'updated_by'
+        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'profile_photo_icon', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'is_online', 'created_by', 'updated_by'
     ];
 
     /**
@@ -77,6 +77,13 @@ class User extends Authenticatable
     public static $storageFolderName       = 'profile';
     public static $storageFolderNameIcon   = 'profile\\icons';
     public static $allowedExtensions       = ['jpg', 'jpeg', 'png', 'gif'];
+
+    const ONLINE  = '1';
+    const OFFLINE = '0';
+    public static $isOnline = [
+        self::ONLINE  => 'Online',
+        self::OFFLINE => 'Offline'
+    ];
 
     public static function getTableName()
     {
@@ -135,6 +142,7 @@ class User extends Authenticatable
             'created_by'       => $createdBy,
             'updated_by'       => $updatedBy,
             'is_superadmin'    => ['in:0,1'],
+            'is_online'        => ['in:' . implode(",", array_keys(self::$isOnline))],
             'tags.*'           => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
         ]);
 

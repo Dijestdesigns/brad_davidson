@@ -1639,6 +1639,42 @@ table.full-inputs .form-control[disabled] {
     width: 87% !important;
 }
 
+.dropdown-menu.extended li a .photo img {
+    border-radius: 2px 2px 2px 2px;
+    float: left;
+    height: 40px;
+    margin-right: 4px;
+    width: 40px;
+}
+
+.dropdown-menu.extended li a .subject {
+    display: block;
+}
+
+.dropdown-menu.extended li a .subject .from {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dropdown-menu.extended li a .subject .time {
+    font-size: 11px;
+    font-style: italic;
+    font-weight: bold;
+    position: absolute;
+    right: 5px;
+}
+
+.dropdown-menu.extended li a .message {
+    display: block !important;
+    font-size: 11px;
+}
+
+.dropdown-menu.extended li a .message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 145px;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;

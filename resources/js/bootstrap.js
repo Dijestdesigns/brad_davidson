@@ -9,6 +9,7 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
+    window.moment = require('moment');
 
     require('bootstrap');
 } catch (e) {}
@@ -23,6 +24,20 @@ window.axios = require('axios');
 window.bootbox = require('bootbox');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/*import VueTimeago from 'vue-timeago';
+
+Vue.use(VueTimeago, {
+    name: 'Timeago', // Component name, `Timeago` by default
+    locale: 'en', // Default locale
+
+    // We use `date-fns` under the hood
+    // So you can use all locales from it
+    /*locales: {
+        'zh-CN': require('date-fns/locale/zh_cn'),
+        ja: require('date-fns/locale/ja')
+    }*//*
+});*/
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

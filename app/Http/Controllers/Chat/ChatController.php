@@ -9,10 +9,12 @@ use App\ChatRoomUser;
 use App\Chat;
 use App\ChatStatus;
 use App\Log;
+use App\Notification;
 use DB;
 use App\Events\ChatRoomCreated;
 use App\Events\NewMessage;
 use App\Events\NewMessageIndividual;
+use App\Events\Notifications;
 use Illuminate\Http\UploadedFile;
 
 class ChatController extends \App\Http\Controllers\BaseController
@@ -438,6 +440,20 @@ class ChatController extends \App\Http\Controllers\BaseController
 
                 broadcast(new NewMessageIndividual($chat))->toOthers();
 
+                // Notification of dashboard.
+                if (isset($chat->user->is_online) && !$chat->user->is_online) {
+                    $create = Notification::create([
+                        'title'   => auth()->user()->name . ' ' . auth()->user()->surname,
+                        'message' => !empty($data['message']) ? $data['message'] : NULL,
+                        'href'    => route('chat.individual', $userId),
+                        'send_by' => $userId,
+                        'user_id' => $withUserId
+                    ]);
+
+                    // $notification = Notification::where('user_id', $withUserId)->where('is_read', Notification::UNREAD)->with('sendByUser')->get();
+                    broadcast(new Notifications($create))->toOthers();
+                }
+
                 $chat = $model::select(Chat::getTableName() . '.*', Chat::getTableName() . '.id as chat_id')->where(Chat::getTableName() . '.id', $chat->id)->with('sentUser')->first();
 
                 if (!empty($chat)) {
@@ -462,5 +478,23 @@ class ChatController extends \App\Http\Controllers\BaseController
         }
 
         return false;
+    }
+
+    public function setOnline(int $userId)
+    {
+        $user = User::find($userId);
+
+        $user->is_online = User::ONLINE;
+
+        return $user->save();
+    }
+
+    public function setOffline(int $userId)
+    {
+        $user = User::find($userId);
+
+        $user->is_online = User::OFFLINE;
+
+        return $user->save();
     }
 }
