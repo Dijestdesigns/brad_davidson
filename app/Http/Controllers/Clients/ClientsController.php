@@ -553,4 +553,28 @@ class ClientsController extends \App\Http\Controllers\BaseController
 
         return redirect('clients/me#')->with('error', __("There has been an error!"));
     }
+
+    public function testSignup(Request $request)
+    {
+        $model = new User();
+        $data  = $request->all();
+
+        $data['password'] = Hash::make('123456');
+        $data['password_confirmation'] = $data['password'];
+        $data['created_by'] = $model::$superadminId;
+
+        $validator = $model::validators($data);
+
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors()->first());
+        }
+
+        $create = $model::create($data);
+
+        if ($create) {
+            return $this->returnSuccess(__('User signup done successfully!'), $create);
+        }
+
+        return $this->returnNull();
+    }
 }
