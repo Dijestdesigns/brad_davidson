@@ -35,7 +35,7 @@ Broadcast::channel('rooms.{room}', function ($user, $chatRoomId) {
     // return $chat->hasUser($user->id);
 });
 
-Broadcast::channel('dashboard-notifications', function ($user) {
+Broadcast::channel('notifications.{id}', function ($user, $id) {
     return $user;
     // return User::where('id', $id)->first();
     // return ['id' => $id, 'senderId' => $senderId];

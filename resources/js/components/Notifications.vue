@@ -41,7 +41,7 @@
 
 <script>
     export default {
-        props: ['notificationsData'],
+        props: ['notificationsData', 'userId'],
 
         data() {
             return {
@@ -62,7 +62,7 @@
 
         methods: {
             listenForNewNotification() {
-                Echo.private('dashboard-notifications')
+                Echo.private('notifications.' + this.userId)
                 .listen('Notifications', (e) => {
                     if (typeof e !== typeof undefined && Object.values(e).length > 0) {
                         this.notifications.datas.splice(0, 0, e);

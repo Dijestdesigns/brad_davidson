@@ -36,7 +36,7 @@ class Notifications implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('channel-name');
-        return new PrivateChannel('dashboard-notifications');
+        return new PrivateChannel('notifications.' . $this->notification->user_id);
     }
 
     public function broadcastWith()

@@ -384,6 +384,19 @@ class ChatController extends \App\Http\Controllers\BaseController
                                 'user_id' => $chatRoomUser->user_id,
                                 'chat_id' => $chat->id
                             ]);
+
+                            if (!$chatRoomUser->user->is_online) {
+                                $createNotifications = Notification::create([
+                                    'title'   => auth()->user()->name . ' ' . auth()->user()->surname,
+                                    'message' => !empty($data['message']) ? $data['message'] : NULL,
+                                    'href'    => route('chat.group', $chatRoomUser->chat_room_id),
+                                    'send_by' => $userId,
+                                    'user_id' => $chatRoomUser->user_id
+                                ]);
+
+                                // $notification = Notification::where('user_id', $withUserId)->where('is_read', Notification::UNREAD)->with('sendByUser')->get();
+                                broadcast(new Notifications($createNotifications))->toOthers();
+                            }
                         }
                     }
 

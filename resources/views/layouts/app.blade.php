@@ -153,7 +153,7 @@
                                 </form>
                              </li>
                         </ul>
-                        <notifications :notifications-data="{{ (new App\Notification)->getNotifications() }}"></notifications>
+                        <notifications :notifications-data="{{ (new App\Notification)->getNotifications() }}" :user-id="{{ auth()->user()->id }}"></notifications>
                     </div>
                 @endif
             </header>
