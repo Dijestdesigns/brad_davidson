@@ -64,25 +64,27 @@
     <link rel="stylesheet" href="{{ asset('css/emojionearea.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/croppie.min.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    @if (auth()->user()->isProUnlimitedClients())
-        <style type="text/css">
-            ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
-                background: #1A9AD7;
-            }
+    @auth
+        @if (auth()->user()->isProUnlimitedClients())
+            <style type="text/css">
+                ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+                    background: #1A9AD7;
+                }
 
-            .chat-room-head {
-                background: #1A9AD7;
-            }
+                .chat-room-head {
+                    background: #1A9AD7;
+                }
 
-            .tab button.active {
-                background-color: #1A9AD7;
-                color: #ffffff;
-            }
-            .tab button:hover {
-                background-color: #1a9ad7e0;
-            }
-        </style>
-    @endif
+                .tab button.active {
+                    background-color: #1A9AD7;
+                    color: #ffffff;
+                }
+                .tab button:hover {
+                    background-color: #1a9ad7e0;
+                }
+            </style>
+        @endif
+    @endauth
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <link rel="stylesheet" href="{{ asset('css/jquery.fileupload.css') }}">
