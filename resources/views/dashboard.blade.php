@@ -9,7 +9,7 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h1 id="header">{{ __('Welcome to your ultimate comeback challenge') }}</h1>
+                    <h1 id="header" style="{{ auth()->user()->isProUnlimitedClients() ? 'margin-top: -20px;' : '' }}">{{ __('Welcome to your ultimate comeback challenge') }}</h1>
                 </div>
             </div>
         </section>
@@ -36,7 +36,7 @@
             </div>
         @endif
 
-        @if ($currentUserRole != 'Normal Clients')
+        @if (auth()->user()->isSuperAdmin())
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
@@ -81,7 +81,7 @@
         @endif
         <!-- /row -->
 
-        @if ($currentUserRole == 'Normal Clients')
+        @if (auth()->user()->isNormalClients() || auth()->user()->isProUnlimitedClients())
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
@@ -91,7 +91,7 @@
                                 <div class="product-panel-2 h250">
                                     <img src="{{ asset('img/icons/Message.I01.2k.png') }}" width="180" height="180" alt="">
                                     <div>&nbsp;</div>
-                                    <a class="btn btn-small btn-theme04" href="{{ route('chat.index') }}">
+                                    <a class="btn btn-small {{ auth()->user()->isProUnlimitedClients() ? 'btn-theme05' : 'btn-theme04' }}" href="{{ route('chat.index') }}">
                                         {{ __('Chat Now') }}
                                     </a>
                                 </div>
@@ -103,7 +103,7 @@
                                 <div class="product-panel-2 h250">
                                     <img src="{{ asset('img/icons/Card_calendar.png') }}" width="180" height="180" alt="">
                                     <div>&nbsp;</div>
-                                    <a class="btn btn-small btn-theme04" href="{{ route('calendar.index') }}">
+                                    <a class="btn btn-small {{ auth()->user()->isProUnlimitedClients() ? 'btn-theme05' : 'btn-theme04' }}" href="{{ route('calendar.index') }}">
                                         {{ __('Calendar') }}
                                     </a>
                                 </div>
@@ -115,7 +115,7 @@
                                 <div class="product-panel-2 h250">
                                     <img src="{{ asset('img/icons/Dumbbells_blue.png') }}" width="180" height="180" alt="">
                                     <div>&nbsp;</div>
-                                    <a class="btn btn-small btn-theme04" href="{{ route('coaching.client.index') }}">
+                                    <a class="btn btn-small {{ auth()->user()->isProUnlimitedClients() ? 'btn-theme05' : 'btn-theme04' }}" href="{{ route('coaching.client.index') }}">
                                         {{ __('Coaching') }}
                                     </a>
                                 </div>
@@ -127,7 +127,7 @@
                                 <div class="product-panel-2 h250">
                                     <img src="{{ asset('img/icons/Sticky_Notes_Green_.png') }}" width="180" height="180" alt="">
                                     <div>&nbsp;</div>
-                                    <a class="btn btn-small btn-theme04" href="{{ route('notes.index') }}">
+                                    <a class="btn btn-small {{ auth()->user()->isProUnlimitedClients() ? 'btn-theme05' : 'btn-theme04' }}" href="{{ route('notes.index') }}">
                                         {{ __('Notes') }}
                                     </a>
                                 </div>

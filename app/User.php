@@ -48,6 +48,7 @@ class User extends Authenticatable
 
     public static $roleAdmin   = 'Superadmin';
     public static $roleProUnlimitedClients = 'Pro Unlimited Clients';
+    public static $roleNormalClients = 'Normal Clients';
 
     public static $superadminId = 1;
 
@@ -94,6 +95,11 @@ class User extends Authenticatable
     public function isSuperAdmin()
     {
         return ($this->is_superadmin == '1' && $this->hasRole(self::$roleAdmin)) ? true : false;
+    }
+
+    public function isNormalClients()
+    {
+        return $this->hasRole(self::$roleNormalClients);
     }
 
     public function isProUnlimitedClients()
