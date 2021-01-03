@@ -81,6 +81,7 @@
                 }
                 .tab button:hover {
                     background-color: #1a9ad7e0;
+                    color: #ffffff;
                 }
             </style>
         @endif
