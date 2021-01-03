@@ -101,12 +101,12 @@ class User extends Authenticatable
         return $this->hasRole(self::$roleProUnlimitedClients);
     }
 
-    public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false, $user = null)
+    public static function validators(array $data, $returnBoolsOnly = false, $isUpdate = false, $user = null, $passwordLength = 8)
     {
         $createdBy = ['required', 'integer', 'exists:' . self::getTableName() . ',id'];
         $updatedBy = [];
         $email     = ['unique:' . self::getTableName() . ',email'];
-        $password  = ['required', 'string', 'min:8', 'confirmed'];
+        $password  = ['required', 'string', 'min:' . $passwordLength, 'confirmed'];
 
         if ($isUpdate) {
             $createdBy = [];

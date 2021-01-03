@@ -554,16 +554,20 @@ class ClientsController extends \App\Http\Controllers\BaseController
         return redirect('clients/me#')->with('error', __("There has been an error!"));
     }
 
-    public function testSignup(Request $request)
+    public function signUp(Request $request)
     {
         $model = new User();
         $data  = $request->all();
 
-        $data['password'] = Hash::make('123456');
+        if (empty($data['password'])) {
+            return $this->returnError(__("Please provide password."));
+        }
+
+        $data['password'] = Hash::make($data['password']);
         $data['password_confirmation'] = $data['password'];
         $data['created_by'] = $model::$superadminId;
 
-        $validator = $model::validators($data);
+        $validator = $model::validators($data, false, false, null, 4);
 
         if ($validator->fails()) {
             return $this->returnError($validator->errors()->first());
@@ -572,6 +576,14 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $create = $model::create($data);
 
         if ($create) {
+            // Assign role
+            if (!empty($data['role_id'])) {
+                $role = Role::find($data['role_id']);
+                if ($role) {
+                    $create->assignRole($role);
+                }
+            }
+
             return $this->returnSuccess(__('User signup done successfully!'), $create);
         }
 

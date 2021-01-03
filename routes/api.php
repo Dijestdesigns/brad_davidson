@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['web.auth.api']], function () {
     Route::group(['prefix' => 'client', 'namespace' => 'Clients'], function () {
         Route::group(['prefix' => 'signup'], function () {
-            Route::post('create', 'ClientsController@testSignup')->name('clients.signup.create');
+            Route::post('create', 'ClientsController@signUp')->name('clients.signup.create');
         });
     });
 });
