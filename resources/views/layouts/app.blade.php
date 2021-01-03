@@ -83,6 +83,14 @@
                     background-color: #1a9ad7e0;
                     color: #ffffff;
                 }
+
+                .saveNotes.btn.btn-primary {
+                    background: #1A9AD7;
+                }
+
+                .room-box h5 a {
+                    color: #1A9AD7;
+                }
             </style>
         @endif
     @endauth
