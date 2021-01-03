@@ -64,7 +64,7 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $records = $modelQuery->orderBy('name', 'ASC')->paginate($model::PAGINATE_RECORDS);
 
         // Client coaching informations.
-        $roles   = [3, 4];
+        $roles   = [3, 4, 5];
         $clients = User::select(User::getTableName() . '.*')
                        ->join(ModelHasRoles::getTableName(), User::getTableName() . '.id', '=', ModelHasRoles::getTableName() . '.model_id')
                        ->whereIn(ModelHasRoles::getTableName() . '.role_id', $roles)
@@ -446,6 +446,8 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate15 = new Carbon('2020-12-21');
         $weekStartDate16 = new Carbon('2020-12-28');
         $weekStartDate17 = new Carbon('2020-12-28');
+        $weekStartDate18 = new Carbon('2021-01-04');
+        $weekStartDate19 = new Carbon('2021-01-04');
         $coachings      = Coaching::all();
 
         $cleanup = $requestClonned->except(['page']);
@@ -480,7 +482,7 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $total   = $modelQuery->count();
         $records = $modelQuery->paginate($model::PAGINATE_RECORDS);
 
-        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9', 'weekStartDate10', 'weekStartDate11', 'weekStartDate12', 'weekStartDate13', 'weekStartDate14', 'weekStartDate15', 'weekStartDate16', 'weekStartDate17'));
+        return view('coaching.history', compact('request', 'isFiltered', 'total', 'records', 'now', 'userId', 'coachings', 'weekStartDate', 'userId', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9', 'weekStartDate10', 'weekStartDate11', 'weekStartDate12', 'weekStartDate13', 'weekStartDate14', 'weekStartDate15', 'weekStartDate16', 'weekStartDate17', 'weekStartDate18', 'weekStartDate19'));
     }
 
     public function clientIndex()
@@ -496,10 +498,11 @@ class CoachingController extends \App\Http\Controllers\BaseController
         $weekStartDate6 = new Carbon('2020-12-14');
         $weekStartDate7 = new Carbon('2020-12-21');
         $weekStartDate8 = new Carbon('2020-12-28');
+        $weekStartDate9 = new Carbon('2021-01-04');
         $currentWeekDay = $now->dayOfWeek;
         $userId         = $user->id;
         $coachings      = Coaching::all();
 
-        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8'));
+        return view('coaching.clientIndex', compact('coachings', 'now', 'weekStartDate', 'currentWeekDay', 'weekStartDate1', 'weekStartDate2', 'weekStartDate3', 'weekStartDate4', 'weekStartDate5', 'weekStartDate6', 'weekStartDate7', 'weekStartDate8', 'weekStartDate9'));
     }
 }
