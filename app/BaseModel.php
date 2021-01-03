@@ -29,7 +29,7 @@ class BaseModel extends Model
                     $find->save();
                 }*/
 
-                DB::select("UPDATE `notifications` SET `is_read` = '1' WHERE `id` = '" . $id . "'");
+                DB::update("UPDATE `notifications` SET `is_read` = '1' WHERE `id` = '" . $id . "'");
 
                 // broadcast(new NotificationsRead($id))->toOthers();
             }
