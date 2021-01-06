@@ -42,35 +42,35 @@
                     <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-2">
-                            <div class="gray-panel pn">
-                                <div class="gray-header">
-                                    <h5><p>{{ __('Total Items') }}</p></h5>
+                            <div class="darkblue-panel pn height-225">
+                                <div class="darkblue-header">
+                                    <h5><p class="font-20">{{ __('Total Items') }}</p></h5>
                                 </div>
-                                <p class="user"><i class="fa fa-object-group"></i>&nbsp; {{ $itemCount }}</p>
+                                <p class="user font-18 color-white padding-top-15"><!-- <i class="fa fa-object-group"></i>&nbsp;  -->{{ $itemCount }}</p>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="yellow-panel pn">
-                                <div class="yellow-header">
-                                    <h5><p>{{ __('Total Clients') }}</p></h5>
+                            <div class="darkblue-panel pn height-225">
+                                <div class="darkblue-header">
+                                    <h5><p class="font-20">{{ __('Total Clients') }}</p></h5>
                                 </div>
-                                <p class="user"><i class="fa fa-users"></i>&nbsp;{{ $userCount }}</p>
+                                <p class="user font-18 color-white padding-top-15"><!-- <i class="fa fa-users"></i>&nbsp; -->{{ $userCount }}</p>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="green-panel pn">
-                                <div class="green-header">
-                                    <h5><p>{{ __('Total Stock') }}</p></h5>
+                            <div class="darkblue-panel pn height-225">
+                                <div class="darkblue-header">
+                                    <h5><p class="font-20">{{ __('Total Stock') }}</p></h5>
                                 </div>
-                                <p class="user"><i class="fa fa-database"></i>&nbsp;{{ $totalStocks }}</p>
+                                <p class="user font-18 color-white padding-top-15"><!-- <i class="fa fa-database"></i>&nbsp; -->{{ $totalStocks }}</p>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="red-panel pn">
-                                <div class="red-header">
-                                    <h5><p>{{ __('Total Values') }}</p></h5>
+                            <div class="darkblue-panel pn height-225">
+                                <div class="darkblue-header">
+                                    <h5><p class="font-20">{{ __('Total Values') }}</p></h5>
                                 </div>
-                                <p class="user"><i class="fa fa-money"></i>&nbsp;${{ $totalValues }}</p>
+                                <p class="user font-18 color-white padding-top-15"><!-- <i class="fa fa-money"></i>&nbsp; -->${{ $totalValues }}</p>
                             </div>
                         </div>
                     </div>
@@ -224,43 +224,54 @@
         @endcan
 
         @can('logs_access')
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-12">
                     <div class="border-head">
                         <h3><i class="fa fa-angle-right"></i> {{ __('Recent activity (Top 10)') }}</h3>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+            </div> -->
+            <div class="row mt">
                 <div class="col-lg-12 {{ ((!empty($logs) && !$logs->isEmpty())) ? 'ds' : '' }}">
-                    @if (!empty($logs) && !$logs->isEmpty())
-                        @foreach ($logs as $log)
-                            @if (empty($log->userCreatedBy))
-                                @continue
-                            @endif
+                    <div class="white-panel">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h5><i class="fa fa-tasks"></i> {{ __('Recent activity (Top 10)') }}</h5>
+                            </div>
 
-                            <div class="desc">
-                                <div class="thumb">
-                                    <a href="{{ route('logs.index', ['hash' => $log->id]) }}" target="__blank">
-                                        <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                                    </a>
-                                </div>
-                                <div class="details">
-                                    <p>
-                                        <a href="#">{{ $log->userCreatedBy->name }}</a> {{ $log->message }} - {{ $log->created_at }} ({{ $log->ip_address }})<br>
-                                    </p>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="desc text-center">
-                            <div class="details">
-                                <p>
-                                    <mark>{{ __('No record found!') }}</mark>
-                                </p>
-                            </div>
+                            <br />
                         </div>
-                    @endif
+                        <div class="custom-check goleft mt">
+                            @if (!empty($logs) && !$logs->isEmpty())
+                                @foreach ($logs as $log)
+                                    @if (empty($log->userCreatedBy))
+                                        @continue
+                                    @endif
+
+                                    <div class="desc">
+                                        <div class="thumb">
+                                            <a href="{{ route('logs.index', ['hash' => $log->id]) }}" target="__blank">
+                                                <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
+                                            </a>
+                                        </div>
+                                        <div class="details">
+                                            <p>
+                                                <a href="#">{{ $log->userCreatedBy->name }}</a> {{ $log->message }} - {{ $log->created_at }} ({{ $log->ip_address }})<br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="desc text-center">
+                                    <div class="details">
+                                        <p>
+                                            <mark>{{ __('No record found!') }}</mark>
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         @endcan

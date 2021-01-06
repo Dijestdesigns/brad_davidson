@@ -1675,6 +1675,26 @@ table.full-inputs .form-control[disabled] {
     width: 145px;
 }
 
+.font-20 {
+    font-size: 20px !important;
+}
+
+.font-18 {
+    font-size: 18px !important;
+}
+
+.color-white {
+    color: white;
+}
+
+.height-225 {
+    height: 225px;
+}
+
+.padding-top-15 {
+    padding-top: 15%;
+}
+
 @media (max-width:320px)  {
     .noContent .saveNotes {
         position: unset;
