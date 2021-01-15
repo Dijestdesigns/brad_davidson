@@ -2249,7 +2249,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['notificationsData'],
+  props: ['notificationsData', 'userId'],
   data: function data() {
     return {
       notifications: this.notificationsData,
@@ -2266,7 +2266,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     listenForNewNotification: function listenForNewNotification() {
       var _this = this;
 
-      Echo["private"]('dashboard-notifications').listen('Notifications', function (e) {
+      Echo["private"]('notifications.' + this.userId).listen('Notifications', function (e) {
         if (_typeof(e) !== ( true ? "undefined" : undefined) && Object.values(e).length > 0) {
           _this.notifications.datas.splice(0, 0, e);
 

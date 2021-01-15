@@ -327,6 +327,22 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('resource_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('resources*') ? 'active' : '') }}" href="{{ route('resources.index') }}">
+                                    <!-- <i class="fa fa-history"></i> -->
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         viewBox="0 0 32 32" style="enable-background:new 0 0 24 24;" width="24px" height="24px" xml:space="preserve">
+                                    <title></title>
+                                    <g id="folder">
+                                        <polygon class="st0" points="25,12 25,7 3,7 3,25 25,25 29,12" id="menu-svg" />
+                                        <polygon class="st0" points="25,25 3,25 7,12 29,12" id="menu-svg" />
+                                    </g>
+                                    </svg>
+                                    <span>{{ __('Resources') }}</span>
+                                </a>
+                            </li>
+                        @endcan
                         @can('roles_access')
                             <li>
                                 <a href="{{ route('roles.index') }}" class="{{ (request()->is('roles*') ? 'mm-active' : '') }}">

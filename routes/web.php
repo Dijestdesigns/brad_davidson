@@ -115,6 +115,11 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['notifications' => 'NotificationsController']);
     });
 
+    Route::group(['namespace' => 'Resources'], function () {
+        Route::get('download/{id}', 'ResourceController@download')->name('resources.download');
+        Route::resources(['resources' => 'ResourceController']);
+    });
+
     Route::get('/storage/link', function () {
         Artisan::call('storage:link');
 

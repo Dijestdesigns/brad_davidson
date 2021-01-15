@@ -105,6 +105,13 @@ class DefaultUserSeeder extends Seeder
 
             ['name' => 'support_access', 'display_name' => 'Support Access', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
             ['name' => 'support_create', 'display_name' => 'Support Create', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+            ['name' => 'support_update', 'display_name' => 'Support Update', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+
+            ['name' => 'resource_access', 'display_name' => 'Resource Access', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            // ['name' => 'resource_show', 'display_name' => 'Resource Show', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            ['name' => 'resource_create', 'display_name' => 'Resource Create', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            // ['name' => 'resource_edit', 'display_name' => 'Resource Edit', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            ['name' => 'resource_delete', 'display_name' => 'Resource Delete', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
         ];
 
         Permission::insert($permissions);
