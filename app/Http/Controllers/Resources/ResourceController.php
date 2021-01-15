@@ -224,7 +224,7 @@ class ResourceController extends \App\Http\Controllers\BaseController
                 'Content-Type: application/pdf',
             );
 
-            return response()->download(public_path() . '\storage\\resources\\' . basename($record->url), basename($record->url), $headers);
+            return response()->download(public_path() . '/storage/resources/' . basename($record->url), basename($record->url), $headers);
         }
 
         abort(404);
