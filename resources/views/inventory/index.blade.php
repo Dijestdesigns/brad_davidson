@@ -2,13 +2,7 @@
 
 @section('content')
     <section class="wrapper site-min-height">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="border-head">
-                    <h3><i class="fa fa-angle-right"></i> {{ __('Inventory') }}</h3>
-                </div>
-            </div>
-        </div>
+        @include('ultimateLogo')
 
         @if (session('success'))
             <div class="alert alert-success" role="alert">
@@ -246,7 +240,7 @@
                                     <label>{{ __('Choose destination folder') }}&nbsp;:&nbsp;</label>
 
                                     <div class="row col-md-10 col-xs-12">
-                                        <input type="number" min="0" max="{{ $record->qty }}" name="amount" class="form-control" placeholder="Enter Amount" value="1" />
+                                        <input type="number" min="0" max="{{ $record->qty }}" name="amount" class="form-control" placeholder="{{ __('Enter Amount') }}" value="1" />
                                     </div>
                                     <div class="row col-md-2">
                                         <label style="margin-top: 6px;">&nbsp;<mark>{{ __('of') }}&nbsp;<span style="font-weight: bold;">{{ $record->qty }}</span></mark></label>

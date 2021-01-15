@@ -62,7 +62,20 @@ class Log extends BaseModel
         $oldData = collect(json_decode($this->old_data, true));
         $newData = collect(json_decode($this->new_data, true));
 
-        $differences = $oldData->diffAssoc($newData);
+        $isNested = false;
+        if (!empty($newData)) {
+            $isNested = is_array($newData->first());
+        }
+
+        if ($isNested) {
+            foreach ($newData as $data) {
+                $differences[] = $oldData->diffAssoc($data);
+            }
+
+            $differences = json_encode($differences);
+        } else {
+            $differences = $oldData->diffAssoc($newData);
+        }
 
         return $differences;
     }

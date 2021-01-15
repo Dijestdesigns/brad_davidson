@@ -48,25 +48,35 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'inventories_move_to_folder', 'display_name' => 'Inventories Move To Folder', 'group_name' => 'Inventories', 'group_slug' => 'inventories', 'guard_name' => 'admin'],
             ['name' => 'inventories_delete', 'display_name' => 'Inventories Delete', 'group_name' => 'Inventories', 'group_slug' => 'inventories', 'guard_name' => 'admin'],
 
-            ['name' => 'training_access', 'display_name' => 'Training Access', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_create', 'display_name' => 'Training Create', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_edit', 'display_name' => 'Training Edit', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
-            ['name' => 'training_delete', 'display_name' => 'Training Delete', 'group_name' => 'Training', 'group_slug' => 'training', 'guard_name' => 'admin'],
+            ['name' => 'coaching_access', 'display_name' => 'Coaching Access', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_create', 'display_name' => 'Coaching Create', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_edit', 'display_name' => 'Coaching Edit', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_delete', 'display_name' => 'Coaching Delete', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_show_to_clients', 'display_name' => 'Coaching Show to Clients', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_access', 'display_name' => 'Coaching Info Access', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_create', 'display_name' => 'Coaching Info Create', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
+            ['name' => 'coaching_info_edit', 'display_name' => 'Coaching Info Edit', 'group_name' => 'Coaching', 'group_slug' => 'coaching', 'guard_name' => 'admin'],
 
             ['name' => 'chat_access', 'display_name' => 'Chat Access', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_create', 'display_name' => 'Chat Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_edit', 'display_name' => 'Chat Edit', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
             ['name' => 'chat_delete', 'display_name' => 'Chat Delete', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_access', 'display_name' => 'Chat Group Access', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_add_user', 'display_name' => 'Chat Group Add User', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_create', 'display_name' => 'Chat Group Create', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_edit', 'display_name' => 'Chat Group Edit', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_delete', 'display_name' => 'Chat Group Delete', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
+            ['name' => 'chat_group_delete_user', 'display_name' => 'Chat Group Delete User', 'group_name' => 'Chat', 'group_slug' => 'chat', 'guard_name' => 'admin'],
 
             ['name' => 'calendar_access', 'display_name' => 'Calendar Access', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
             ['name' => 'calendar_create', 'display_name' => 'Calendar Create', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
             ['name' => 'calendar_edit', 'display_name' => 'Calendar Edit', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
             ['name' => 'calendar_delete', 'display_name' => 'Calendar Delete', 'group_name' => 'Calendar', 'group_slug' => 'calendar', 'guard_name' => 'admin'],
 
-            ['name' => 'diary_access', 'display_name' => 'Diary Access', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_create', 'display_name' => 'Diary Create', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_edit', 'display_name' => 'Diary Edit', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
-            ['name' => 'diary_delete', 'display_name' => 'Diary Delete', 'group_name' => 'Diary', 'group_slug' => 'diary', 'guard_name' => 'admin'],
+            ['name' => 'note_access', 'display_name' => 'Note Access', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_create', 'display_name' => 'Note Create', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_edit', 'display_name' => 'Note Edit', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
+            ['name' => 'note_delete', 'display_name' => 'Note Delete', 'group_name' => 'Notes', 'group_slug' => 'notes', 'guard_name' => 'admin'],
 
             ['name' => 'supplements_access', 'display_name' => 'Supplements Access', 'group_name' => 'Supplements', 'group_slug' => 'supplements', 'guard_name' => 'admin'],
             ['name' => 'supplements_create', 'display_name' => 'Supplements Create', 'group_name' => 'Supplements', 'group_slug' => 'supplements', 'guard_name' => 'admin'],
@@ -81,6 +91,8 @@ class DefaultUserSeeder extends Seeder
 
             ['name' => 'trash_access', 'display_name' => 'Trash Access', 'group_name' => 'Trashes', 'group_slug' => 'trashes', 'guard_name' => 'admin'],
 
+            ['name' => 'constant_update', 'display_name' => 'Constants Update', 'group_name' => 'Constants', 'group_slug' => 'constants', 'guard_name' => 'admin'],
+
             ['name' => 'roles_access', 'display_name' => 'Access', 'group_name' => 'Roles', 'group_slug' => 'roles', 'guard_name' => 'admin'],
             ['name' => 'roles_create', 'display_name' => 'Create', 'group_name' => 'Roles', 'group_slug' => 'roles', 'guard_name' => 'admin'],
             ['name' => 'roles_edit', 'display_name' => 'Edit', 'group_name' => 'Roles', 'group_slug' => 'roles', 'guard_name' => 'admin'],
@@ -90,6 +102,16 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'permissions_create', 'display_name' => 'Create', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
             ['name' => 'permissions_edit', 'display_name' => 'Edit', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
             ['name' => 'permissions_delete', 'display_name' => 'Delete', 'group_name' => 'Permissions', 'group_slug' => 'permissions', 'guard_name' => 'admin'],
+
+            ['name' => 'support_access', 'display_name' => 'Support Access', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+            ['name' => 'support_create', 'display_name' => 'Support Create', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+            ['name' => 'support_update', 'display_name' => 'Support Update', 'group_name' => 'Support', 'group_slug' => 'support', 'guard_name' => 'admin'],
+
+            ['name' => 'resource_access', 'display_name' => 'Resource Access', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            // ['name' => 'resource_show', 'display_name' => 'Resource Show', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            ['name' => 'resource_create', 'display_name' => 'Resource Create', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            // ['name' => 'resource_edit', 'display_name' => 'Resource Edit', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+            ['name' => 'resource_delete', 'display_name' => 'Resource Delete', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
         ];
 
         Permission::insert($permissions);
@@ -113,7 +135,7 @@ class DefaultUserSeeder extends Seeder
         $assignCoachesPermissions = $getPermissions->map(function($item) {
             $shiv = [
                 'clients_access', 'clients_create', 'clients_show', 'clients_edit',
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit'
             ];
@@ -145,10 +167,9 @@ class DefaultUserSeeder extends Seeder
             'guard_name' => 'admin'
         ]);
 
-        $assignCoachesPermissions = $getPermissions->map(function($item) {
+        $assignVIPClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'clients_access', 'clients_create', 'clients_show', 'clients_edit',
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
                 'diary_access', 'diary_create', 'diary_edit',
@@ -159,7 +180,7 @@ class DefaultUserSeeder extends Seeder
                 return [$item->name];
             }
         });
-        $vipClientsRole->givePermissionTo($assignCoachesPermissions);
+        $vipClientsRole->givePermissionTo($assignVIPClientsPermissions);
 
         $coaches = User::create([
             'id'            => 3,
@@ -175,16 +196,15 @@ class DefaultUserSeeder extends Seeder
         }
 
         // Normal Clients.
-        $vipClientsRole = Role::create([
+        $normalClientsRole = Role::create([
             'id' => 4,
             'name' => 'Normal Clients',
             'guard_name' => 'admin'
         ]);
 
-        $assignCoachesPermissions = $getPermissions->map(function($item) {
+        $assignNormalClientsPermissions = $getPermissions->map(function($item) {
             $shiv = [
-                'clients_access', 'clients_create', 'clients_show', 'clients_edit',
-                'training_access', 'training_create', 'training_edit',
+                'coaching_show_to_clients',
                 'chat_access', 'chat_create', 'chat_edit',
                 'calendar_access', 'calendar_create', 'calendar_edit',
                 'diary_access', 'diary_create', 'diary_edit',
@@ -195,7 +215,7 @@ class DefaultUserSeeder extends Seeder
                 return [$item->name];
             }
         });
-        $vipClientsRole->givePermissionTo($assignCoachesPermissions);
+        $normalClientsRole->givePermissionTo($assignNormalClientsPermissions);
 
         $coaches = User::create([
             'id'            => 4,

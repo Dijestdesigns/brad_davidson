@@ -12,7 +12,7 @@ Website: http://Alvarez.is/
 */
 
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+@import url(https://fonts.googleapis.com/css?family=Ruda:400,700,900);
 
 /* BASIC THEME CONFIGURATION */
 body {
@@ -153,6 +153,21 @@ a, a:hover, a:focus {
   color: #fff;
   background-color: #da4453;
   border-color: #da4453;
+}
+
+.btn-theme05 {
+  color: #fff;
+  background-color: #1A9AD7;
+  border-color: #1A9AD7;
+}
+.btn-theme05:hover,
+.btn-theme05:focus,
+.btn-theme05:active,
+.btn-theme05.active,
+.open .dropdown-toggle.btn-theme04 {
+  color: #fff;
+  background-color: #1a9ad7e0;
+  border-color: #1a9ad7e0;
 }
 
 .btn-clear-g {
@@ -714,7 +729,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     margin-top: 0;
     opacity: 0;
     position: absolute;
-    left: 7px;
+    /*left: 7px;*/
+    left: 105px;
     top: -18px;
     transition: all 0.25s ease 0s;
     width: 0;
@@ -1459,10 +1475,10 @@ PANELS CONFIGURATIONS
 }
 
 /* Calendar Configuration */
-#calendar {
+/*#calendar {
 	color: white;
 	padding: 0px !important;
-}
+}*/
 .calendar-month-header {
 	background: #43b1a9;
 }
@@ -2827,6 +2843,14 @@ ul.inbox-pagination li {
     border-right: 1px solid #e5e8ef;
 }
 
+.chat-body {
+    /*max-height: 700px !important;*/
+    height: 70vh;
+    /*height: calc(var(--vh, 1vh) * 100);*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .chat-room .right-side {
     width: 25%;
     background: #fff;
@@ -2836,14 +2860,14 @@ ul.inbox-pagination li {
     background: #3498db;
     color: #FFFFFF;
     min-height: 70px;
-    padding: 10px;
+    padding: 15px;
     border-left: 1px solid #3498db;
     margin-left: -1px;
     position: relative;
 }
 
 
-.chat-room .user-head i {
+.chat-room .user-head i:not(.excluded) {
    float: left;
    font-size: 40px;
    margin-right: 10px;
@@ -2958,7 +2982,7 @@ ul.chat-user li a:hover{
     background: #f6f6f6;
     padding: 15px;
     height: 70px;
-    width: 75%;
+    width: 75%; /*100%*/
     position: absolute;
     bottom: 0;
     border-right: 1px solid #E5E8EF;
@@ -3099,7 +3123,7 @@ ul.chat-available-user li a:hover {
 
 .chat-txt {
     float: left;
-    width: 75%;
+    width: 100%; /*75%*/
     margin-right: 5px;
 }
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,28 +31,56 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['tags' => 'TagsController']);
     });
 
-    Route::group(['namespace' => 'Folders'], function () {
-        Route::resources(['folders' => 'FoldersController']);
+    Route::group(['namespace' => 'Clients'], function () {
+        Route::get('clients/me', 'ClientsController@myProfile')->name('clients.myprofile');
+        Route::post('clients/me/update', 'ClientsController@updateProfile')->name('clients.myprofile.update');
+        Route::resources(['clients' => 'ClientsController']);
     });
 
-    Route::group(['namespace' => 'Training'], function () {
-        Route::resources(['training' => 'TrainingController']);
+    Route::group(['namespace' => 'Coaching'], function () {
+        Route::post('coaching/client/store', 'CoachingController@clientStore')->name('coaching.client.store');
+        Route::post('coaching/client/{userId}/info/create', 'CoachingController@clientInfoCreate')->name('coaching.client.info.create');
+        Route::post('coaching/client/{userId}/info/update', 'CoachingController@clientInfoUpdate')->name('coaching.client.info.update');
+        Route::get('coaching/client/{userId}/history', 'CoachingController@clientHistory')->name('coaching.client.history');
+        Route::get('coaching/client/index', 'CoachingController@clientIndex')->name('coaching.client.index');
+        Route::resources(['coaching' => 'CoachingController']);
+    });
+
+    Route::group(['namespace' => 'Constants'], function () {
+        Route::resources(['constants' => 'ConstantsController']);
     });
 
     Route::group(['namespace' => 'Chat'], function () {
         Route::resources(['chat' => 'ChatController']);
+        Route::get('chat/{userId}/individual', 'ChatController@individual')->name('chat.individual');
+        Route::get('chat/{groupId}/group', 'ChatController@group')->name('chat.group');
+
+        Route::post('chat/individual', 'ChatController@individualPost')->name('chat.individual.post');
+        Route::post('chat/room', 'ChatController@groupPost')->name('chat.room.post');
+
+        Route::post('chat/markAsRead/{chatId}', 'ChatController@markAsRead')->name('chat.room.markAsRead');
+
+        Route::post('chat/online/{chatId}', 'ChatController@setOnline')->name('chat.room.setOnline');
+
+        Route::post('chat/offline/{chatId}', 'ChatController@setOffline')->name('chat.room.setOffline');
+
+        Route::delete('chat/room/{chatRoomId}/destroyUser', 'ChatController@destroyUser')->name('chat.room.destroyUser');
     });
 
     Route::group(['namespace' => 'Calendar'], function () {
         Route::resources(['calendar' => 'CalendarController']);
+        Route::post('calendar/update', 'CalendarController@update')->name('calendar.update');
     });
 
-    Route::group(['namespace' => 'Diary'], function () {
-        Route::resources(['diary' => 'DiaryController']);
+    Route::group(['namespace' => 'Notes'], function () {
+        Route::resources(['notes' => 'NoteController']);
     });
 
     Route::group(['namespace' => 'Supplements'], function () {
         Route::resources(['supplements' => 'SupplementsController']);
+        Route::get('supplements/{userId}/{date}/edit', 'SupplementsController@edit')->name('supplements.edit');
+        Route::post('supplements/{userId}/{date}/update', 'SupplementsController@update')->name('supplements.update');
+        Route::delete('supplements/{userId}/{date}/destroy', 'SupplementsController@destroy')->name('supplements.destroy');
     });
 
     Route::group(['namespace' => 'StockLevels'], function () {
@@ -76,6 +105,20 @@ Route::middleware($middlewares)->group(function() {
 
     Route::group(['namespace' => 'Permissions', 'middleware' => ['permission:permissions_access']], function () {
         Route::resources(['permissions' => 'PermissionController']);
+    });
+
+    Route::group(['namespace' => 'Support'], function () {
+        Route::resources(['support' => 'SupportController']);
+    });
+
+    Route::group(['namespace' => 'Notifications'], function () {
+        Route::get('notifications/{userId}/read', 'NotificationsController@read')->name('notifications.read');
+        Route::resources(['notifications' => 'NotificationsController']);
+    });
+
+    Route::group(['namespace' => 'Resources'], function () {
+        Route::get('download/{id}', 'ResourceController@download')->name('resources.download');
+        Route::resources(['resources' => 'ResourceController']);
     });
 
     Route::get('/storage/link', function () {

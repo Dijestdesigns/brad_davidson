@@ -16,7 +16,13 @@
     <script difer src="{{ asset('js/jquery.scrollTo.min.js') }}" defer></script>
     <!-- <script difer src="{{ asset('js/bootstrap.min.js') }}" defer></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+    <script difer src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" defer></script>
+    <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=RPID2xBpzvHJDn2eUdkP7XNumDKdZtZm8hKwsPaInmywr8ABw62Qw92cxee8" defer></script>
+    <script type="text/javascript" src="{{ asset('js/emojionearea.min.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/croppie.js') }}" defer></script>
     <script difer src="{{ asset('js/scripts.js') }}" defer></script>
+
+    @stack('scripts')
     <!-- <script difer src="{{ asset('js/lightslider.js') }}" defer></script> -->
     <!-- <script src="{{ asset('js/jquery.ui.widget.js') }}" defer></script> -->
     <!-- The Templates plugin is included to render the upload/download listings -->
@@ -36,18 +42,58 @@
     <script src="{{ asset('js/jquery.fileupload.main.js') }}" defer></script> -->
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Ruda:400,700,900" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    @auth
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    @else
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    @endauth
+
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style-responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/to-do.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/lightslider.css') }}" rel="stylesheet"> -->
+    @yield('styles')
+    <link rel="stylesheet" href="{{ asset('css/emojionearea.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/croppie.min.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    @auth
+        @if (auth()->user()->isProUnlimitedClients())
+            <style type="text/css">
+                ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+                    background: #1A9AD7;
+                }
+
+                .chat-room-head {
+                    background: #1A9AD7;
+                }
+
+                .tab button.active {
+                    background-color: #1A9AD7;
+                    color: #ffffff;
+                }
+                .tab button:hover {
+                    background-color: #1a9ad7e0;
+                    color: #ffffff;
+                }
+
+                .saveNotes.btn.btn-primary {
+                    background: #1A9AD7;
+                }
+
+                .room-box h5 a {
+                    color: #1A9AD7;
+                }
+            </style>
+        @endif
+    @endauth
     <!-- blueimp Gallery styles -->
     <!-- <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <link rel="stylesheet" href="{{ asset('css/jquery.fileupload.css') }}">
@@ -111,238 +157,57 @@
                 </div>
             </div>
         </nav> -->
-        <header class="header black-bg">
-            @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
-                <div class="sidebar-toggle-box">
-                    <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
-                </div>
-            @endif
-            <!--logo start-->
-            <a href="{{ route("dashboard") }}" class="logo"><b>{{ config('app.name', 'Brad Davidson') }}</b></a>
-            <!--logo end-->
-            <!-- <div class="nav notify-row" id="top_menu">
-                <!--  notification start --><!--
-                <ul class="nav top-menu">
-                    <!-- settings start --><!--
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                        <i class="fa fa-tasks"></i>
-                        <span class="badge bg-theme">4</span>
-                        </a>
-                        <ul class="dropdown-menu extended tasks-bar">
-                            <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <p class="green">You have 4 pending tasks</p>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Dashio Admin Panel</div>
-                                        <div class="percent">40%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Database Update</div>
-                                        <div class="percent">60%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Product Development</div>
-                                        <div class="percent">80%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Payments Sent</div>
-                                        <div class="percent">70%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                                            <span class="sr-only">70% Complete (Important)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="external">
-                                <a href="#">See All Tasks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- settings end --><!--
-                    <!-- inbox dropdown start--><!--
-                    <li id="header_inbox_bar" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-theme">5</span>
-                        </a>
-                        <ul class="dropdown-menu extended inbox">
-                            <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <p class="green">You have 5 new messages</p>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="photo"><img alt="avatar" src="img/ui-zac.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Zac Snider</span>
-                                <span class="time">Just now</span>
-                                </span>
-                                <span class="message">
-                                Hi mate, how is everything?
-                                </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="photo"><img alt="avatar" src="img/ui-divya.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Divya Manian</span>
-                                <span class="time">40 mins.</span>
-                                </span>
-                                <span class="message">
-                                Hi, I need your help with this.
-                                </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="photo"><img alt="avatar" src="img/ui-danro.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Dan Rogers</span>
-                                <span class="time">2 hrs.</span>
-                                </span>
-                                <span class="message">
-                                Love your new Dashboard.
-                                </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="photo"><img alt="avatar" src="img/ui-sherman.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Dj Sherman</span>
-                                <span class="time">4 hrs.</span>
-                                </span>
-                                <span class="message">
-                                Please, answer asap.
-                                </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">See all messages</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- inbox dropdown end --><!--
-                    <!-- notification dropdown start--><!--
-                    <li id="header_notification_bar" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                        <i class="fa fa-bell-o"></i>
-                        <span class="badge bg-warning">7</span>
-                        </a>
-                        <ul class="dropdown-menu extended notification">
-                            <div class="notify-arrow notify-arrow-yellow"></div>
-                            <li>
-                                <p class="yellow">You have 7 new notifications</p>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="label label-danger"><i class="fa fa-bolt"></i></span>
-                                Server Overloaded.
-                                <span class="small italic">4 mins.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="label label-warning"><i class="fa fa-bell"></i></span>
-                                Memory #2 Not Responding.
-                                <span class="small italic">30 mins.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="label label-danger"><i class="fa fa-bolt"></i></span>
-                                Disk Space Reached 85%.
-                                <span class="small italic">2 hrs.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                <span class="label label-success"><i class="fa fa-plus"></i></span>
-                                New User Registered.
-                                <span class="small italic">3 hrs.</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">See all notifications</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- notification dropdown end --><!--
-                </ul>
-                <!--  notification end --><!--
-            </div> -->
-            @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
-                <div class="top-menu">
-                    <ul class="nav pull-right top-menu">
-                        <li>
-                            <a class="logout" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                     {{ __('Logout') }}
-                             </a>
+        @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
+            <header class="header black-bg">
+                @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
+                    <div class="sidebar-toggle-box">
+                        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+                    </div>
+                @endif
+                <!--logo start-->
+                <a href="{{ route("dashboard") }}" class="logo"><b>{{ config('app.name', 'Brad Davidson') }}</b></a>
+                <!--logo end-->
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                         </li>
-                    </ul>
-                </div>
-            @endif
-        </header>
+                @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
+                    <div class="top-menu">
+                        <ul class="nav pull-right top-menu">
+                            <li>
+                                <a class="logout" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                         {{ __('Logout') }}
+                                 </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                             </li>
+                        </ul>
+                        <notifications :notifications-data="{{ (new App\Notification)->getNotifications() }}" :user-id="{{ auth()->user()->id }}"></notifications>
+                    </div>
+                @endif
+            </header>
+        @endif
 
         @if(Auth::guard('admin')->check() || Auth::guard('client')->check())
             <aside>
                 <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <p class="centered">
-                            <a href="#">
-                                @if(Auth::guard('admin')->user()->isSuperAdmin())
-                                    <img src="{{ asset('img/me/me.png') }}" class="img-circle" width="80">
+                        <p class="centered profile-pic">
+                            <a href="{{ route('clients.myprofile') }}">
+                                @if(!empty(auth()->user()->profile_photo_icon))
+                                    <img src="{{ auth()->user()->profile_photo_icon }}" class="img-circle" width="80" style="border: unset;">
                                 @else
-                                    <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80">
+                                    <img src="{{ asset('img/friends/fr-05.jpg') }}" class="img-circle" width="80" style="border: unset;">
                                 @endif
                             </a>
                         </p>
                         <h5 class="centered">
                             @if(Auth::guard('admin')->check())
-                                {{ Auth::guard('admin')->user()->name }}
+                                {{ Auth::guard('admin')->user()->fullname }}
                             @elseif(Auth::guard('client')->check())
-                                {{ Auth::guard('client')->user()->name }}
+                                {{ Auth::guard('client')->user()->fullname }}
                             @endif
                         </h5>
                         <li class="mt">
@@ -372,19 +237,10 @@
                         @endcan
                         @can('clients_access')
                             <li class="sub-menu">
-                                <a class="{{ (request()->is('folders*') ? 'active' : '') }}" href="{{ route('folders.index') }}">
+                                <a class="{{ (request()->is('clients*') ? 'active' : '') }}" href="{{ route('clients.index') }}">
                                     <!-- <i class="fa fa-users"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M12 2c-4.97 0-9 4.03-9 9 0 4.17 2.84 7.67 6.69 8.69L12 22l2.31-2.31C18.16 18.67 21 15.17 21 11c0-4.97-4.03-9-9-9zm0 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.3c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                                     <span>{{ __('Clients') }}</span>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('training_access')
-                            <li class="sub-menu">
-                                <a class="{{ (request()->is('training*') ? 'active' : '') }}" href="{{ route('training.index') }}">
-                                    <!-- <i class="fa fa-users"></i> -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M15.5,13.5c0,2-2.5,3.5-2.5,5h-2c0-1.5-2.5-3-2.5-5c0-1.93,1.57-3.5,3.5-3.5h0C13.93,10,15.5,11.57,15.5,13.5z M13,19.5h-2 V21h2V19.5z M19,13c0,1.68-0.59,3.21-1.58,4.42l1.42,1.42C20.18,17.27,21,15.23,21,13c0-2.74-1.23-5.19-3.16-6.84l-1.42,1.42 C17.99,8.86,19,10.82,19,13z M16,5l-4-4v3c0,0,0,0,0,0c-4.97,0-9,4.03-9,9c0,2.23,0.82,4.27,2.16,5.84l1.42-1.42 C5.59,16.21,5,14.68,5,13c0-3.86,3.14-7,7-7c0,0,0,0,0,0v3L16,5z"/></g></svg>
-                                    <span>{{ __('Training') }}</span>
                                 </a>
                             </li>
                         @endcan
@@ -406,15 +262,35 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('diary_access')
+                        @can('note_access')
                             <li class="sub-menu">
-                                <a class="{{ (request()->is('diary*') ? 'active' : '') }}" href="{{ route('diary.index') }}">
+                                <a class="{{ (request()->is('notes*') ? 'active' : '') }}" href="{{ route('notes.index') }}">
                                     <!-- <i class="fa fa-users"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path id="menu-svg" d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z"/></svg>
-                                    <span>{{ __('Diary') }}</span>
+                                    <span>{{ __('Notes') }}</span>
                                 </a>
                             </li>
                         @endcan
+                        @can('coaching_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('coaching*') ? 'active' : '') }}" href="{{ route('coaching.index') }}">
+                                    <!-- <i class="fa fa-users"></i> -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M15.5,13.5c0,2-2.5,3.5-2.5,5h-2c0-1.5-2.5-3-2.5-5c0-1.93,1.57-3.5,3.5-3.5h0C13.93,10,15.5,11.57,15.5,13.5z M13,19.5h-2 V21h2V19.5z M19,13c0,1.68-0.59,3.21-1.58,4.42l1.42,1.42C20.18,17.27,21,15.23,21,13c0-2.74-1.23-5.19-3.16-6.84l-1.42,1.42 C17.99,8.86,19,10.82,19,13z M16,5l-4-4v3c0,0,0,0,0,0c-4.97,0-9,4.03-9,9c0,2.23,0.82,4.27,2.16,5.84l1.42-1.42 C5.59,16.21,5,14.68,5,13c0-3.86,3.14-7,7-7c0,0,0,0,0,0v3L16,5z"/></g></svg>
+                                    <span>{{ __('Coaching') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @if (!auth()->user()->isSuperAdmin())
+                            @can('coaching_show_to_clients')
+                                <li class="sub-menu">
+                                    <a class="{{ (request()->is('coaching/client*') ? 'active' : '') }}" href="{{ route('coaching.client.index') }}">
+                                        <!-- <i class="fa fa-users"></i> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect id="menu-svg" fill="none" height="24" width="24"/><path d="M15.5,13.5c0,2-2.5,3.5-2.5,5h-2c0-1.5-2.5-3-2.5-5c0-1.93,1.57-3.5,3.5-3.5h0C13.93,10,15.5,11.57,15.5,13.5z M13,19.5h-2 V21h2V19.5z M19,13c0,1.68-0.59,3.21-1.58,4.42l1.42,1.42C20.18,17.27,21,15.23,21,13c0-2.74-1.23-5.19-3.16-6.84l-1.42,1.42 C17.99,8.86,19,10.82,19,13z M16,5l-4-4v3c0,0,0,0,0,0c-4.97,0-9,4.03-9,9c0,2.23,0.82,4.27,2.16,5.84l1.42-1.42 C5.59,16.21,5,14.68,5,13c0-3.86,3.14-7,7-7c0,0,0,0,0,0v3L16,5z"/></g></svg>
+                                        <span>{{ __('Coaching') }}</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        @endif
                         @can('supplements_access')
                             <li class="sub-menu">
                                 <a class="{{ (request()->is('supplements*') ? 'active' : '') }}" href="{{ route('supplements.index') }}">
@@ -448,6 +324,22 @@
                                     <!-- <i class="fa fa-history"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path id="menu-svg" d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
                                     <span>{{ __('Logs') }}</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('resource_access')
+                            <li class="sub-menu">
+                                <a class="{{ (request()->is('resources*') ? 'active' : '') }}" href="{{ route('resources.index') }}">
+                                    <!-- <i class="fa fa-history"></i> -->
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         viewBox="0 0 32 32" style="enable-background:new 0 0 24 24;" width="24px" height="24px" xml:space="preserve">
+                                    <title></title>
+                                    <g id="folder">
+                                        <polygon class="st0" points="25,12 25,7 3,7 3,25 25,25 29,12" id="menu-svg" />
+                                        <polygon class="st0" points="25,25 3,25 7,12 29,12" id="menu-svg" />
+                                    </g>
+                                    </svg>
+                                    <span>{{ __('Resources') }}</span>
                                 </a>
                             </li>
                         @endcan
@@ -490,5 +382,84 @@
             </section>
         </main>
     </div>
+
+    @auth
+        @can('support_access')
+            <div class="support-model d-none">
+                <form action="{{ route('support.store') }}" method="POST">
+                    @csrf
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="border-head h3">
+                                        {{ __('Support Forum') }}
+                                        <br />
+                                        <span class="h6">{{ __('Tell us your issue in brief please.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-{{ !empty(auth()->user()->surname) ? '6' : '12' }}">
+                                    <label>{{ __('Name') }}</label>
+                                    <input type="text" disabled="" value="{{ auth()->user()->name }}" class="form-control" />
+                                </div>
+
+                                @if (!empty(auth()->user()->surname))
+                                    <div class="col-md-6">
+                                        <label>{{ __('Surname') }}</label>
+                                        <input type="text" disabled="" value="{{ auth()->user()->surname }}" class="form-control" />
+                                    </div>
+                                @endif
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{ __('Email') }}</label>
+                                    <input type="email" disabled="" value="{{ auth()->user()->email }}" class="form-control" />
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{ __('Your Query') }}</label>
+                                    <textarea class="form-control" name="query" placeholder="{{ __('Describe here your queries.') }}" autofocus="true"></textarea>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" value="{{ auth()->user()->fullName }}" name="name" />
+                                    <input type="hidden" value="{{ auth()->user()->email }}" name="email" />
+                                    <button class="btn btn-primary"><i class="fa fa-save"></i></button>
+                                    <button type="button" class="btn btn-secondary btn-default bootbox-cancel close-model" style="float: none;"><i class="fa fa-close"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @endcan
+    @endauth
+
+    <footer>
+        <div class="footer-godaddy text-right">
+            @auth
+                @can('support_access')
+                    <!-- <button class="btn btn-default support" title="{{ __('Support') }}" data-html="support-model"><i class="fa fa-question-circle"></i> {{ __('Support') }}</button> -->
+                @endcan
+            @endauth
+            <span id="siteseal"></span>
+        </div>
+    </footer>
 </body>
+        <script type="text/javascript">
+            @stack('custom_scripts')
+        </script>
 </html>
