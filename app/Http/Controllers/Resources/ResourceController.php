@@ -69,7 +69,7 @@ class ResourceController extends \App\Http\Controllers\BaseController
 
             $resources  = $modelQuery->orderBy('id','ASC')->paginate(Resource::PAGINATE_RECORDS);
 
-            $extensions = Resource::all()->pluck('extensions');
+            $extensions = Resource::all()->pluck('extensions', 'extensions');
 
             return view('resources.list', compact('total', 'resources', 'extensions', 'request', 'isFiltered'));
         } elseif (auth()->user()->can('resource_access')) {
