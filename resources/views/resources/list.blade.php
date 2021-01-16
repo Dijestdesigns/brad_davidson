@@ -113,8 +113,8 @@
                                 </table>
 
                                 <div class="float-left ml-10">
-                                    @if(!empty($term))
-                                        {{ $resources->appends(['s' => $term])->links() }}
+                                    @if(!empty($request))
+                                        {{ $resources->appends($request->all())->links() }}
                                     @else
                                         {{ $resources->links() }}
                                     @endif
