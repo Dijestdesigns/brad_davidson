@@ -24,7 +24,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <div class="custom-box">
                                 <div class="servicetitle">
-                                    <h4>Standard</h4>
+                                    <h4>{{ $record->title }}</h4>
                                     <hr>
                                 </div>
 

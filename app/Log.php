@@ -19,11 +19,13 @@ class Log extends BaseModel
     const CREATE = 'create';
     const UPDATE = 'update';
     const DELETE = 'delete';
+    const DOWNLOAD = 'download';
 
     public static $operationTypes = [
         self::CREATE => self::CREATE,
         self::UPDATE => self::UPDATE,
-        self::DELETE => self::DELETE
+        self::DELETE => self::DELETE,
+        self::DOWNLOAD => self::DOWNLOAD
     ];
 
     public function userCreatedBy()

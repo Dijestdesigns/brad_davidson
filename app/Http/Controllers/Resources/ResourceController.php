@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Resource;
 use App\ResourceUser;
 use App\User;
+use App\Log;
 use Illuminate\Http\UploadedFile;
 use Carbon\Carbon;
+use DB;
 
 class ResourceController extends \App\Http\Controllers\BaseController
 {
@@ -160,6 +162,9 @@ class ResourceController extends \App\Http\Controllers\BaseController
                 }
             }
 
+            $find = $model::find($id);
+            self::createLog($find, __("Created resource {$find->title}"), Log::CREATE, [], [$find->toArray(), 'users' => $resourceUser]);
+
             return redirect('resources')->with('success', __("Resource added!"));
         }
 
@@ -212,7 +217,21 @@ class ResourceController extends \App\Http\Controllers\BaseController
             DB::beginTransaction();
 
             $isRemoved = self::remove($record);
+
+            if ($isRemoved) {
+                self::createLog($record[0], __("Deleted resource " . $record[0]->title), Log::DELETE, $record[0]->toArray(), []);
+
+                DB::commit();
+
+                return redirect('resources')->with('success', __("Resource deleted!"));
+            } else {
+                DB::rollBack();
+
+                return redirect('resources')->with('error', __("There has been an error!"));
+            }
         }
+
+        return redirect('resources')->with('error', __("Not found!"));
     }
 
     public function download(int $id)
@@ -220,6 +239,8 @@ class ResourceController extends \App\Http\Controllers\BaseController
         $record = Resource::find($id);
 
         if (!empty($record)) {
+            self::createLog($record, __("Downloaded resource " . $record->title), Log::DOWNLOAD, $record->toArray(), $record->toArray());
+
             $headers = array(
                 'Content-Type: application/pdf',
             );
