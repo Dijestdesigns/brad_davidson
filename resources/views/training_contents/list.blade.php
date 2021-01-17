@@ -32,12 +32,6 @@
 
                         <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
                     </div>
-
-                    @can('roles_create')
-                        <div class="pull-right add-new-button">
-                            <a class="btn btn-primary" href="{{ route('trainingContents.create') }}"><i class="fa fa-plus"></i></a>
-                        </div>
-                    @endcan
                 </form>
             </div>
         </div>
