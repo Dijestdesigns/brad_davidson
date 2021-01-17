@@ -10,4 +10,9 @@ class Role extends \Spatie\Permission\Models\Role
     {
         return with(new static)->getTable();
     }
+
+    public function trainingPosts()
+    {
+        return $this->hasMany('App\TrainingContent', 'role_id', 'id');
+    }
 }

@@ -112,6 +112,10 @@ class DefaultUserSeeder extends Seeder
             ['name' => 'resource_create', 'display_name' => 'Resource Create', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
             // ['name' => 'resource_edit', 'display_name' => 'Resource Edit', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
             ['name' => 'resource_delete', 'display_name' => 'Resource Delete', 'group_name' => 'Resources', 'group_slug' => 'resources', 'guard_name' => 'admin'],
+
+            ['name' => 'training_content_access', 'display_name' => 'Training Content Access', 'group_name' => 'TrainingContents', 'group_slug' => 'TrainingContents', 'guard_name' => 'admin'],
+            ['name' => 'training_content_create', 'display_name' => 'Training Content Create', 'group_name' => 'TrainingContents', 'group_slug' => 'TrainingContents', 'guard_name' => 'admin'],
+            ['name' => 'training_content_update', 'display_name' => 'Training Content Update', 'group_name' => 'TrainingContents', 'group_slug' => 'TrainingContents', 'guard_name' => 'admin'],
         ];
 
         Permission::insert($permissions);

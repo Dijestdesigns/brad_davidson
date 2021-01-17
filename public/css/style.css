@@ -1298,7 +1298,7 @@ PANELS CONFIGURATIONS
 	font-size: 12px;
 }
 .message-p .form-inline {
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 }
 .message-p .form-inline .form-group {
 	width: 80%;

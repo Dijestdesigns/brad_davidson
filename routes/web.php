@@ -120,6 +120,10 @@ Route::middleware($middlewares)->group(function() {
         Route::resources(['resources' => 'ResourceController']);
     });
 
+    Route::group(['namespace' => 'TrainingContents'], function () {
+        Route::resources(['trainingContents' => 'TrainingContentController']);
+    });
+
     Route::get('/storage/link', function () {
         Artisan::call('storage:link');
 

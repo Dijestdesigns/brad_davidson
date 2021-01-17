@@ -628,6 +628,49 @@ jQuery(document).ready(function( $ ) {
           }
       });
   });
+  $(".createTrainingContents").on('click', function () {
+      event.preventDefault();
+
+      // $("." + $(this).attr('data-html')).find(".upload-file").bind("click");
+      // $("." + $(this).attr('data-html')).find(".upload-url").bind("click");
+
+      var form    = $(this).parent(),
+          form    = (form && form.length > 1) ? form[0] : form,
+          message = $("." + $(this).attr('data-html')).clone().removeClass("d-none");
+
+      var dialog = bootbox.dialog({
+          message: message,
+          callback: function callback(result) {
+              if (result) form.submit();
+          }
+      });
+
+      $(".richtext:eq(1)").richText({
+          imageUpload: false,
+          videoEmbed: false,
+          fileUpload: false
+      });
+
+      $(document).find(".upload-file:eq(1)").on("click", function() {
+          $("*[id*=" + $(this).val() + "]").each(function() {
+              $(this).removeClass("d-none");
+          });
+
+          $("*[id*=url]").each(function() {
+              $(this).addClass("d-none");
+          });
+      });
+
+      $(document).find(".upload-url:eq(1)").on("click", function() {
+          $("*[id*=" + $(this).val() + "]").each(function() {
+              $(this).removeClass("d-none");
+          });
+
+          $("*[id*=file]").each(function() {
+              $(this).addClass("d-none");
+          });
+      });
+  });
 
   $(".support").on('click', function () {
       event.preventDefault();
@@ -857,6 +900,18 @@ jQuery(document).ready(function( $ ) {
             });
         });
     }
+
+    setTimeout(function() {
+        /*$(".richtext").richText({
+            imageUpload: false,
+            videoEmbed: false,
+            fileUpload: false
+        });*/
+
+        /*$(document).find("input[type=radio][name=upload]").on("click", function() {
+            console.log(this);
+        });*/
+    }, 3000);
 });
 
 function getValue(element) {
