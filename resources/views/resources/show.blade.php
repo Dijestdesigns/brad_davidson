@@ -45,7 +45,13 @@
                         <!-- end custombox -->
                     @endforeach
                   @else
-                    <mark>{{ __('No record found!') }}</mark>
+                    <div class="content-panel">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <mark>{{ __('No record found!') }}</mark>
+                            </div>
+                        </div>
+                    </div>
                   @endif
             </div>
         </div>
