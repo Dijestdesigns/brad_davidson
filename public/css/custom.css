@@ -1683,6 +1683,10 @@ table.full-inputs .form-control[disabled] {
     font-size: 18px !important;
 }
 
+.font-25 {
+    font-size: 25px !important;
+}
+
 .color-white {
     color: white;
 }
@@ -1700,6 +1704,48 @@ table.full-inputs .form-control[disabled] {
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+.moxi_ass_div {
+    position: relative;
+    display: inline-block;
+}
+
+.moxi_image {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+    margin: auto;
+}
+
+.moxi_labels {
+    position: absolute;
+    height: 40%;
+    text-align: right;
+    margin: auto;
+    top: -20px;
+    bottom: 0;
+    right: 0;
+    left: 69px;
+    color: white;
+    width: min-content;
+    display: table-caption;
+    text-align: center;
+}
+
+.moxi_min_height {
+    min-height: 327.94px;
+    padding-top: 23%;
+}
+
+.moxi_label_color {
+    background-color: #ff6600;
+    border: none;
+}
+
+.moxi_label_color:focus,.moxi_label_color:active {
+   outline: none !important;
+   box-shadow: none;
 }
 
 @media (max-width:320px)  {

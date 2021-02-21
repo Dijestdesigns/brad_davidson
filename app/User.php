@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Tag;
 use App\Chat;
+use App\ClientTag;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -25,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'profile_photo_icon', 'shipping_address', 'gender', 'age', 'weight', 'weight_unit', 'is_superadmin', 'is_online', 'created_by', 'updated_by'
+        'name', 'surname', 'contact', 'category', 'email', 'password', 'profile_photo', 'profile_photo_icon', 'shipping_address', 'gender', 'age', 'height', 'weight', 'weight_unit', 'pancreas_function', 'liver_congestion', 'adrenal_function', 'gut_function', 'created_month', 'moxi_count', 'moxi_unique_id', 'is_superadmin', 'is_online', 'created_by', 'updated_by'
     ];
 
     /**
@@ -145,8 +146,16 @@ class User extends Authenticatable
             'shipping_address' => ['nullable'],
             'gender'           => ['in:' . implode(",", array_keys(self::$genders))],
             'age'              => ['nullable', 'integer'],
+            'height'           => ['nullable', 'integer'],
             'weight'           => array_merge(['integer'], $weight),
             'weight_unit'      => array_merge([], $weightUnits),
+            'pancreas_function' => ['nullable', 'integer'],
+            'liver_congestion' => ['nullable', 'integer'],
+            'adrenal_function' => ['nullable', 'integer'],
+            'gut_function'     => ['nullable', 'integer'],
+            'created_month'    => ['nullable', 'date:Y-m-d'],
+            'moxi_count'       => ['nullable', 'integer'],
+            'moxi_unique_id'   => ['nullable', 'integer'],
             'contact'          => ['nullable', 'string', 'max:255'],
             'category'         => ['in:' . implode(",", array_keys(self::$categories))],
             'email'            => array_merge(['required', 'string', 'email', 'max:255'], $email),
@@ -233,9 +242,39 @@ class User extends Authenticatable
         return $this->name . ' ' . $this->surname;
     }
 
+    public function getWeightUnitAttribute($value)
+    {
+        $default = 'n';
+
+        return !empty($this::$weightUnits[$value]) ? $this::$weightUnits[$value] : $this::$weightUnits[$default];
+    }
+
+    public static function getCreatedByName(int $id)
+    {
+        $name = NULL;
+        $find = self::find($id);
+
+        if (!empty($find)) {
+            $name = $find->name;
+        } else {
+            $find = self::find(self::$superadminId);
+
+            if (!empty($find)) {
+                $name = $find->name;
+            }
+        }
+
+        return $name;
+    }
+
     public function userCreatedBy()
     {
         return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
+    public static function getClientTags(int $id)
+    {
+        return ClientTag::where('user_id', $id)->get();
     }
 
     public function clientTags()

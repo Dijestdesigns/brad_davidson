@@ -112,19 +112,19 @@
                                                     <td>{{ $record->id }}</td>
                                                     <td>{{ $record->name }}</td>
                                                     @php
-                                                        $tags = ['-'];
-                                                        if (!empty($record->clientTags) && !$record->clientTags->isEmpty()) {
+                                                        $tags           = ['-'];
+                                                        $getClientTags  = $model::getClientTags($record->id);
+                                                        if (!empty($getClientTags) && !$getClientTags->isEmpty()) {
                                                             $tags = [];
-                                                            foreach ($record->clientTags as $clientTag) {
+                                                            foreach ($getClientTags as $clientTag) {
                                                                 $tags[] = $clientTag->tag->name;
                                                             }
                                                         }
                                                     @endphp
                                                     <td>{{ implode(", ", $tags) }}</td>
-                                                    <!-- <td>{{ $record->notes }}</td> -->
                                                     <td>{{ (!empty(App\User::$categories[$record->category])) ? App\User::$categories[$record->category] : __('None') }}</td>
                                                     <td>{{ $record->qty }}</td>
-                                                    <td>{{ $record->userCreatedBy->name }}</td>
+                                                    <td>{{ $model::getCreatedByName($record->created_by) }}</td>
                                                     <td class="form-inline">
                                                         @can('clients_edit')
                                                             <a href="{{ route('clients.edit', $record->id) }}" title="{{ __('Edit') }}">

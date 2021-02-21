@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\DeletedRecord;
 use App\Log;
 use App\Email;
+use APp\User;
 use Illuminate\Support\Facades\Mail;
 use View;
 use Carbon\Carbon;
@@ -88,7 +89,7 @@ abstract class BaseController extends Controller
             $data['url']            = $url;
             $data['ip_address']     = $ipAddress;
             $data['user_agent']     = $userAgent;
-            $data['created_by']     = auth()->user()->id;
+            $data['created_by']     = !empty(auth()->user()->id) ? auth()->user()->id : User::$superadminId;
 
             $model = new Log();
 

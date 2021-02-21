@@ -76,7 +76,9 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $modelQuery->where($model::getTableName() . '.id', '!=', $model::$superadminId);
         $modelQuery->where($model::getTableName() . '.id', '!=', $userId);
         $modelQuery->groupBy($model::getTableName() . '.id');
-        $modelQuery->select(DB::raw($model::getTableName() . ".*, SUM(" . ClientItem::getTableName() . '.qty) as qty'));
+        $modelQuery->select(DB::raw($model::getTableName() . ".*, SUM(" . ClientItem::getTableName() . '.qty) as qty, IF(' . $model::getTableName() . '.moxi_unique_id IS NULL, ' . $model::getTableName() . '.id, IF(SUBSTRING(' . $model::getTableName() . '.email, 1, LOCATE("+", ' . $model::getTableName() . '.email) - 1) IS NULL OR SUBSTRING(' . $model::getTableName() . '.email, 1, LOCATE("+", ' . $model::getTableName() . '.email) - 1) = "", ' . $model::getTableName() . '.email, CONCAT(SUBSTRING(' . $model::getTableName() . '.email, 1, LOCATE("+", ' . $model::getTableName() . '.email) - 1), SUBSTRING(' . $model::getTableName() . '.email, LOCATE("@", ' . $model::getTableName() . '.email))))) as task_specific_email_id'));
+
+        $modelQuery = DB::table(DB::raw("({$modelQuery->toSql()}) AS t"))->mergeBindings($modelQuery->getQuery())->groupBy('task_specific_email_id');
 
         $total   = $modelQuery->get()->count();
         $records = $modelQuery->orderBy('name', 'ASC')->paginate($model::PAGINATE_RECORDS);
@@ -84,7 +86,7 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $tags       = Tag::all();
         $categories = User::$categories;
 
-        return view('clients.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'categories'));
+        return view('clients.index', compact('total', 'records', 'request', 'isFiltered', 'tags', 'categories', 'model'));
     }
 
     public function create()
@@ -459,9 +461,16 @@ class ClientsController extends \App\Http\Controllers\BaseController
         $record = User::find($id);
 
         if ($record) {
-            $permissions = app('App\Http\Controllers\Roles\RoleController')->getPermissionsByGroup();
+            $permissions            = app('App\Http\Controllers\Roles\RoleController')->getPermissionsByGroup();
 
-            return view('clients.show', ['client' => $record, 'groups' => $permissions]);
+            $email                  = $record->email;
+
+            $moxiAssessmentDatas    = User::where(function($query) use($email) {
+                                                $query->where('email', $email)
+                                                      ->orWhereRaw("CONCAT(SUBSTRING(email, 1, LOCATE('+', email) - 1), SUBSTRING(email, LOCATE('@', email))) = '{$email}'");
+                                            })->orderBy('moxi_count')->get();
+
+            return view('clients.show', ['client' => $record, 'groups' => $permissions, 'moxiAssessmentDatas' => $moxiAssessmentDatas]);
         }
 
         return redirect('clients')->with('error', __("Client not found!"));

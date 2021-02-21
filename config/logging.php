@@ -99,6 +99,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'moxi_assessment_user_import_log' => [
+            'driver'    => 'single',
+            'path'      => storage_path('logs/moxi_logs.log'),
+            'level'     => 'debug',
+        ]
     ],
 
 ];

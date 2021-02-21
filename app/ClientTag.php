@@ -17,6 +17,24 @@ class ClientTag extends BaseModel
         'user_id', 'tag_id'
     ];
 
+    public static function validator(array $data, $returnBoolsOnly = false)
+    {
+        $validator = Validator::make($data, [
+            'user_id'  => ['required', 'integer', 'exists:' . User::getTableName() . ',id'],
+            'tag_id'   => ['required', 'integer', 'exists:' . Tag::getTableName() . ',id']
+        ]);
+
+        if ($returnBoolsOnly === true) {
+            if ($validator->fails()) {
+                \Session::flash('error', $validator->errors()->first());
+            }
+
+            return !$validator->fails();
+        }
+
+        return $validator;
+    }
+
     public static function validators(array $data, $returnBoolsOnly = false)
     {
         $validator = Validator::make($data, [

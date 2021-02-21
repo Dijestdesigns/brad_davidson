@@ -134,6 +134,96 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Moxi Assessment Data') }}</div>
+                                        <div class="col-md-10">
+                                            @if (!empty($moxiAssessmentDatas) && !$moxiAssessmentDatas->isEmpty())
+                                                @foreach ($moxiAssessmentDatas as $moxiAssessmentData)
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">Day {{ $moxiAssessmentData->moxi_count }}</h3>
+                                                            <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                                                        </div>
+                                                        <div class="panel-body disp-none">
+                                                            <div class="table-responsive">
+                                                                <div class="col-md-6 text-center d-flex justify-content-center">
+                                                                    <div class="row moxi_min_height font-18">
+                                                                        <div class="col-md-4">
+                                                                            {{ __('Height') }}
+                                                                            <br />
+                                                                            <button class="btn btn-info moxi_label_color">{{ $moxiAssessmentData->height }} {{ __('C. M. ') }}</button>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            {{ __('Weight') }}
+                                                                            <br />
+                                                                            <button class="btn btn-info moxi_label_color">{{ $moxiAssessmentData->weight }} {{ $moxiAssessmentData->weight_unit }}</button>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            {{ __('Age') }}
+                                                                            <br />
+                                                                            <button class="btn btn-info moxi_label_color">{{ $moxiAssessmentData->age }}</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 moxi_ass_div">
+                                                                            <img src="{{ asset('img/icons/Pancreas/Background.png') }}" class="moxi_image" />
+                                                                            <label class="moxi_labels font-18">
+                                                                                {{ __('PANCREAS FUNCTION') }}
+
+                                                                                <span class="font-25">{{ $moxiAssessmentData->pancreas_function }}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <img src="{{ asset('img/icons/Liver Congestion/liver-background.png') }}" class="moxi_image" />
+                                                                            <label class="moxi_labels font-18">
+                                                                                {{ __('LIVER CONGESTION') }}
+
+                                                                                <span class="font-25">{{ $moxiAssessmentData->liver_congestion }}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <img src="{{ asset('img/icons/Gut Function/gut-function-background.png') }}" class="moxi_image" />
+                                                                            <label class="moxi_labels font-18">
+                                                                                {{ __('GUT FUNCTION') }}
+
+                                                                                <span class="font-25">{{ $moxiAssessmentData->adrenal_function }}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <img src="{{ asset('img/icons/Adrenal/andrenal-background.png') }}" class="moxi_image" />
+                                                                            <label class="moxi_labels font-18">
+                                                                                {{ __('ADRENAL FUNCTION') }}
+
+                                                                                <span class="font-25">{{ $moxiAssessmentData->gut_function }}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Day 1</h3>
+                                                        <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                                                    </div>
+                                                    <div class="panel-body disp-none">
+                                                        <div class="table-responsive">
+                                                            <mark class="col-md-12 centered">
+                                                                {{ __('No records found!') }}
+                                                            </mark>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <div class="col-md-2">{{ __('Created at') }}</div>
                                         <div class="col-md-3">
                                             {{$client->created_at}}
