@@ -140,7 +140,7 @@
                                                 @foreach ($moxiAssessmentDatas as $moxiAssessmentData)
                                                     <div class="panel panel-primary">
                                                         <div class="panel-heading">
-                                                            <h3 class="panel-title">Day {{ $moxiAssessmentData->moxi_count }}</h3>
+                                                            <h3 class="panel-title">{{ __('Month') }} {{ $moxiAssessmentData->moxi_count }}</h3>
                                                             <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
                                                         </div>
                                                         <div class="panel-body disp-none">
