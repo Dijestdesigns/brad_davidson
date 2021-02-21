@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('import:moxi:users')->everyTenMinutes();
+        $schedule->command('import:moxi:users')->everyMinute();
     }
 
     /**
