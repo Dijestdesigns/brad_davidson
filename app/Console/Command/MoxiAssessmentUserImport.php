@@ -31,7 +31,21 @@ class MoxiAssessmentUserImport extends Command
     protected $description = 'Import live Moxi Assessment users.';
 
     public $googleLibrary, $googleService, $spreadsheetId;
-    
+
+    private $startMonth = 2;
+
+    private $clientTagId = 8;
+
+    private $weightUnits = 'p';
+
+    private $sleepLoops = 45;
+
+    private $chunkedLengths = 200;
+
+    private $moxiRolesId = 6;
+
+    private $staticPassword = "%Q3xrI0S";
+
     /**
      * Create a new command instance.
      *
@@ -70,6 +84,9 @@ class MoxiAssessmentUserImport extends Command
                 // Email
                 $userData[$index]['email'] = $this->getData('email', $row);
 
+                // Mobile
+                $userData[$index]['contact'] = $this->getData('contact', $row);
+
                 // Gender
                 $userData[$index]['gender'] = $this->getData('gender', $row);
 
@@ -100,23 +117,23 @@ class MoxiAssessmentUserImport extends Command
         }
 
         if (!empty($userData)) {
-            $staticPassword = "%Q3xrI0S";
+            $modelClientTags = new ClientTag();
 
             $model          = new User();
 
-            $modelClientTags = new ClientTag();
+            $staticPassword = $this->staticPassword;
 
-            $startMonth     = 2;
+            $startMonth     = $this->startMonth;
 
-            $clientTagId    = 8;
+            $clientTagId    = $this->clientTagId;
 
-            $weightUnits    = 'p';
+            $weightUnits    = $this->weightUnits;
 
-            $sleepLoops     = 45;
+            $sleepLoops     = $this->sleepLoops;
 
-            $chunkedLengths = 200;
+            $chunkedLengths = $this->chunkedLengths;
 
-            $moxiRolesId    = 6;
+            $moxiRolesId    = $this->moxiRolesId;
 
             $userData       = array_chunk($userData, $chunkedLengths);
 
@@ -241,32 +258,35 @@ class MoxiAssessmentUserImport extends Command
                 case 'email':
                     $return = (!empty($row[3])) ? (string)$row[3] : NULL;
                     break;
+                case 'contact':
+                    $return = (!empty($row[4])) ? (string)$row[4] : NULL;
+                    break;
                 case 'gender':
-                    $return = !empty($row[3]) ? ((strtolower($row[3]) == "male") ? "m" : (strtolower($row[3]) == "female" ? "f" : "n")) : "n";
+                    $return = !empty($row[5]) ? ((strtolower($row[5]) == "male") ? "m" : (strtolower($row[5]) == "female" ? "f" : "n")) : "n";
                     break;
                 case 'age':
-                    $return = (!empty($row[5])) ? (int)$row[5] : 0;
-                    break;
-                case 'weight':
-                    $return = (!empty($row[7])) ? (int)$row[7] : 0;
-                    break;
-                case 'height':
                     $return = (!empty($row[6])) ? (int)$row[6] : 0;
                     break;
+                case 'weight':
+                    $return = (!empty($row[8])) ? (int)$row[8] : 0;
+                    break;
+                case 'height':
+                    $return = (!empty($row[7])) ? (int)$row[7] : 0;
+                    break;
                 case 'pancreas_function':
-                    $return = (!empty($row[21])) ? (int)$row[21] : 0;
+                    $return = (!empty($row[22])) ? (int)$row[22] : 0;
                     break;
                 case 'liver_congestion':
-                    $return = (!empty($row[32])) ? (int)$row[32] : 0;
+                    $return = (!empty($row[33])) ? (int)$row[33] : 0;
                     break;
                 case 'adrenal_function':
-                    $return = (!empty($row[43])) ? (int)$row[43] : 0;
+                    $return = (!empty($row[44])) ? (int)$row[44] : 0;
                     break;
                 case 'gut_function':
-                    $return = (!empty($row[54])) ? (int)$row[54] : 0;
+                    $return = (!empty($row[55])) ? (int)$row[55] : 0;
                     break;
                 case 'moxi_unique_id':
-                    $return = (!empty($row[66])) ? (int)$row[66] : 0;
+                    $return = (!empty($row[67])) ? (int)$row[67] : 0;
                     break;
             }
         }
