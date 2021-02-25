@@ -271,22 +271,22 @@ class MoxiAssessmentUserImport extends Command
                     $return = (!empty($row[8])) ? (int)$row[8] : 0;
                     break;
                 case 'height':
-                    $return = (!empty($row[7])) ? (int)$row[7] : 0;
+                    $return = (!empty($row[7])) ? (string)$row[7] : 0;
                     break;
                 case 'pancreas_function':
-                    $return = (!empty($row[22])) ? (int)$row[22] : 0;
+                    $return = (!empty($row[30])) ? (int)$row[30] : 0;
                     break;
                 case 'liver_congestion':
-                    $return = (!empty($row[33])) ? (int)$row[33] : 0;
+                    $return = (!empty($row[41])) ? (int)$row[41] : 0;
                     break;
                 case 'adrenal_function':
-                    $return = (!empty($row[44])) ? (int)$row[44] : 0;
+                    $return = (!empty($row[52])) ? (int)$row[52] : 0;
                     break;
                 case 'gut_function':
-                    $return = (!empty($row[55])) ? (int)$row[55] : 0;
+                    $return = (!empty($row[63])) ? (int)$row[63] : 0;
                     break;
                 case 'moxi_unique_id':
-                    $return = (!empty($row[67])) ? (int)$row[67] : 0;
+                    $return = (!empty($row[75])) ? (int)$row[75] : 0;
                     break;
             }
         }

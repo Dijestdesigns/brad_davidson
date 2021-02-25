@@ -71,7 +71,19 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label>{{ __('Height') }} : </label>
+
+                                        <input type="text" class="form-control{{ $errors->has('height') ? ' is-invalid' : '' }}" name="height" value="{{ old('height') }}"/>
+
+                                        @if ($errors->has('height'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('height') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-4">
                                         <label>{{ __('Weight') }} : </label>
 
                                         <input type="number" class="form-control{{ $errors->has('weight') ? ' is-invalid' : '' }}" name="weight" value="{{ old('weight') }}"/>
@@ -83,7 +95,7 @@
                                         @endif
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label>{{ __('Weight Unit') }} : </label>
 
                                         <select name="weight_unit" class="form-control{{ $errors->has('weight_unit') ? ' is-invalid' : '' }}">

@@ -63,6 +63,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <div class="col-md-2">{{ __('Height') }}</div>
+                                        <div class="col-md-8">
+                                            {{ $client->height }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <div class="col-md-2">{{ __('Weight') }}</div>
                                         <div class="col-md-8">
                                             {{ $client->weight }} {{ ($client->weight_unit != 'n' && !empty(App\User::$weightUnits[$client->weight_unit])) ? App\User::$weightUnits[$client->weight_unit] : '-' }}

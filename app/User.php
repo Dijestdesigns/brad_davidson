@@ -146,7 +146,7 @@ class User extends Authenticatable
             'shipping_address' => ['nullable'],
             'gender'           => ['in:' . implode(",", array_keys(self::$genders))],
             'age'              => ['nullable', 'integer'],
-            'height'           => ['nullable', 'integer'],
+            'height'           => ['nullable', 'string'],
             'weight'           => array_merge(['integer'], $weight),
             'weight_unit'      => array_merge([], $weightUnits),
             'pancreas_function' => ['nullable', 'integer'],
